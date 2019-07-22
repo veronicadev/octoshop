@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title #{docTitle}
+        link(rel="stylesheet", href="/css/bootstrap.min.css")
+        link(rel="stylesheet", href="/css/main.css")
+        block styles
+    body
+    header.main-header
+        nav.navbar.navbar-expand-lg
+            .container
+                a.navbar-brand(href='/') OctoFood
+                button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarToggle', aria-controls='navbarTogglerDemo02', aria-expanded='false', aria-label='Toggle navigation')
+                    span.navbar-toggler-icon
+                #navbarToggle.collapse.navbar-collapse
+                    ul.navbar-nav.ml-auto.mt-2.mt-lg-0
+                        li.nav-item.active
+                            a.nav-link(href="/", class=(path==="/" ? "active" : "")) Shop
+                        li.nav-item
+                            a.nav-link(href="/products", class=(path==="/products" ? "active" : "")) Products
+                        li.nav-item
+                            a.nav-link(href="/cart", class=(path==="/cart" ? "active" : "")) Cart                         
+                        li.nav-item
+                            a.nav-link(href="/admin/add-product", class=(path==="/admin/add-product" ? "active" : "")) Add product
+                        li.nav-item
+                            a.nav-link(href="/admin/products", class=(path==="/admin/products" ? "active" : "")) Admin products  
+      
+    main 
+        .container
+            .row
+                block content

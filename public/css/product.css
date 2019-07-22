@@ -1,0 +1,15 @@
+.product-form {
+    width: 20rem;
+    max-width: 90%;
+    margin: auto;
+}
+
+.product{
+    margin-bottom: 30px;
+}
+
+.product__price {
+    text-align: center;
+    margin-left: 10px;
+    font-weight: 700;
+}
