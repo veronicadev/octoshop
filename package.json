@@ -1,0 +1,25 @@
+{
+  "name": "octoshop",
+  "version": "1.0.0",
+  "description": "simple nodejs ecommerce / nodejs, express, bootstrap, less, BEM",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pug": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/veronicadev/octoshop.git"
+  },
+  "author": "veronicadev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/veronicadev/octoshop/issues"
+  },
+  "homepage": "https://github.com/veronicadev/octoshop#readme"
+}

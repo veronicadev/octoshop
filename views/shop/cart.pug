@@ -1,1 +1,28 @@
-extends ./../layouts/main-layout
+extends ./../layouts/shop-layout
+
+block content
+    .container
+        .row
+            .col-lg-12
+                h1.page__title Cart
+                section.cart
+                    table.cart-table
+                        tbody
+                            tr.cart-item
+                                td.cart-item__info
+                                    a.cart-item__link-img(title="", href="#")
+                                        img.cart-item__img(alt="", src="https://cdn.shopify.com/s/files/1/0012/6425/5042/products/rosemary_550x550_crop_center.jpg?v=1555269384")
+                                    a.cart-item__link
+                                        h2.cart-item__title Jelly Fish
+                                            span.cart-item__count x2
+                                        p.cart-item__summary Spicy jelly fish
+                                td.cart-item__price-box
+                                    span.cart-item__price $19.99
+                                    .cart-item__remove(data-ID="123") Remove
+                        tfoot.cart__total
+                            tr.cart-item
+                                td.cart-total__info
+                                        h2.cart-item__title Total
+                                        p.cart-item__summary Shipping will be calculated at the next step
+                                td.cart-item__price-box
+                                    span.cart-item__price $19.99F

@@ -1,29 +1,28 @@
-extends ./../layouts/main-layout
-
-block styles
-    link(rel="stylesheet", href="/css/product.css")
+extends ./../layouts/shop-layout
 
 block content
-        .col-lg-12
-            .row
-                .col-lg-12
-                    h1 My Products
-                    p List of all the products...
-            .row
-                if prods.length>0
-                    each product in prods
-                        .col-lg-4
-                            article.product
-                                .product__image
-                                    img(src=product.imageUrl, alt=product.title) 
-                                .product__content
-                                    h2.product__title #{product.title}
-                                    span.product__category #{product.category}
-                                    <!--p.product__description #{product.description}-->
-                                .product__actions
-                                    button.product__btn.product__btn--full.btn--green  Add to cart
-                                        span.product__price $#{product.price}
-                else
+    .container
+        .row
+            .col-lg-12
+                .row
                     .col-lg-12
-                        h1 No products
+                        h1.page__title My Products
+                        p List of all the products...
+                .row
+                    if prods.length>0
+                        each product in prods
+                            .col-lg-4
+                                article.product
+                                    .product__image
+                                        img(src=product.imageUrl, alt=product.title) 
+                                    .product__content
+                                        h2.product__title #{product.title} 
+                                        span.product__category #{product.category}
+                                        <!--p.product__description #{product.description}-->
+                                    .product__actions
+                                        button.btn.btn--full.btn--green  Add to cart 
+                                            span.product__price $#{product.price}
+                    else
+                        .col-lg-12
+                            h1 No products
 

@@ -21,7 +21,7 @@ exports.getIndex = (req, res, next) => {
 }
 
 exports.getCart = (req, res, next) => {
-    res.render("shop/index", {
+    res.render("shop/cart", {
         docTitle: "Cart",
         path: "/cart"
     });

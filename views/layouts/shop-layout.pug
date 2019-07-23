@@ -6,13 +6,14 @@ html(lang="en")
         meta(http-equiv="X-UA-Compatible", content="ie=edge")
         title #{docTitle}
         link(rel="stylesheet", href="/css/bootstrap.min.css")
-        link(rel="stylesheet", href="/css/main.css")
+        link(rel="stylesheet", href="/css/global.css")
+        link(rel="stylesheet", href="/css/shop/shop.css")
         block styles
     body
     header.main-header
         nav.navbar.navbar-expand-lg
             .container
-                a.navbar-brand(href='/') OctoFood
+                a.navbar-brand(href='/') OctoShop
                 button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarToggle', aria-controls='navbarTogglerDemo02', aria-expanded='false', aria-label='Toggle navigation')
                     span.navbar-toggler-icon
                 #navbarToggle.collapse.navbar-collapse
@@ -28,7 +29,5 @@ html(lang="en")
                         li.nav-item
                             a.nav-link(href="/admin/products", class=(path==="/admin/products" ? "active" : "")) Admin products  
       
-    main 
-        .container
-            .row
-                block content
+    main.main-content
+        block content

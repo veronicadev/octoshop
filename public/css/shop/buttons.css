@@ -1,0 +1,143 @@
+
+/*****BUTTONS*****/
+
+.btn {
+    position: relative;
+    cursor: pointer;
+    line-height: 52px;
+    font-size: 16px;
+    padding: 0 15px;
+    margin: 0;
+    box-shadow: none;
+    border:none;
+    border-radius: 0;
+    transition: 0.4s all ease-in
+  }
+  
+  .btn:hover,
+  .btn:active {
+    background-color: #00a499;
+    color: white;
+  }
+  
+  .btn--full {
+    width: 100%;
+  }
+  
+  /*green*/
+  .btn--green {
+    color: #fff;
+    background-color: #00a499;
+  }
+  
+  .btn--green-shadow{
+    color: #00a499;
+    background-color: #fff;
+    border: 3px solid #00a499;
+  }
+  
+  .btn--green-shadow:after{
+    content: "";
+    position: absolute;
+    width: calc(100% + 6px);
+    height:  calc(100% + 6px);
+    background-color: #00a499;
+    top: 3px;
+    left: 3px;
+    z-index: -1;
+  }
+  
+  .btn--green-outline{
+    color: #00a499;
+    background-color: #fff;
+    border: 1px solid #00a499;
+  }
+  /*blue*/
+  .btn--blue {
+    color: #fff;
+    background-color: #0042a4;
+  }
+  
+  .btn--blue-shadow{
+    color: #0042a4;
+    background-color: #fff;
+    border: 3px solid #0042a4;
+    box-shadow: 4px 4px #0042a4;
+  }
+  
+  .btn--blue-shadow:after{
+    content: "";
+    position: absolute;
+    width: calc(100% + 6px);
+    height:  calc(100% + 6px);
+    background-color: #0042a4;
+    top: 3px;
+    left: 3px;
+    z-index: -1;
+  }
+  
+  .btn--blue-outline{
+    color: #0042a4;
+    background-color: #fff;
+    border: 1px solid #0042a4;
+  }
+  /*yellow*/
+  .btn--yellow {
+    color: #fff;
+    background-color: #ffd518;
+  }
+  
+  .btn--yellow-shadow{
+    color: #ffd518;
+    background-color: #fff;
+    border: 3px solid #ffd518;
+    box-shadow: 4px 4px #ffd518;
+  }
+  
+  .btn--yellow-shadow:after{
+    content: "";
+    position: absolute;
+    width: calc(100% + 6px);
+    height:  calc(100% + 6px);
+    background-color: #ffd518;
+    top: 3px;
+    left: 3px;
+    z-index: -1;
+  }
+  
+  .btn--yellow-outline{
+    color: #ffd518;
+    background-color: #fff;
+    border: 1px solid #ffd518;
+  }
+  
+  /*red*/
+  .btn--red {
+    color: #fff;
+    background-color: #d10a0a;
+  }
+  
+  .btn--red-shadow{
+    color: #d10a0a;
+    background-color: #fff;
+    border: 3px solid #d10a0a;
+    box-shadow: 4px 4px #d10a0a;
+  }
+  
+  .btn--red-shadow:after{
+    content: "";
+    position: absolute;
+    width: calc(100% + 6px);
+    height:  calc(100% + 6px);
+    background-color: #d10a0a;
+    top: 3px;
+    left: 3px;
+    z-index: -1;
+  }
+  
+  .btn--red-outline{
+    color: #d10a0a;
+    background-color: #fff;
+    border: 1px solid #d10a0a;
+  }
+  
