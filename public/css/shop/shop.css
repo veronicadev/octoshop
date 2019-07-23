@@ -21,7 +21,10 @@
   .main-header {
     width: 100%;
     padding: 30px 0;
-  }
+    position: fixed;
+    left: 0;
+    top: 0;
+}
   
   .nav-link{
     color: #09382c;
@@ -57,7 +60,7 @@
   }
 
   .page__title{
-    font-size: 45px;
+    font-size: 46px;
     font-weight: 700;
     margin-bottom: 40px;
   }
@@ -164,4 +167,23 @@
   }
   tbody .cart-item{
     border-bottom: 1px solid #d8dee0;
+  }
+
+  /*SECTION*/
+  .section__title{
+    font-size: 46px;
+    font-weight: 700;
+    margin-bottom: 40px;
+  }
+  .section__text{
+    font-size: 20px;
+  }
+
+  /*HOMEPAGE*/
+  .banner{
+    height: 100vh;
+    background-image: url('./../../img/banner.png');
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: cover;
   }

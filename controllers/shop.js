@@ -4,7 +4,7 @@ exports.getProducts = (req, res, next) => {
     Product.all((prods) => {
         res.render("shop/products", {
             prods: prods,
-            docTitle: "Homepage",
+            docTitle: "Shop",
             path: "/products"
         });
     });
@@ -14,7 +14,7 @@ exports.getIndex = (req, res, next) => {
     Product.all((prods) => {
         res.render("shop/index", {
             prods: prods,
-            docTitle: "Shop",
+            docTitle: "Octoshop - homepage ",
             path: "/"
         });
     });

@@ -11,7 +11,16 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
-.pt-60{
+.ptb-60{
   padding-top:60px;
   padding-bottom: 60px;
+}
+
+
+.ptb-120{
+  padding-top:120px;
+  padding-bottom: 120px;
+}
+.pt-100{
+  padding-top: 100px;
 }
