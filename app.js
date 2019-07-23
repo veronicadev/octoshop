@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const app = express();
+const port = process.env.PORT || 3000;
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -17,4 +18,4 @@ app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(errorsController.get404);
 
-app.listen(3000);
+app.listen(port);
