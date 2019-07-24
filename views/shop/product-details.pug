@@ -1,1 +1,14 @@
 extends ./../layouts/shop-layout
+
+block content
+    .container.pt-100
+        .row
+            .col-lg-6
+                img.details__img(src=product.imageUrl, alt=product.title)
+            .col-lg-6
+                h1.details__title #{product.title}
+                h2.details__category #{product.category}
+                span.details__price $ #{product.price}
+                p.details__description #{product.description}
+                form(action="/cart", method="POST")
+                    button.btn.btn--green-shadow.btn--full(type="submit") Add to Cart

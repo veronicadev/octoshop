@@ -10,6 +10,9 @@ body {
   color: #09382c;
   font-family: 'Roboto', sans-serif;
 }
+img{
+  max-width: 100%;
+}
 
 .ptb-60{
   padding-top:60px;

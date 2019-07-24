@@ -10,11 +10,23 @@ exports.getProducts = (req, res, next) => {
     });
 }
 
+exports.getProduct = (req, res, next) => {
+    const prodId = req.params.productId;
+    Product.findByID(prodId, (product)=>{
+        console.log(product);
+        res.render("shop/product-details", {
+            product:product,
+            docTitle: "Shop - " + product.title,
+            path: "/products"
+        });
+    })
+}
+
 exports.getIndex = (req, res, next) => {
     Product.all((prods) => {
         res.render("shop/index", {
             prods: prods,
-            docTitle: "Octoshop - homepage ",
+            docTitle: "Octoshop - Homepage ",
             path: "/"
         });
     });

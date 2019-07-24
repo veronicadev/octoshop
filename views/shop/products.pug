@@ -16,8 +16,9 @@ block content
                                     .product__image
                                         img(src=product.imageUrl, alt=product.title) 
                                     .product__content
-                                        h2.product__title #{product.title} 
-                                        span.product__category #{product.category}
+                                        a.product__link(href="/products/"+product.productId)
+                                            h2.product__title #{product.title} 
+                                            span.product__category #{product.category}
                                         <!--p.product__description #{product.description}-->
                                     .product__actions
                                         button.btn.btn--full.btn--green  Add to cart 
