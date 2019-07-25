@@ -21,8 +21,11 @@ block content
                                             span.product__category #{product.category}
                                         <!--p.product__description #{product.description}-->
                                     .product__actions
-                                        button.btn.btn--full.btn--green  Add to cart 
-                                            span.product__price $#{product.price}
+                                        form(action="/cart", method="POST")
+                                            button.btn.btn--full.btn--green(type="submit") Add to Cart
+                                                span.product__price $#{product.price}
+                                            input(type="hidden", name="productId", value=product.productId)
+                                            
                     else
                         .col-lg-12
                             h1 No products

@@ -12,3 +12,4 @@ block content
                 p.details__description #{product.description}
                 form(action="/cart", method="POST")
                     button.btn.btn--green-shadow.btn--full(type="submit") Add to Cart
+                    input(type="hidden", name="productId", value=product.productId)
