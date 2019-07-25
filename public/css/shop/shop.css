@@ -29,10 +29,7 @@
     background-color: #d3f1e8;
     transition: 0.2s linear top;
   }
-  .main-header--fixed{
-    background-color: #d3f1e8;
-    border-bottom: 1px solid #00a499
-  }
+
  /* .main-header--hidden{
     top: -100px;
   }*/
@@ -221,5 +218,9 @@
     }
     .page__title{
       font-size: 46px
+    }
+    .main-header--fixed{
+      background-color: #d3f1e8;
+      border-bottom: 1px solid #00a499
     }
   }
