@@ -2,6 +2,7 @@
 
 * {
   box-sizing: border-box;
+  outline: none;
 }
 
 body {
@@ -13,17 +14,30 @@ body {
 img{
   max-width: 100%;
 }
-
 .ptb-60{
+  padding-top:30px;
+  padding-bottom: 30px;
+}
+
+
+.ptb-120{
   padding-top:60px;
   padding-bottom: 60px;
 }
 
 
-.ptb-120{
-  padding-top:120px;
-  padding-bottom: 120px;
-}
-.pt-100{
-  padding-top: 100px;
+@media screen and (min-width:992px){
+  .ptb-60{
+    padding-top:60px;
+    padding-bottom: 60px;
+  }
+  
+  
+  .ptb-120{
+    padding-top:120px;
+    padding-bottom: 120px;
+  }
+  .pt-100{
+    padding-top: 100px;
+  }
 }

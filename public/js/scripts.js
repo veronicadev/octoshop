@@ -14,3 +14,11 @@ window.addEventListener("scroll", function(e){
     }
     oldScroll = current;*/
 });
+
+const navbarToggler = document.getElementById("navbarToggler");
+const navbar = document.getElementById('navbarToggle');
+navbarToggler.addEventListener('click', (e)=>{
+    e.preventDefault();
+    navbar.classList.toggle('collapse');
+
+});

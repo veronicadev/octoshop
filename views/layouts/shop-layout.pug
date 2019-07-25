@@ -14,8 +14,10 @@ html(lang="en")
             nav.navbar.navbar-expand-lg
                 .container
                     a.navbar-brand(href='/') OctoShop
-                    button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarToggle', aria-controls='navbarTogglerDemo02', aria-expanded='false', aria-label='Toggle navigation')
-                        span.navbar-toggler-icon
+                    button.navbar-toggler#navbarToggler(type='button', data-toggle='collapse', data-target='#navbarToggle', aria-controls='navbarTogglerDemo02', aria-expanded='false', aria-label='Toggle navigation')
+                        div.navbar-toggler-icon
+                            span.navbar-toggler-line
+                            span.navbar-toggler-line
                     #navbarToggle.collapse.navbar-collapse
                         ul.navbar-nav.ml-auto.mt-2.mt-lg-0
                             li.nav-item.active

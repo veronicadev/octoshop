@@ -26,6 +26,7 @@
     left: 0;
     top: 0;
     z-index: 2;
+    background-color: #d3f1e8;
     transition: 0.2s linear top;
   }
   .main-header--fixed{
@@ -45,9 +46,29 @@
     padding-right: 30px;
   }
   
+  .navbar-toggler-icon{
+    width: 30px;
+    height: 30px;
+    position: relative;
+  }
+
+  .navbar-toggler-line{
+    position: absolute;
+    left: 0;
+    width: 30px;
+    height: 1px;
+    background-color: #09382c;
+    top: 8px;
+  }
+
+  .navbar-toggler-line:first-of-type{
+    top: 20px;
+  }
+
   .nav-link.active{
     color: #00a499
   }
+
   
   .main-header .navbar{
     padding-top: 0;
@@ -70,7 +91,7 @@
   }
 
   .page__title{
-    font-size: 46px;
+    font-size: 32px;
     font-weight: 700;
     margin-bottom: 40px;
   }
@@ -80,6 +101,10 @@
   }
   
   /*****PRODUCT - PRODUCT LIST*****/
+  .product{
+    margin-bottom: 30px;
+  }
+
   .product__link, .product__link:hover{
     color: #09382c;
     text-decoration: none;
@@ -124,78 +149,22 @@
     margin-top: 3px;
   }
 
-  /*CART*/
-  .cart-table{
-    width: 100%;
-  }
 
-  .cart-item__title{
-    font-size:28px;
-    font-weight: 700;
-    color: #09382c;
-  }
-
-  
-  .cart-item__count{
-    font-size: 24px;
-    font-weight: 400;
-  }
-  
-  .cart-item__title .cart-item__count{
-    margin-left: 5px;
-  }
-
-  .cart-item__summary{
-    font-size: 18px;
-    margin-top: 5px;
-  }
-  .cart-item__img{
-    max-width: 100%;
-    width: 100px;
-    height: auto;
-  }
-  .cart-item__info {
-    padding: 20px;
-    display: flex;
-    width: 80%;
-  }
-  .cart-total__info{
-    padding: 20px;
-    width: 80%;
-  }
-  .cart-item__price-box{
-    padding: 20px;
-    width: 20%;
-  }
-  .cart-item__link-img{
-    margin-right: 25px;
-  }
-  .cart-item__remove{
-    font-size: 14px;
-    text-decoration: underline;    
-    color: #7a8184;
-    cursor: pointer;
-  }
-  .cart-item__price{
-    font-size: 22px;
-  }
-  tbody .cart-item{
-    border-bottom: 1px solid #d8dee0;
-  }
 
   /*SECTION*/
   .section__title{
-    font-size: 46px;
+    font-size: 32px;
     font-weight: 700;
     margin-bottom: 40px;
   }
   .section__text{
-    font-size: 20px;
+    font-size: 14px;
   }
 
   /*HOMEPAGE*/
   .banner{
-    height: 100vh;
+    height: 430px;
+    position: relative;
   }
   
   .banner__text{
@@ -234,5 +203,23 @@
     }
     .banner__title{
       font-size: 52px;
+    }
+  }
+
+  @media screen and (min-width:992px){
+    .main-header {
+      background-color: transparent;
+    }
+    .banner{
+      height: 100vh;
+    }
+    .section__title{
+      font-size: 46px;
+    }
+    .section__text{
+      font-size: 20px;
+    }
+    .page__title{
+      font-size: 46px
     }
   }
