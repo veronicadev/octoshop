@@ -29,6 +29,10 @@ img{
   padding-top: 100px;
 }
 
+input[type="number"]{
+
+}
+
 @media screen and (min-width:992px){
   .ptb-60{
     padding-top:60px;

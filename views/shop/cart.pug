@@ -7,25 +7,35 @@ block content
     .container.pt-100
         .row
             .col-lg-12
-                h1.page__title Cart
-                section.cart
-                    table.cart-table
-                        tbody
-                            tr.cart-item
-                                td.cart-item__info
-                                    a.cart-item__link-img(title="", href="#")
-                                        img.cart-item__img(alt="", src="https://cdn.shopify.com/s/files/1/0012/6425/5042/products/rosemary_550x550_crop_center.jpg?v=1555269384")
-                                    a.cart-item__link
-                                        h2.cart-item__title Jelly Fish
-                                            span.cart-item__count x2
-                                        p.cart-item__summary Spicy jelly fish
-                                td.cart-item__price-box
-                                    span.cart-item__price $19.99
-                                    .cart-item__remove(data-ID="123") Remove
-                        tfoot.cart__total
-                            tr.cart-item
-                                td.cart-total__info
-                                        h2.cart-item__title Total
-                                        p.cart-item__summary Shipping will be calculated at the next step
-                                td.cart-item__price-box
-                                    span.cart-item__price $19.99F
+                .row
+                    .col-lg-12
+                        h1.page__title Cart
+                .row
+                    if products.length>0
+                        .col-lg-12
+                            section.cart
+                                table.cart-table
+                                    tbody
+                                        each item in products
+                                            tr.cart-item
+                                                td.cart-item__info
+                                                    a.cart-item__link-img(title="item.title", href="/products/"+item.productId)
+                                                        img.cart-item__img(alt="item.title", src=item.imageUrl)
+                                                    a.cart-item__link
+                                                        h2.cart-item__title #{item.title}
+                                                            span.cart-item__count x #{item.qty}
+                                                <!--td.cart-item__qty -->
+                                                <!--    input(type="number", name="qty")-->
+                                                td.cart-item__price-box
+                                                    span.cart-item__price $ #{item.price}
+                                                    .cart-item__remove(data-ID=item.productId) Remove
+                                    tfoot.cart__total
+                                        tr.cart-item
+                                            td.cart-total__info
+                                                    h2.cart-item__title Total
+                                                    p.cart-item__summary Shipping will be calculated at the next step
+                                            td.cart-item__price-box
+                                                span.cart-item__price $ #{totalPrice}
+                    else
+                        .col-lg-12
+                            h2 No products in the carts
