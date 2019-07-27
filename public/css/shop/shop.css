@@ -193,6 +193,9 @@
     font-weight: 700;
     margin-bottom: 40px;
   }
+  .intro__img{
+    width: 90%;
+  }
 
   @media screen and (min-width:1024px){
     .main-header {
