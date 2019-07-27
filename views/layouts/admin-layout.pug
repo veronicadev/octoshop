@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title Octoshop - Dashboard - #{docTitle}
+        link(rel="stylesheet", href="/css/bootstrap.min.css")
+        link(rel="stylesheet", href="/css/font-awesome.min.css")
+        link(rel="stylesheet", href="/css/global.css")
+        link(rel="stylesheet", href="/css/admin/dashboard.css")
+        block styles
+    body
+        .nav-header
+            .brand-logo
+                a(href="/")
+                    span.brand-title OctoShop
+        .header
+            .header-content.clearfix
+                .header-right
+                    ul.clearfix
+                        li.icons.dropdown#openProfile
+                            .user-img.c-pointer.position-relative
+                                img(src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",height="40",width="40",alt="")
+                            .drop-down.dropdown-profile.animated.fadeIn.dropdown-menu#dropdownProfile
+                                .dropdown-content-body
+                                    ul
+                                        li
+                                            a(href="app-profile.html")
+                                                i.fa.fa-user
+                                                span Profile
+                                        hr
+                                        li
+                                            a(href="logout.html")
+                                                i.fa.fa-key
+                                                span Logout
+        main.main-content
+            block content
+
+        .nav-sidebar
+            ul
+                    li.nav-label Dashboard
+                    li
+                        a(href="./index.html") 
+                            i.fa.fa-bar-chart
+                            span Home
+                    li.mega-menu-item
+                        a.has-arrow(href="javascript:void()", aria-expanded="false")
+                            i.fa.fa-book.menu-icon
+                            span.nav-text Products
+                        ul.mega-menu.collapse(aria-expanded="false") 
+                            li
+                                a(href="/admin/products") All products
+                            li
+                                a(href="/admin/add-product") Add product
+
+        script(src="/js/admin/scripts.js")

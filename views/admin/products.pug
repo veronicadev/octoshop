@@ -1,0 +1,35 @@
+extends ./../layouts/admin-layout
+
+block content
+    .container-fluid
+        .row
+            .col-lg-12
+                .card
+                    .card-body
+                        .card-title
+                            h4 Products
+                        if prods.length>0
+                            .table-responsive
+                                table.table
+                                    thead
+                                        tr
+                                            th #
+                                            th Name 
+                                            th Category
+                                            th Description
+                                            th Price
+                                            th 
+                                    tbody
+                                        each product in prods
+                                            tr
+                                                th.table-id #{product.productId}
+                                                td.table-title #{product.title}
+                                                td.table-category #{product.category}
+                                                td.table-description #{product.description}
+                                                td.table-price $ #{product.price}
+                                                td.table-actions 
+                                                    a.edit-action(href="/admin/edit-product/"+product.productId+"?edit=true")
+                                                        i.fa.fa-pencil(aria-hidden="true")
+                        else
+                            p No products
+
