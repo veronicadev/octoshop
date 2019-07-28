@@ -28,7 +28,9 @@ block content
                                                 <!--    input(type="number", name="qty")-->
                                                 td.cart-item__price-box
                                                     span.cart-item__price $ #{item.price}
-                                                    .cart-item__remove(data-ID=item.productId) Remove
+                                                    form(action="/cart-delete-item", method="POST")
+                                                        input(type="hidden", value=item.productId, name="productId")
+                                                        button(type="submit").cart-item__remove Remove
                                     tfoot.cart__total
                                         tr.cart-item
                                             td.cart-total__info

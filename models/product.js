@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const rootDir = require('./../util/path')
+const Cart = require('./cart');
 
 const p = path.join(rootDir, 'data', 'products.json');
 const getProductsFromFile = (cb)=>{
@@ -14,7 +15,8 @@ const getProductsFromFile = (cb)=>{
 
 
 module.exports = class Product {
-    constructor(title, imageUrl, description, category, price) {
+    constructor(productId, title, imageUrl, description, category, price) {
+        this.productId = productId;
         this.title = title;
         this.imageUrl = imageUrl;
         this.description= description;
@@ -23,12 +25,22 @@ module.exports = class Product {
     }
 
     save() {
-        this.productId = Math.random().toString();
         getProductsFromFile((products)=>{
-            products.push(this);
-            fs.writeFile(p, JSON.stringify(products), (error)=>{
-                console.log(error)
-            });
+            if(this.productId){
+                const existingProductIndex = products.findIndex(prod => this.productId===prod.productId)
+                const updatedProducts = [...products];
+                updatedProducts[existingProductIndex] = this;
+                fs.writeFile(p, JSON.stringify(updatedProducts), (error)=>{
+                    console.log(error)
+                });
+            }else{
+                this.productId = Math.random().toString();
+                products.push(this);
+                fs.writeFile(p, JSON.stringify(products), (error)=>{
+                    console.log(error)
+                });
+            }
+            
         })
     }
 
@@ -42,6 +54,22 @@ module.exports = class Product {
                 return (p.productId === id)
             })
             cb(product);
+        })
+    }
+
+    static deleteByID(id){
+        getProductsFromFile(products =>{
+            const product = products.find(prod => prod.productId===id);
+            console.log(product)
+            const updatedProducts = products.filter((p)=>{
+                return (p.productId !== id)
+            })
+            fs.writeFile(p, JSON.stringify(updatedProducts), (error)=>{
+                if(!error){
+                    Cart.deleteProduct(id, product.price)
+                }
+                console.log(error)
+            });
         })
     }
 }

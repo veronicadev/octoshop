@@ -212,21 +212,32 @@ table {
     width: 10%;
 }
 .table-description {
-    width: 40%;
+    width: 35%;
     white-space: nowrap;
     overflow: hidden;
     max-width: 1px;
     text-overflow: ellipsis;
 }
-.edit-action {
+.action-btn{
+    outline: none;
     padding: 5px 8px;
-    font-size: 12px;
-    color: #fff;
+    font-size: 12px;   
     border-radius: 3px;
+    border: none;
+    display: inline-block;
+    margin: 0 3px;
+}
+.edit-action {
+    color: #fff;
     background-color: #55b857;
     box-shadow: 0px 4px 4px 0px rgba(78, 164, 67, 0.5);
 }
-.edit-action:hover{
+.delete-action{
+    color: #fff;
+    background-color: #b85555;
+    box-shadow: 0px 4px 4px 0px rgba(164, 67, 67, 0.5);
+}
+.edit-action:hover, .delete-action:hover{
     color: #fff;
 }
 th {

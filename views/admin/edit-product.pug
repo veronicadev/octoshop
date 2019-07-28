@@ -13,22 +13,23 @@ block content
                                 .col
                                     .form-group
                                         label(for="title") Title
-                                        input.form-control(type="text", name="title")#title
+                                        input.form-control(type="text", name="title", value=product.title)#title
                                 .col        
                                     .form-group
                                         label(for="imageUrl") Image url
-                                        input.form-control(type="text", name="imageUrl")#imageUrl
+                                        input.form-control(type="text", name="imageUrl", value=product.imageUrl)#imageUrl
                             .form-group
                                 label(for="description") description
-                                textarea(name="description", cols="30", rows="10").form-control#description
+                                textarea(name="description", cols="30", rows="10").form-control#description #{product.description}
                             .form-row
                                 .col
                                     .form-group
                                         label(for="category") category
-                                        input.form-control(type="text", name="category")#category
+                                        input.form-control(type="text", name="category", value=product.category)#category
                                 .col        
                                     .form-group
                                         label(for="price") price
-                                        input.form-control(type="number", name="price", step="0.01")#price
-                            
+                                        input.form-control(type="number", name="price", step="0.01", value=product.price)#price
+                            if editing
+                                input(type="hidden", value=product.productId, name="productId")
                             button.btn(type="submit") #{title}
