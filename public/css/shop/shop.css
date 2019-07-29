@@ -81,6 +81,22 @@
     padding: 0;
     line-height: 35px;
   }
+  .nav-item {
+    padding: 0 5px;
+  }
+
+  .nav__svg{
+    display:inline-block;
+    height:18px;
+    width:18px;
+    vertical-align:top;
+  }
+  .nav__svg path{
+    fill:#09382c;
+  }
+  .nav-link.active .nav__svg path{
+    fill:#00a499;
+  }
 
   /****MAIN CONTENT****/
   .main-content{
