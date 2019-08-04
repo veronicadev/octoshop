@@ -8,6 +8,8 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const errorsController = require('./controllers/errors')
 
+const mongoConnect = require('./util/database')
+
 app.set("view engine", "pug");
 app.set("views", "views");
 
@@ -18,6 +20,10 @@ app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(errorsController.get404);
 
-app.listen(port, ()=>{
-    console.log("Server listening on port 3000")
-});
+mongoConnect((client)=>{
+    app.listen(port, ()=>{
+        console.log(client)
+        console.log("Server listening on port 3000")
+    });
+})
+
