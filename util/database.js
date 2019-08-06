@@ -1,14 +1,26 @@
 const mongodb = require('mongodb');
-const MongoClient = mongodb.MongoClient;
+const MongoClient = new mongodb.MongoClient('mongodb+srv://octoshopDbAdmin:ys09DstbyqSUU6jV@octoshopcluster-d3kt9.mongodb.net/octoshop?retryWrites=true&w=majority', { useNewUrlParser: true });
+let _db; 
 const mongoConnect = (callback) =>{
-    MongoClient.connect('mongodb+srv://octoshopDbAdmin:ys09DstbyqSUU6jV@octoshopcluster-d3kt9.mongodb.net/test?retryWrites=true&w=majority')
-        .then(result =>{
+    MongoClient.connect()
+        .then(client =>{
             console.log('Connected to MONGODB');
-            callback(result);
+            _db = client.db();
+            callback(client);
         })
         .catch(error =>{
-            console.log(error);
+            console.log('Not connected',error);
         })
+
 }
 
-module.exports = mongoConnect;
+const getDb = () =>{
+    if(_db){
+        return _db
+    }
+    throw 'No database found!';
+}
+
+    
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;

@@ -31,8 +31,15 @@ exports.getProducts = (req, res, next)=>{
 
 exports.postAddProduct = (req, res, next)=>{
     const newProduct = new Product(null,req.body.title, req.body.imageUrl, req.body.description, req.body.category, req.body.price);
-    newProduct.save();
-    res.redirect('/admin/products');
+    newProduct.save()
+    .then(prod =>{
+        console.log('Product created!' , prod);
+        res.redirect('/admin/products');
+    })
+    .catch(error =>{
+        console.log('Product not created!',error);
+        res.redirect('/admin/products');
+    });
 }
 
 exports.getEditProduct = (req, res, next)=>{
