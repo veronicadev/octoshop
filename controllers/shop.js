@@ -2,7 +2,9 @@ const Product = require('./../models/product');
 const Cart = require('./../models/cart');
 
 exports.getProducts = (req, res, next) => {
-    Product.all((prods) => {
+    Product.all()
+    .then(prods =>{
+        console.log(prods)
         res.render("shop/products", {
             prods: prods,
             docTitle: "Shop",
@@ -24,13 +26,14 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getIndex = (req, res, next) => {
-    Product.all((prods) => {
-        res.render("shop/index", {
-            prods: prods,
-            docTitle: "Octoshop - Homepage ",
-            path: "/"
+    Product.lastNProducts(6)
+        .then(prods =>{
+            res.render("shop/index", {
+                prods: prods,
+                docTitle: "Octoshop - Homepage ",
+                path: "/"
+            });
         });
-    });
 }
 
 exports.getCart = (req, res, next) => {

@@ -20,7 +20,8 @@ exports.getAddProduct = (req, res, next)=>{
 }
 
 exports.getProducts = (req, res, next)=>{
-    Product.all((prods) => {
+    Product.all()
+    .then(prods => {
         res.render("admin/products", {
             prods: prods,
             docTitle: "Home",
@@ -30,7 +31,7 @@ exports.getProducts = (req, res, next)=>{
 }
 
 exports.postAddProduct = (req, res, next)=>{
-    const newProduct = new Product(null,req.body.title, req.body.imageUrl, req.body.description, req.body.category, req.body.price);
+    const newProduct = new Product(req.body.title, req.body.imageUrl, req.body.description, req.body.category, req.body.price);
     newProduct.save()
     .then(prod =>{
         console.log('Product created!' , prod);

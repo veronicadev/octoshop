@@ -17,7 +17,23 @@ module.exports = class Product {
     }
 
     static all(cb) {
-        
+        const db = getDb();
+        return db.collection('products').find().toArray()
+            .then(result => {
+                console.log(result);
+                return result;
+            })
+            .catch(error => console.log(error))
+    }
+
+    static lastNProducts(limit){
+        const db = getDb();
+        return db.collection('products').find().limit(limit).toArray()
+            .then(result => {
+                console.log(result);
+                return result;
+            })
+            .catch(error => console.log(error))
     }
 
     static findByID(id, cb){
