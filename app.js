@@ -9,7 +9,7 @@ const shopRoutes = require('./routes/shop');
 const errorsController = require('./controllers/errors')
 
 const mongoConnect = require('./util/database').mongoConnect;
-const user = require('./models/user');
+const User = require('./models/user');
 
 app.set("view engine", "pug");
 app.set("views", "views");
@@ -18,9 +18,9 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next)=>{
-    user.findById('5d4d85171c9d4400004028af')
+    User.findById('5d4d85171c9d4400004028af')
         .then((user)=>{
-            req.user = user;
+            req.user = new User(user.name, user.email, user.cart, user._id);
             next();
         })
 })
