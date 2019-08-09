@@ -33,9 +33,9 @@ block content
                                     a.product__image(href="/products/"+product.productId)
                                         img(src=product.imageUrl, alt=product.title) 
                                     .product__content
-                                        a.product__link(href="/products/"+product.productId)
+                                        a.product__link(href="/products/"+product._id)
                                     .product__actions
-                                        a.btn.btn--blue-outline(href="/products/"+product.productId) #{product.title} +
+                                        a.btn.btn--blue-outline(href="/products/"+product._id) #{product.title} +
                                             
                 else
                     .col-lg-12

@@ -19,7 +19,7 @@ block content
                                         each item in products
                                             tr.cart-item
                                                 td.cart-item__info
-                                                    a.cart-item__link-img(title="item.title", href="/products/"+item.productId)
+                                                    a.cart-item__link-img(title="item.title", href="/products/"+item._id)
                                                         img.cart-item__img(alt="item.title", src=item.imageUrl)
                                                     a.cart-item__link
                                                         h2.cart-item__title #{item.title}
@@ -29,7 +29,7 @@ block content
                                                 td.cart-item__price-box
                                                     span.cart-item__price $ #{item.price}
                                                     form(action="/cart-delete-item", method="POST")
-                                                        input(type="hidden", value=item.productId, name="productId")
+                                                        input(type="hidden", value=item._id, name="productId")
                                                         button(type="submit").cart-item__remove Remove
                                     tfoot.cart__total
                                         tr.cart-item

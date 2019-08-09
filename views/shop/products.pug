@@ -24,7 +24,7 @@ block content
                                         form(action="/cart", method="POST")
                                             button.btn.btn--full.btn--green(type="submit") Add to Cart 
                                                 span.product__price $#{product.price}
-                                            input(type="hidden", name="productId", value=product.productId)
+                                            input(type="hidden", name="productId", value=product._id)
                                             
                     else
                         .col-lg-12
