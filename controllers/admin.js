@@ -31,7 +31,7 @@ exports.getProducts = (req, res, next)=>{
 }
 
 exports.postAddProduct = (req, res, next)=>{
-    const newProduct = new Product(req.body.title, req.body.imageUrl, req.body.description, req.body.category, req.body.price);
+    const newProduct = new Product(req.body.title, req.body.imageUrl, req.body.description, req.body.category, req.body.price, null, req.user._id);
     newProduct.save()
     .then(prod =>{
         console.log('Product created!' , prod);

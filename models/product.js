@@ -2,13 +2,14 @@ const mongodb = require('mongodb');
 const getDb = require('./../util/database').getDb;
 
 module.exports = class Product {
-    constructor( title, imageUrl, description, category, price, id) {
+    constructor( title, imageUrl, description, category, price, id, userId) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.description= description;
         this.category = category;
         this.price = price; 
         this._id= id ? new mongodb.ObjectId(id) : null;
+        this.userId = userId;
     }
 
     save() {
@@ -22,7 +23,7 @@ module.exports = class Product {
                 $set: this
             })
         }else{
-            dbOp= db.collection('products').insertOne(this) 
+            dbOp= db.collection('products').insertOne(this);
         }
         return dbOp
             .then(result => {console.log(result)})
@@ -33,7 +34,6 @@ module.exports = class Product {
         const db = getDb();
         return db.collection('products').find().toArray()
             .then(result => {
-                console.log(result);
                 return result;
             })
             .catch(error => console.log(error))
@@ -43,7 +43,6 @@ module.exports = class Product {
         const db = getDb();
         return db.collection('products').find().limit(limit).toArray()
             .then(result => {
-                console.log(result);
                 return result;
             })
             .catch(error => console.log(error))
@@ -55,7 +54,6 @@ module.exports = class Product {
             _id: new mongodb.ObjectId(id)
         }).next()
         .then(result => {
-            console.log(result);
             return result;
         })
         .catch(error => console.log(error))
