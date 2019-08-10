@@ -88,6 +88,33 @@ module.exports = class User {
         .catch(error => console.log(error))
     }
 
+    addOrder(){
+        const db = getDb();
+        return this.getCart()
+            .then(cart=>{
+                const order = {
+                    items: cart.items,
+                    totalPrice: cart.totalPrice,
+                    user: {
+                        _id:new mongodb.ObjectId(this._id)
+                    }
+                };
+                return db.collection('orders').insertOne(order);
+            })
+            .then(result =>{
+                this.cart = {
+                    items: []
+                };
+                return db.collection('users').updateOne({
+                    _id: new mongodb.ObjectId(this._id)
+                },
+                {
+                    $set: {cart: { items:[]}}
+                })
+
+            })
+    }
+
     deleteItemFromCart(id){
         const updatedCartItems = this.cart.items.filter(item=>{
             return id.toString()!==item._id.toString();
@@ -102,6 +129,17 @@ module.exports = class User {
         .then(result => {
             return result;
         })
+        .catch(error => console.log(error))
+    }
+
+    getOrders(){
+        const db = getDb();
+        return db.collection('orders').find({
+            "user._id":new mongodb.ObjectId(this._id)
+        }).toArray() 
+        .then(orders =>{
+            return orders;
+        })       
         .catch(error => console.log(error))
     }
 }

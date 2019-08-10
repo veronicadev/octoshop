@@ -38,6 +38,9 @@ block content
                                                     p.cart-item__summary Shipping will be calculated at the next step
                                             td.cart-item__price-box
                                                 span.cart-item__price $ #{totalPrice}
+                                .text-right
+                                    form(action="/create-order", method="POST")
+                                        button.btn.btn--green(type="submit") Order now                                                 
                     else
                         .col-lg-12
                             h2 No products in the carts
