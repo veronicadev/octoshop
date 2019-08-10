@@ -74,8 +74,9 @@ module.exports = class User {
                     return prod._id.toString() === item._id.toString();
                 }).quantity};
             });
-            const totalPrice = prods.reduce((total, item)=>{
-                return total + item.price * item.quantity;
+            let totalPrice = 0;
+            prods.forEach(item => {
+                totalPrice = totalPrice + item.price * item.quantity;
             });
             console.log('ao',totalPrice)
             const newCart = {
@@ -83,6 +84,23 @@ module.exports = class User {
                 totalPrice: totalPrice
             }
             return newCart;
+        })
+        .catch(error => console.log(error))
+    }
+
+    deleteItemFromCart(id){
+        const updatedCartItems = this.cart.items.filter(item=>{
+            return id.toString()!==item._id.toString();
+        });
+        const db = getDb();
+        return db.collection('users').updateOne({
+            _id: new mongodb.ObjectId(this._id)
+        },
+        {
+            $set: {cart: {items:updatedCartItems}}
+        })
+        .then(result => {
+            return result;
         })
         .catch(error => console.log(error))
     }
