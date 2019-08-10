@@ -95,7 +95,7 @@ exports.postOrder = ((req, res, next) => {
 exports.getOrders = ((req, res, next) => {
     req.user.getOrders()
         .then(orders =>{
-            res.render("shop/orders", {
+            res.render("customer/orders", {
                 docTitle: "Orders",
                 path: "/orders",
                 orders: orders

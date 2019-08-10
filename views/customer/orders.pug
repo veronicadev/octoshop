@@ -1,0 +1,13 @@
+extends ./../layouts/customer-layout
+
+block content-customer
+    if orders.length>0
+        section.orders
+            ul
+                each order, index in orders
+                    li # #{index + 1}
+                        each prod in order.items
+                            p #{prod.title} x #{prod.quantity}
+        
+    else
+        h2 No orders

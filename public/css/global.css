@@ -17,6 +17,9 @@ img{
 .ptb-60{
   padding-top:30px;
   padding-bottom: 30px;
+}  
+.bk--grey{
+  background-color: #f4f8f7;
 }
 
 
@@ -26,7 +29,7 @@ img{
 }
 
 .pt-100{
-  padding-top: 100px;
+  padding-top: 87px;
 }
 
 input[type="number"]{
