@@ -30,7 +30,7 @@ block content
                         each product in prods
                             .col-lg-4
                                 article.product
-                                    a.product__image(href="/products/"+product.productId)
+                                    a.product__image(href="/products/"+product._id)
                                         img(src=product.imageUrl, alt=product.title) 
                                     .product__content
                                         a.product__link(href="/products/"+product._id)
