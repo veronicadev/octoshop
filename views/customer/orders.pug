@@ -1,13 +1,24 @@
 extends ./../layouts/customer-layout
 
 block content-customer
+    h4 Orders
     if orders.length>0
         section.orders
-            ul
+            ul.orders__list
                 each order, index in orders
-                    li # #{index + 1}
+                    li.order__item 
                         each prod in order.items
-                            p #{prod.title} x #{prod.quantity}
-        
+                            a(href="/products/"+prod._id, target="_blank").order__product
+                                img.order__product-img(src=prod.imageUrl, alt=prod.title)
+                                .order__quantity #{prod.quantity}
+                                <!--p #{prod.title} x #{prod.quantity}-->
+                        .order__details
+                            .row
+                                .col-lg-3.detail
+                                    .detail__title Order number
+                                    .detail__descr # #{index + 1}
+                                .col-lg-3.detail
+                                    .detail__title Total   
+                                    .detail__descr  #{order.totalPrice}                   
     else
         h2 No orders

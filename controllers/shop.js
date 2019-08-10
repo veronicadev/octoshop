@@ -93,12 +93,14 @@ exports.postOrder = ((req, res, next) => {
 });
 
 exports.getOrders = ((req, res, next) => {
+    console.log('user ', req.user)
     req.user.getOrders()
         .then(orders =>{
             res.render("customer/orders", {
                 docTitle: "Orders",
                 path: "/orders",
-                orders: orders
+                orders: orders,
+                user: req.user
             });
 
         })
