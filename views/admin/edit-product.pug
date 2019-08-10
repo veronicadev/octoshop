@@ -31,5 +31,5 @@ block content
                                         label(for="price") price
                                         input.form-control(type="number", name="price", step="0.01", value=product.price)#price
                             if editing
-                                input(type="hidden", value=product.productId, name="productId")
+                                input(type="hidden", value=product._id, name="productId")
                             button.btn(type="submit") #{title}

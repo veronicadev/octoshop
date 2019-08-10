@@ -20,3 +20,25 @@ block content
                 .col-lg-6.text-center
                     img.intro__img(src="/img/caffee.png", alt="Welcome to Octoshop - the delicious sustainable and healthy superfood.")
 
+    section.ptb-120.bk--grey
+        .container
+            .row
+                .col-lg-12
+                    h2.section__title What's new at OctoShop
+            .row
+                if prods.length>0
+                        each product in prods
+                            .col-lg-4
+                                article.product
+                                    a.product__image(href="/products/"+product.productId)
+                                        img(src=product.imageUrl, alt=product.title) 
+                                    .product__content
+                                        a.product__link(href="/products/"+product._id)
+                                    .product__actions
+                                        a.btn.btn--blue-outline(href="/products/"+product._id) #{product.title} +
+                                            
+                else
+                    .col-lg-12
+                        h1 No products
+
+

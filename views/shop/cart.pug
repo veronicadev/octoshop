@@ -19,17 +19,17 @@ block content
                                         each item in products
                                             tr.cart-item
                                                 td.cart-item__info
-                                                    a.cart-item__link-img(title="item.title", href="/products/"+item.productId)
+                                                    a.cart-item__link-img(title="item.title", href="/products/"+item._id)
                                                         img.cart-item__img(alt="item.title", src=item.imageUrl)
                                                     a.cart-item__link
                                                         h2.cart-item__title #{item.title}
-                                                            span.cart-item__count x #{item.qty}
+                                                            span.cart-item__count x #{item.quantity}
                                                 <!--td.cart-item__qty -->
                                                 <!--    input(type="number", name="qty")-->
                                                 td.cart-item__price-box
                                                     span.cart-item__price $ #{item.price}
                                                     form(action="/cart-delete-item", method="POST")
-                                                        input(type="hidden", value=item.productId, name="productId")
+                                                        input(type="hidden", value=item._id, name="productId")
                                                         button(type="submit").cart-item__remove Remove
                                     tfoot.cart__total
                                         tr.cart-item
@@ -38,6 +38,9 @@ block content
                                                     p.cart-item__summary Shipping will be calculated at the next step
                                             td.cart-item__price-box
                                                 span.cart-item__price $ #{totalPrice}
+                                .text-right
+                                    form(action="/create-order", method="POST")
+                                        button.btn.btn--green(type="submit") Order now                                                 
                     else
                         .col-lg-12
                             h2 No products in the carts

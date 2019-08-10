@@ -28,10 +28,10 @@ block content
                                                 td.table-description #{product.description}
                                                 td.table-price $ #{product.price}
                                                 td.table-actions 
-                                                    a.action-btn.edit-action(href="/admin/edit-product/"+product.productId+"?edit=true")
+                                                    a.action-btn.edit-action(href="/admin/edit-product/"+product._id+"?edit=true")
                                                         i.fa.fa-pencil(aria-hidden="true")
                                                     form.d-inline-block(action="/admin/delete-product", method="POST")
-                                                        input(type="hidden", value=product.productId, name="productId")
+                                                        input(type="hidden", value=product._id, name="productId")
                                                         button.action-btn.delete-action(type="submit")
                                                             i.fa.fa-trash-o(aria-hidden="true")
                         else
