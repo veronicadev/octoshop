@@ -20,7 +20,7 @@ exports.getAddProduct = (req, res, next)=>{
 }
 
 exports.getProducts = (req, res, next)=>{
-    Product.all()
+    Product.find()
     .then(prods => {
         res.render("admin/products", {
             prods: prods,
@@ -31,7 +31,13 @@ exports.getProducts = (req, res, next)=>{
 }
 
 exports.postAddProduct = (req, res, next)=>{
-    const newProduct = new Product(req.body.title, req.body.imageUrl, req.body.description, req.body.category, req.body.price, null, req.user._id);
+    const newProduct = new Product({
+        title: req.body.title,
+        description: req.body.description,
+        imageUrl: req.body.imageUrl,
+        price: req.body.price,
+        category: req.body.category,
+    });
     newProduct.save()
     .then(prod =>{
         console.log('Product created!' , prod);

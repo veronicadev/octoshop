@@ -1,4 +1,30 @@
-const mongodb = require('mongodb');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const productSchema = new Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    description:{
+        type: String,
+    },
+    imageUrl:{
+        type: String,
+        required: true
+    },
+    price:{
+        type: Number,
+        required: true
+    },
+    category:{
+        type: String,
+        required: true
+    },
+
+})
+
+module.exports = mongoose.model('Product', productSchema);
+/*
 const getDb = require('./../util/database').getDb;
 
 module.exports = class Product {
@@ -66,4 +92,4 @@ module.exports = class Product {
         })
         .catch(error => console.log(error))
     }
-}
+}*/

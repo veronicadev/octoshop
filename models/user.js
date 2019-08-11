@@ -1,4 +1,4 @@
-const mongodb = require('mongodb');
+/*const mongodb = require('mongodb');
 const getDb = require('./../util/database').getDb;
 
 module.exports = class User {
@@ -142,4 +142,4 @@ module.exports = class User {
         })       
         .catch(error => console.log(error))
     }
-}
+}*/

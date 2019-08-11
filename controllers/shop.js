@@ -3,7 +3,7 @@ const Cart = require('./../models/cart');
 const User = require('./../models/user');
 
 exports.getProducts = (req, res, next) => {
-    Product.all()
+    Product.find()
     .then(prods =>{
         console.log(prods)
         res.render("shop/products", {
@@ -16,7 +16,7 @@ exports.getProducts = (req, res, next) => {
 
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
-    Product.findByID(prodId)
+    Product.findById(prodId)
     .then(product =>{
         res.render("shop/product-details", {
             product:product,
@@ -27,7 +27,7 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getIndex = (req, res, next) => {
-    Product.lastNProducts(6)
+    Product.find().limit(6)
         .then(prods =>{
             res.render("shop/index", {
                 prods: prods,
