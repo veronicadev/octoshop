@@ -7,9 +7,9 @@ block content-customer
             ul.orders__list
                 each order, index in orders
                     li.order__item 
-                        each prod in order.items
-                            a(href="/products/"+prod._id, target="_blank").order__product
-                                img.order__product-img(src=prod.imageUrl, alt=prod.title)
+                        each prod in order.products
+                            a(href="/products/"+prod.product._id, target="_blank").order__product
+                                img.order__product-img(src=prod.product.imageUrl, alt=prod.product.title)
                                 .order__quantity #{prod.quantity}
                                 <!--p #{prod.title} x #{prod.quantity}-->
                         .order__details
