@@ -1,0 +1,17 @@
+extends ./../layouts/shop-layout
+
+block content
+    .container.pt-100
+        .row
+            .col-lg-12
+                .row
+                    .col-lg-12.text-center
+                        h1.page__title Login
+                .row
+                    .col-lg-6.offset-3
+                        form(action="/login", method="POST")
+                            input(type="text", name="email", value="", placeholder="Email")
+                            input(type="password" name="password", value="", placeholder="Password")
+                            button.btn.btn--full.btn--green-shadow(type="submit") Login
+
+                    

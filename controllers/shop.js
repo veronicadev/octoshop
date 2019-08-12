@@ -47,7 +47,7 @@ exports.getCart = (req, res, next) => {
             res.render("shop/cart", {
                 docTitle: "Cart",
                 path: "/cart",
-                totalPrice:totalPrice,
+                totalPrice: totalPrice,
                 products: products
             });
         });
@@ -91,7 +91,7 @@ exports.postOrder = (req, res, next) => {
         .execPopulate()
         .then(user => {
             const products = user.cart.items.map(item => {
-                return { quantity: item.quantity, product: {...item.product._doc} }
+                return { quantity: item.quantity, product: { ...item.product._doc } }
             });
             const newOrder = new Order({
                 user: req.user._id,
@@ -101,20 +101,20 @@ exports.postOrder = (req, res, next) => {
             console.log(newOrder)
             return newOrder.save();
         })
-        .then(result=>{
+        .then(result => {
             req.user.clearCart();
         })
-        .then(result=>{
+        .then(result => {
             res.redirect('/orders');
         })
-        .catch(error=>{
+        .catch(error => {
             console.log(error)
         })
 };
 
 exports.getOrders = (req, res, next) => {
     console.log('user ', req.user)
-    Order.find({user: req.user._id})
+    Order.find({ user: req.user._id })
         .then(orders => {
             res.render("customer/orders", {
                 docTitle: "Orders",
@@ -124,4 +124,12 @@ exports.getOrders = (req, res, next) => {
             });
 
         })
+};
+
+
+exports.getLogin = (req, res, next) => {
+    res.render("shop/login", {
+        docTitle: "Login",
+        path: "/login"
+    });
 };
