@@ -41,13 +41,17 @@ html(lang="en")
                             li.nav-item.active
                                 a.nav-link(href="/", class=(path==="/" ? "active" : "")) Home
                             li.nav-item
-                                a.nav-link(href="/products", class=(path==="/products" ? "active" : "")) Shop                     
+                                a.nav-link(href="/products", class=(path==="/products" ? "active" : "")) Shop 
+                            if isAuth==true               
+                                li.nav-item
+                                    a.nav-link(href="/admin/add-product", class=(path==="/admin/add-product" ? "active" : "")) Add product
+                                li.nav-item
+                                    a.nav-link(href="/admin/products", class=(path==="/admin/products" ? "active" : "")) Admin products  
+                                li.nav-item
+                                    form(action="/logout", method="POST")
+                                        button.nav-link(type="submit") Logout
                             li.nav-item
-                                a.nav-link(href="/admin/add-product", class=(path==="/admin/add-product" ? "active" : "")) Add product
-                            li.nav-item
-                                a.nav-link(href="/admin/products", class=(path==="/admin/products" ? "active" : "")) Admin products  
-                            li.nav-item
-                                a.nav-link(href="/login", class=(path==="/login" ? "active" : "")) Login     
+                                a.nav-link(href="/login", class=(path==="/login" ? "active" : "")) Login  
                             li.nav-item
                                 a.nav-link(href="/cart", class=(path==="/cart" ? "active" : ""))  
                                     svg.nav__svg(height="15px", viewBox="0 -31 512.00026 512", width="15px", xmlns="http://www.w3.org/2000/svg")

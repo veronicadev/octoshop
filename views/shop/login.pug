@@ -10,8 +10,8 @@ block content
                 .row
                     .col-lg-6.offset-3
                         form(action="/login", method="POST")
-                            input(type="text", name="email", value="", placeholder="Email")
-                            input(type="password" name="password", value="", placeholder="Password")
+                            input.form-control#email(type="text", name="email", placeholder="Email")
+                            input.form-control#password(type="password" name="password", placeholder="Password")
                             button.btn.btn--full.btn--green-shadow(type="submit") Login
 
                     

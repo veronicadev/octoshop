@@ -15,7 +15,8 @@ exports.getAddProduct = (req, res, next)=>{
         editing:false,
         formAction:'/admin/add-product',
         product:product,
-        title: "Add product"
+        title: "Add product",
+        isAuth: req.session.isLoggedin
     });
 }
 
@@ -25,7 +26,8 @@ exports.getProducts = (req, res, next)=>{
         res.render("admin/products", {
             prods: prods,
             docTitle: "Home",
-            path: "/admin/products"
+            path: "/admin/products",
+            isAuth: req.session.isLoggedin
         });
     });
 }
@@ -63,7 +65,8 @@ exports.getEditProduct = (req, res, next)=>{
             editing:editMode,
             product:product,
             formAction:'/admin/edit-product',
-            title:"Update product"
+            title:"Update product",
+            isAuth: req.session.isLoggedin
         });
     });
 }

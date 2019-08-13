@@ -9,7 +9,8 @@ exports.getProducts = (req, res, next) => {
             res.render("shop/products", {
                 prods: prods,
                 docTitle: "Shop",
-                path: "/products"
+                path: "/products",
+                isAuth: req.session.isLoggedin
             });
         });
 }
@@ -21,7 +22,8 @@ exports.getProduct = (req, res, next) => {
             res.render("shop/product-details", {
                 product: product,
                 docTitle: "Shop - " + product.title,
-                path: "/products"
+                path: "/products",
+                isAuth: req.session.isLoggedin
             });
         });
 }
@@ -32,13 +34,14 @@ exports.getIndex = (req, res, next) => {
             res.render("shop/index", {
                 prods: prods,
                 docTitle: "Octoshop - Homepage ",
-                path: "/"
+                path: "/",
+                isAuth: req.session.isLoggedin
             });
         });
 }
 
 exports.getCart = (req, res, next) => {
-    req.user.populate('cart.items.product')
+    req.session.user.populate('cart.items.product')
         .execPopulate()
         .then(user => {
             const products = user.cart.items;
@@ -48,7 +51,8 @@ exports.getCart = (req, res, next) => {
                 docTitle: "Cart",
                 path: "/cart",
                 totalPrice: totalPrice,
-                products: products
+                products: products,
+                isAuth: req.session.isLoggedin
             });
         });
 }
@@ -57,7 +61,8 @@ exports.getCart = (req, res, next) => {
 exports.getCheckout = (req, res, next) => {
     res.render("shop/checkout", {
         docTitle: "Checkout",
-        path: "/checkout"
+        path: "/checkout",
+        isAuth: req.session.isLoggedin
     });
 }
 
@@ -77,7 +82,7 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
     const productId = req.body.productId;
-    req.user.removeFromCart(productId)
+    req.session.user.removeFromCart(productId)
         .then(result => {
             res.redirect('/cart');
         })
@@ -113,23 +118,15 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-    console.log('user ', req.user)
-    Order.find({ user: req.user._id })
+    Order.find({ user: req.session.user._id })
         .then(orders => {
             res.render("customer/orders", {
                 docTitle: "Orders",
                 path: "/orders",
                 orders: orders,
-                user: req.user
+                user: req.session.user,
+                isAuth: req.session.isLoggedin
             });
 
         })
-};
-
-
-exports.getLogin = (req, res, next) => {
-    res.render("shop/login", {
-        docTitle: "Login",
-        path: "/login"
-    });
 };
