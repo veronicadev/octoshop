@@ -33,7 +33,7 @@ app.use(session({
 }));
 app.use((req, res, next)=>{
     if(!req.session.user){
-        next();
+        return next();
     }
     User.findById(req.session.user._id)
     .then(user => {
@@ -55,15 +55,6 @@ app.use(errorsController.get404);
 mongoose.connect(MONGODB_URI,{useNewUrlParser: true})
     .then(result=>{
         console.log('Mongoose started');
-       /* const user = new User({
-            username:'admin',
-            email:'info@octoshop.com',
-            cart:{
-                items:[],
-                totalPrice:0
-            }
-        });
-        user.save();*/
         app.listen(port, ()=>{
             console.log("Server listening on port 3000")
         });
