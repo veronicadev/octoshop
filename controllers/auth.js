@@ -16,13 +16,25 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-    User.findById('5d516139fb556fad9fe0b359')
-    .then(user => {
-        req.session.isLoggedin = true;
-        req.session.user = user;
-            res.session.save(()=>{
-                res.redirect('/');
-            });
+    const email = req.body.email;
+    const password = req.body.password;
+    User.findOne({ email: email })
+        .then(user => {
+            console.log(user)
+            if (!user) {
+                return res.redirect('/login');
+            }
+            bcryptjs.compare(password, user.password)
+                .then(doMatch => {
+                    if (doMatch) {
+                        req.session.isLoggedin = true;
+                        req.session.user = user;
+                        return req.session.save(error => {
+                            res.redirect('/');
+                        });
+                    }
+                    res.redirect('/login');
+                })
         })
         .catch(error => {
             console.log(error);
@@ -35,39 +47,37 @@ exports.postSignup = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
-    User.findOne({email:email})
-        .then(userDoc=>{
-            if(userDoc){
+    User.findOne({ email: email })
+        .then(userDoc => {
+            if (userDoc) {
                 return res.redirect('/signup');
             }
             return bcryptjs.hash(password, 12)
-            .then(hashPsw=>{
-                const user = new User({
-                    username:username,
-                    email: email,
-                    password: hashPsw,
-                    cart: {
-                        items:[],
-                        totalPrice:0
-                    }
-                });
-                return user.save();
-            })
-            .then(user=>{
-                console.log('ok')
-                console.log(user);
-                res.redirect('/login');
-            })
+                .then(hashPsw => {
+                    const user = new User({
+                        username: username,
+                        email: email,
+                        password: hashPsw,
+                        cart: {
+                            items: [],
+                            totalPrice: 0
+                        }
+                    });
+                    return user.save();
+                })
+                .then(user => {
+                    res.redirect('/login');
+                })
         })
-        .catch(error=>{
+        .catch(error => {
             console.log(error)
         })
 };
 
 exports.postLogout = (req, res, next) => {
-    req.session.destroy((error)=>{
+    req.session.destroy((error) => {
         console.log(error);
         res.redirect('/');
     })
-    .catch(error=>{console.log(error)});
+    .catch(error => { console.log(error) });
 };
