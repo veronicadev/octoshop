@@ -9,8 +9,7 @@ exports.getProducts = (req, res, next) => {
             res.render("shop/products", {
                 prods: prods,
                 docTitle: "Shop",
-                path: "/products",
-                isAuth: req.session.isLoggedin
+                path: "/products"
             });
         });
 }
@@ -22,8 +21,7 @@ exports.getProduct = (req, res, next) => {
             res.render("shop/product-details", {
                 product: product,
                 docTitle: "Shop - " + product.title,
-                path: "/products",
-                isAuth: req.session.isLoggedin
+                path: "/products"
             });
         });
 }
@@ -34,8 +32,7 @@ exports.getIndex = (req, res, next) => {
             res.render("shop/index", {
                 prods: prods,
                 docTitle: "Octoshop - Homepage ",
-                path: "/",
-                isAuth: req.session.isLoggedin
+                path: "/"
             });
         });
 }
@@ -51,8 +48,7 @@ exports.getCart = (req, res, next) => {
                 docTitle: "Cart",
                 path: "/cart",
                 totalPrice: totalPrice,
-                products: products,
-                isAuth: req.session.isLoggedin
+                products: products
             });
         });
 }
@@ -61,8 +57,7 @@ exports.getCart = (req, res, next) => {
 exports.getCheckout = (req, res, next) => {
     res.render("shop/checkout", {
         docTitle: "Checkout",
-        path: "/checkout",
-        isAuth: req.session.isLoggedin
+        path: "/checkout"
     });
 }
 
@@ -124,8 +119,7 @@ exports.getOrders = (req, res, next) => {
                 docTitle: "Orders",
                 path: "/orders",
                 orders: orders,
-                user: req.session.user,
-                isAuth: req.session.isLoggedin
+                user: req.session.user
             });
 
         })

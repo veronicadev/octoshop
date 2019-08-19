@@ -32,6 +32,7 @@ block content
                                                         i.fa.fa-pencil(aria-hidden="true")
                                                     form.d-inline-block(action="/admin/delete-product", method="POST")
                                                         input(type="hidden", value=product._id, name="productId")
+                                                        input(type="hidden",name="_csrf" value=csrfToken)
                                                         button.action-btn.delete-action(type="submit")
                                                             i.fa.fa-trash-o(aria-hidden="true")
                         else

@@ -49,6 +49,7 @@ html(lang="en")
                                     a.nav-link(href="/admin/products", class=(path==="/admin/products" ? "active" : "")) Admin products  
                                 li.nav-item
                                     form(action="/logout", method="POST")
+                                        input(type="hidden",name="_csrf" value=csrfToken)
                                         button.nav-link(type="submit") Logout
                             li.nav-item
                                 a.nav-link(href="/login", class=(path==="/login" ? "active" : "")) Login  

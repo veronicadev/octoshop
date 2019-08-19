@@ -10,6 +10,7 @@ block content
                 .row
                     .col-lg-6.offset-3
                         form(action="/signup", method="POST")
+                            input(type="hidden",name="_csrf" value=csrfToken)
                             input.form-control#username(type="text", name="username", placeholder="Username")
                             input.form-control#email(type="text", name="email", placeholder="Email")
                             input.form-control#password(type="password" name="password", placeholder="Password")

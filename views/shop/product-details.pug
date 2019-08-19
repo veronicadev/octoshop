@@ -11,5 +11,6 @@ block content
                 span.details__price $ #{product.price}
                 p.details__description #{product.description}
                 form(action="/cart", method="POST")
-                    button.btn.btn--green-shadow.btn--full(type="submit") Add to Cart
+                    input(type="hidden",name="_csrf" value=csrfToken)
                     input(type="hidden", name="productId", value=product._id)
+                    button.btn.btn--green-shadow.btn--full(type="submit") Add to Cart

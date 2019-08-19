@@ -29,6 +29,7 @@ block content
                                                 td.cart-item__price-box
                                                     span.cart-item__price $ #{item.product.price}
                                                     form(action="/cart-delete-item", method="POST")
+                                                        input(type="hidden",name="_csrf" value=csrfToken)
                                                         input(type="hidden", value=item._id, name="productId")
                                                         button(type="submit").cart-item__remove Remove
                                     tfoot.cart__total
@@ -40,6 +41,7 @@ block content
                                                 span.cart-item__price $ #{totalPrice}
                                 .text-right
                                     form(action="/create-order", method="POST")
+                                        input(type="hidden",name="_csrf" value=csrfToken)
                                         button.btn.btn--green(type="submit") Order now                                                 
                     else
                         .col-lg-12
