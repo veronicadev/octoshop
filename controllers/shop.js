@@ -38,12 +38,14 @@ exports.getIndex = (req, res, next) => {
 }
 
 exports.getCart = (req, res, next) => {
-    req.session.user.populate('cart.items.product')
+    req.user.populate('cart.items.product')
         .execPopulate()
         .then(user => {
+            let totalPrice = 0;
             const products = user.cart.items;
-            const totalPrice = user.cart.totalPrice;
-            console.log(products)
+            products.forEach((item, index) => {
+                totalPrice= totalPrice+(item.product.price *item.quantity);
+            });
             res.render("shop/cart", {
                 docTitle: "Cart",
                 path: "/cart",
@@ -77,7 +79,7 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
     const productId = req.body.productId;
-    req.session.user.removeFromCart(productId)
+    req.user.removeFromCart(productId)
         .then(result => {
             res.redirect('/cart');
         })
@@ -90,13 +92,17 @@ exports.postOrder = (req, res, next) => {
     req.user.populate('cart.items.product')
         .execPopulate()
         .then(user => {
+            let totalPrice =0;
             const products = user.cart.items.map(item => {
                 return { quantity: item.quantity, product: { ...item.product._doc } }
+            });
+            products.forEach((item, index)=>{
+                totalPrice = totalPrice + (item.product.price * item.quantity);
             });
             const newOrder = new Order({
                 user: req.user._id,
                 products: products,
-                totalPrice: user.cart.totalPrice
+                totalPrice: totalPrice
             });
             console.log(newOrder)
             return newOrder.save();

@@ -24,11 +24,7 @@ const userSchema = new Schema({
                 type: Number,
                 required: true
             }
-        }],
-        totalPrice: {
-            type: Number,
-            required: true
-        }
+        }]
     }
 });
 
@@ -47,9 +43,7 @@ userSchema.methods.addToCart = function(product){
             quantity:newQuantity
         });
     }
-    let totalPrice=0;
-    console.log("TOTAL PRICE: ", t);
-    const updatedCart = {items: updatedCartItems, totalPrice:totalPrice};
+    const updatedCart = {items: updatedCartItems};
     this.cart = updatedCart;
     return this.save()
 }
