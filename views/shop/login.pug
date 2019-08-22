@@ -14,5 +14,7 @@ block content
                             input.form-control#email(type="text", name="email", placeholder="Email")
                             input.form-control#password(type="password" name="password", placeholder="Password")
                             button.btn.btn--full.btn--green-shadow(type="submit") Login
+                        if errorMessage
+                            .alert.alert-danger.mt-2  #{errorMessage}
 
                     

@@ -9,8 +9,15 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
+    let message = req.flash('error');
+    if(message.length>0){
+        message= message[0];
+    }else{
+        message = null;
+    }
     res.render("shop/login", {
         docTitle: "Login",
+        errorMessage: message,
         path: "/login"
     });
 };
@@ -22,6 +29,7 @@ exports.postLogin = (req, res, next) => {
         .then(user => {
             console.log(user)
             if (!user) {
+                req.flash('error', 'Invalid email or password');
                 return res.redirect('/login');
             }
             bcryptjs.compare(password, user.password)
