@@ -22,9 +22,10 @@ block content
                                     
                                     .product__actions
                                         form(action="/cart", method="POST")
+                                            input(type="hidden",name="_csrf" value=csrfToken)
+                                            input(type="hidden", name="productId", value=product._id)
                                             button.btn.btn--full.btn--green(type="submit") Add to Cart 
                                                 span.product__price $#{product.price}
-                                            input(type="hidden", name="productId", value=product._id)
                                             
                     else
                         .col-lg-12

@@ -32,4 +32,5 @@ block content
                                         input.form-control(type="number", name="price", step="0.01", value=product.price)#price
                             if editing
                                 input(type="hidden", value=product._id, name="productId")
+                            input(type="hidden",name="_csrf" value=csrfToken)    
                             button.btn(type="submit") #{title}

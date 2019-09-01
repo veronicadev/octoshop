@@ -16,7 +16,6 @@ exports.getAddProduct = (req, res, next)=>{
         formAction:'/admin/add-product',
         product:product,
         title: "Add product",
-        isAuth: req.session.isLoggedin
     });
 }
 
@@ -27,7 +26,6 @@ exports.getProducts = (req, res, next)=>{
             prods: prods,
             docTitle: "Home",
             path: "/admin/products",
-            isAuth: req.session.isLoggedin
         });
     });
 }
@@ -66,7 +64,6 @@ exports.getEditProduct = (req, res, next)=>{
             product:product,
             formAction:'/admin/edit-product',
             title:"Update product",
-            isAuth: req.session.isLoggedin
         });
     });
 }

@@ -3,6 +3,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const csrf = require('csurf');
+const flash = require('connect-flash');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const port = process.env.PORT || 3000;
 
@@ -19,6 +21,7 @@ const store = new MongoDBStore({
     uri: MONGODB_URI,
     collection: 'sessions'
 });
+const csrfProtection = csrf();
 
 app.set("view engine", "pug");
 app.set("views", "views");
@@ -31,6 +34,7 @@ app.use(session({
     saveUninitialized:false,
     store: store
 }));
+app.use(csrfProtection);
 app.use((req, res, next)=>{
     if(!req.session.user){
         return next();
@@ -43,7 +47,13 @@ app.use((req, res, next)=>{
     .catch(error => {
         console.log(error);
     })
-})
+});
+app.use((req, res, next)=>{
+    res.locals.isAuth = req.session.isLoggedin;
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
+app.use(flash());
 
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
