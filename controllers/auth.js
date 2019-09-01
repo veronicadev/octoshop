@@ -1,5 +1,13 @@
 const User = require('./../models/user');
 const bcryptjs = require('bcryptjs');
+const nodemailer = require('nodemailer');
+const sendgridTransport = require('nodemailer-sendgrid-transport');
+
+const transporter = nodemailer.createTransport(sendgridTransport({
+    auth:{
+        api_key:'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'
+    }
+}));
 
 exports.getSignup = (req, res, next) => {
     res.render("shop/signup", {
@@ -67,6 +75,12 @@ exports.postSignup = (req, res, next) => {
                 })
                 .then(user => {
                     res.redirect('/login');
+                    return transporter.sendMail({
+                        to:email,
+                        from: 'info@octoshop.com',
+                        subject: 'Octoshop - signup succeded',
+                        html: '<h1>Octoshop - signup succeded</h1>'
+                    });
                 })
         })
         .catch(error => {
