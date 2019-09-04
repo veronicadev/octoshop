@@ -6,17 +6,14 @@ block content
             .col-lg-12
                 .row
                     .col-lg-12.text-center
-                        h1.page__title Login
+                        h1.page__title Reset password
                 .row
                     .col-lg-6.offset-3
                         if errorMessage
                             .alert.alert-danger.mb-3  #{errorMessage}
-                        form(action="/login", method="POST")
+                        form(action="/reset", method="POST")
                             input(type="hidden",name="_csrf" value=csrfToken)
                             input.form-control#email(type="text", name="email", placeholder="Email")
-                            input.form-control#password(type="password" name="password", placeholder="Password")
-                            button.btn.btn--full.btn--green-shadow(type="submit") Login
-                        .text-center.mt-3
-                            a(href="/reset") Forget password?
+                            button.btn.btn--full.btn--green-shadow(type="submit") Reset
 
                     
