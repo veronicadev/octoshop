@@ -9,6 +9,8 @@ block content
                         h1.page__title Signup
                 .row
                     .col-lg-6.offset-3
+                        if errorMessage
+                            .alert.alert-danger.mb-3  #{errorMessage}
                         form(action="/signup", method="POST")
                             input(type="hidden",name="_csrf" value=csrfToken)
                             input.form-control#username(type="text", name="username", placeholder="Username")

@@ -3,17 +3,25 @@ const bcryptjs = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const crypto = require('crypto');
-
+const BASE_URL = process.env['BASE_URL'];
+const API_EMAIL = process.env['API_EMAIL'];
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth:{
-        api_key:''
+        api_key:API_EMAIL
     }
 }));
 
 exports.getSignup = (req, res, next) => {
+    let message = req.flash('error');
+    if(message.length>0){
+        message= message[0];
+    }else{
+        message = null;
+    }
     res.render("shop/signup", {
         docTitle: "Signup",
-        path: "/signup"
+        path: "/signup",
+        errorMessage: message,
     });
 };
 
@@ -72,7 +80,7 @@ exports.postReset = (req, res, next) => {
                     <h1>
                         You requested a password reset. Click the link below to set a new password
                     </h1>
-                    <a href="${req.baseUrl}/reset-password/${token}">Reset password</a>`
+                    <a href="${BASE_URL}/reset-password/${token}">Reset password</a>`
                 });
             })
             .catch(error=>{
@@ -117,6 +125,7 @@ exports.postSignup = (req, res, next) => {
     User.findOne({ email: email })
         .then(userDoc => {
             if (userDoc) {
+                req.flash('error', 'Email address already exists');
                 return res.redirect('/signup');
             }
             return bcryptjs.hash(password, 12)
@@ -136,7 +145,7 @@ exports.postSignup = (req, res, next) => {
                     res.redirect('/login');
                     return transporter.sendMail({
                         to:email,
-                        from: 'info@octoshop.com',
+                        from: 'veronicaviarengo@gmail.com',
                         subject: 'Octoshop - signup succeded',
                         html: '<h1>Octoshop - signup succeded</h1>'
                     });
