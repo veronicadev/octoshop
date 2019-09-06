@@ -3,6 +3,7 @@ const bcryptjs = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const crypto = require('crypto');
+const utils = require('./../util/utils');
 const BASE_URL = process.env['BASE_URL'];
 const API_EMAIL = process.env['API_EMAIL'];
 const transporter = nodemailer.createTransport(sendgridTransport({
@@ -12,43 +13,28 @@ const transporter = nodemailer.createTransport(sendgridTransport({
 }));
 
 exports.getSignup = (req, res, next) => {
-    let message = req.flash('error');
-    if(message.length>0){
-        message= message[0];
-    }else{
-        message = null;
-    }
+    const errorMessage = utils.getFlashMessage(req, 'error');
     res.render("shop/signup", {
         docTitle: "Signup",
         path: "/signup",
-        errorMessage: message,
+        errorMessage: errorMessage,
     });
 };
 
 exports.getLogin = (req, res, next) => {
-    let message = req.flash('error');
-    if(message.length>0){
-        message= message[0];
-    }else{
-        message = null;
-    }
+    const errorMessage =  utils.getFlashMessage(req, 'error');
     res.render("shop/login", {
         docTitle: "Login",
-        errorMessage: message,
+        errorMessage: errorMessage,
         path: "/login"
     });
 };
 
 exports.getReset = (req, res, next) => {
-    let message = req.flash('error');
-    if(message.length>0){
-        message= message[0];
-    }else{
-        message = null;
-    }
+    const errorMessage =  utils.getFlashMessage(req, 'error');
     res.render("shop/reset", {
         docTitle: "Reset password",
-        errorMessage: message,
+        errorMessage: errorMessage,
         path: "/reset"
     });
 };

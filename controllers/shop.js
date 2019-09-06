@@ -1,6 +1,7 @@
 const Product = require('./../models/product');
 const Order = require('./../models/order');
 const User = require('./../models/user');
+const utils = require('./../util/utils');
 
 exports.getProducts = (req, res, next) => {
     Product.find()
@@ -46,11 +47,15 @@ exports.getCart = (req, res, next) => {
             products.forEach((item, index) => {
                 totalPrice= totalPrice+(item.product.price *item.quantity);
             });
+            const infoMessage = utils.getFlashMessage(req, 'info');
+            const errorMessage =  utils.getFlashMessage(req, 'error');
             res.render("shop/cart", {
                 docTitle: "Cart",
                 path: "/cart",
                 totalPrice: totalPrice,
-                products: products
+                products: products,
+                infoMessage: infoMessage,
+                errorMessage:errorMessage
             });
         });
 }
@@ -81,6 +86,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
     const productId = req.body.productId;
     req.user.removeFromCart(productId)
         .then(result => {
+            req.flash('info', 'Product removed');
             res.redirect('/cart');
         })
         .catch(error => {

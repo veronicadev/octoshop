@@ -9,7 +9,11 @@ block content
             .col-lg-12
                 .row
                     .col-lg-12
-                        h1.page__title Cart
+                            h1.page__title Cart
+                if infoMessage
+                    .row
+                            .col-lg-12
+                                .alert.alert-info.mb-3  #{infoMessage}
                 .row
                     if products.length>0
                         .col-lg-12
