@@ -7,7 +7,7 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const port = process.env.PORT || 3000;
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://octoshopDbAdmin:ys09DstbyqSUU6jV@octoshopcluster-d3kt9.mongodb.net/octoshop?retryWrites=true&w=majority';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
