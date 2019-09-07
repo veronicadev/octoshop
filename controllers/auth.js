@@ -6,9 +6,10 @@ const crypto = require('crypto');
 const utils = require('./../util/utils');
 const BASE_URL = process.env['BASE_URL'];
 const API_EMAIL = process.env['API_EMAIL'];
+const mongoose = require('mongoose');
 const transporter = nodemailer.createTransport(sendgridTransport({
-    auth:{
-        api_key:API_EMAIL
+    auth: {
+        api_key: API_EMAIL
     }
 }));
 
@@ -22,7 +23,7 @@ exports.getSignup = (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
-    const errorMessage =  utils.getFlashMessage(req, 'error');
+    const errorMessage = utils.getFlashMessage(req, 'error');
     res.render("shop/login", {
         docTitle: "Login",
         errorMessage: errorMessage,
@@ -31,7 +32,7 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.getReset = (req, res, next) => {
-    const errorMessage =  utils.getFlashMessage(req, 'error');
+    const errorMessage = utils.getFlashMessage(req, 'error');
     res.render("shop/reset", {
         docTitle: "Reset password",
         errorMessage: errorMessage,
@@ -40,15 +41,15 @@ exports.getReset = (req, res, next) => {
 };
 
 exports.postReset = (req, res, next) => {
-    crypto.randomBytes(32, (error, buffer)=>{
-        if(error){
+    crypto.randomBytes(32, (error, buffer) => {
+        if (error) {
             console.log(error);
             return res.redirect('/reset');
         }
         const token = buffer.toString('hex');
-        User.findOne({email: req.body.email})
-            .then(user=>{
-                if(!user){
+        User.findOne({ email: req.body.email })
+            .then(user => {
+                if (!user) {
                     req.flash('error', 'No user with that mail found.');
                     return res.redirect('/reset');
                 }
@@ -56,10 +57,10 @@ exports.postReset = (req, res, next) => {
                 user.resetTokenExp = Date.now() + 3600000;
                 user.save();
             })
-            .then((result)=>{
+            .then((result) => {
                 res.redirect('/login');
                 return transporter.sendMail({
-                    to:req.body.email,
+                    to: req.body.email,
                     from: 'info@octoshop.com',
                     subject: 'Octoshop - password reset',
                     html: `
@@ -69,7 +70,7 @@ exports.postReset = (req, res, next) => {
                     <a href="${BASE_URL}/reset-password/${token}">Reset password</a>`
                 });
             })
-            .catch(error=>{
+            .catch(error => {
                 console.log(error)
             })
     })
@@ -130,7 +131,7 @@ exports.postSignup = (req, res, next) => {
                 .then(user => {
                     res.redirect('/login');
                     return transporter.sendMail({
-                        to:email,
+                        to: email,
                         from: 'veronicaviarengo@gmail.com',
                         subject: 'Octoshop - signup succeded',
                         html: '<h1>Octoshop - signup succeded</h1>'
@@ -147,26 +148,65 @@ exports.postLogout = (req, res, next) => {
         console.log(error);
         res.redirect('/');
     })
-    .catch(error => { console.log(error) });
+        .catch(error => { console.log(error) });
 };
 
 exports.getNewPassword = (req, res, next) => {
     const token = req.params.token;
+    if (!token) {
+        return res.redirect('/login');
+    }
     console.log(token)
-    User.findOne({resetToken: token, resetTokenExp: {$gt: Date.now()}})
-    .then((user)=>{
-        console.log(user)
-        if(!user){
-            return res.redirect('/login');
-        }
-        res.render("shop/new-password", {
-            docTitle: "New password",
-            path: "/reset-password",
-            userId: user._id.toString()
-        });
+    User.findOne({ resetToken: token, resetTokenExp: { $gt: Date.now() } })
+        .then((user) => {
+            console.log(user)
+            if (!user) {
+                return res.redirect('/login');
+            }
+            res.render("shop/new-password", {
+                docTitle: "New password",
+                path: "/reset-password",
+                token: token,
+                userId: user._id.toString()
+            });
 
-    })
-    .catch((error)=>{
-        console.log(error);
-    })
+        })
+        .catch((error) => {
+            console.log(error);
+        })
 }
+
+exports.postNewPassword = (req, res, next) => {
+    const token = req.body.token;
+    const newPassword = req.body.newPassword;
+    const userId = req.body.userId;
+    let resetUser;
+    User.findOne(
+        {
+            resetToken: token,
+            resetTokenExp: { $gt: Date.now() },
+            _id: mongoose.Types.ObjectId(userId)
+        })
+        .then((user) => {
+            console.log(mongoose.Types.ObjectId(userId))
+            resetUser = user;
+            console.log('user',user)
+            return bcryptjs.hash(newPassword, 12);
+        })
+        .then((hashedPsw) => {
+            console.log('resetUser',resetUser)
+            resetUser.password = hashedPsw;
+            resetUser.resetToken = null;
+            resetUser.resetTokenExp = undefined;
+            return resetUser.save();
+        })
+        .then((result) => {
+            //TODO 
+            //inviare mail che conferma che è stata cambiata la password e eventualmente un flash message
+            console.log(result)
+            res.redirect('/login');
+        })
+        .catch((error) => {
+            console.log('Error: ' + error);
+        })
+};
