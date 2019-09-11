@@ -98,6 +98,25 @@
     fill:#00a499;
   }
 
+  .cart__items-container{
+    position: relative;
+    display: inline-block;
+  }
+
+  .cart__items-num{
+    background-color: #00a499;
+    color: #fff;
+    margin-left: 5px;
+    font-size: 8px;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: top;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 9px;
+  }
+
   /****MAIN CONTENT****/
   .main-content{
     

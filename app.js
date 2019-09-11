@@ -49,8 +49,13 @@ app.use((req, res, next)=>{
     })
 });
 app.use((req, res, next)=>{
+    let cartItemsNum = 0;
     res.locals.isAuth = req.session.isLoggedin;
     res.locals.csrfToken = req.csrfToken();
+    if(req.user){
+        cartItemsNum = req.user.cart.items.length;
+    }
+    res.locals.cartItemsNum = cartItemsNum;
     next();
 });
 app.use(flash());

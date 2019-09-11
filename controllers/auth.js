@@ -156,8 +156,7 @@ exports.postLogout = (req, res, next) => {
     req.session.destroy((error) => {
         console.log(error);
         res.redirect('/');
-    })
-        .catch(error => { console.log(error) });
+    });
 };
 
 exports.getNewPassword = (req, res, next) => {
