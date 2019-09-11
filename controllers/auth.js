@@ -7,6 +7,7 @@ const utils = require('./../util/utils');
 const BASE_URL = process.env['BASE_URL'];
 const API_EMAIL = process.env['API_EMAIL'];
 const mongoose = require('mongoose');
+const Email = require('email-templates');
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
         api_key: API_EMAIL
@@ -59,16 +60,21 @@ exports.postReset = (req, res, next) => {
             })
             .then((result) => {
                 res.redirect('/login');
-                return transporter.sendMail({
-                    to: req.body.email,
-                    from: 'info@octoshop.com',
-                    subject: 'Octoshop - password reset',
-                    html: `
-                    <h1>
-                        You requested a password reset. Click the link below to set a new password
-                    </h1>
-                    <a href="${BASE_URL}/reset-password/${token}">Reset password</a>`
+                const email = new Email();
+                return email.render('reset-password', {
+                    baseUrl: BASE_URL,
+                    token: token
                 });
+
+            })
+            .then(renderedEmail => {
+                console.log(renderedEmail)
+                return transporter.sendMail({
+                     to: req.body.email,
+                     from: 'viarengoveronica@gmail.com',
+                     subject: 'Octoshop - password reset',
+                     html: renderedEmail
+                 })
             })
             .catch(error => {
                 console.log(error)
@@ -190,11 +196,11 @@ exports.postNewPassword = (req, res, next) => {
         .then((user) => {
             console.log(mongoose.Types.ObjectId(userId))
             resetUser = user;
-            console.log('user',user)
+            console.log('user', user)
             return bcryptjs.hash(newPassword, 12);
         })
         .then((hashedPsw) => {
-            console.log('resetUser',resetUser)
+            console.log('resetUser', resetUser)
             resetUser.password = hashedPsw;
             resetUser.resetToken = null;
             resetUser.resetTokenExp = undefined;
