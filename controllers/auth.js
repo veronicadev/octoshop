@@ -42,6 +42,7 @@ exports.getReset = (req, res, next) => {
 };
 
 exports.postReset = (req, res, next) => {
+    let username;
     crypto.randomBytes(32, (error, buffer) => {
         if (error) {
             console.log(error);
@@ -54,6 +55,7 @@ exports.postReset = (req, res, next) => {
                     req.flash('error', 'No user with that mail found.');
                     return res.redirect('/reset');
                 }
+                username = user.username;
                 user.resetToken = token;
                 user.resetTokenExp = Date.now() + 3600000;
                 user.save();
@@ -63,7 +65,8 @@ exports.postReset = (req, res, next) => {
                 const email = new Email();
                 return email.render('reset-password', {
                     baseUrl: BASE_URL,
-                    token: token
+                    token: token,
+                    username: username
                 });
 
             })
@@ -72,7 +75,7 @@ exports.postReset = (req, res, next) => {
                 return transporter.sendMail({
                      to: req.body.email,
                      from: 'viarengoveronica@gmail.com',
-                     subject: 'Octoshop - password reset',
+                     subject: 'Octoshop - Password reset',
                      html: renderedEmail
                  })
             })
