@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const utils = require('./../util/utils');
 const BASE_URL = process.env['BASE_URL'];
 const API_EMAIL = process.env['API_EMAIL'];
+const FROM_EMAIL = process.env['TO_EMAIL'];
 const mongoose = require('mongoose');
 const Email = require('email-templates');
 const transporter = nodemailer.createTransport(sendgridTransport({
@@ -71,10 +72,10 @@ exports.postReset = (req, res, next) => {
 
             })
             .then(renderedEmail => {
-                console.log(renderedEmail)
+                //console.log(renderedEmail)
                 return transporter.sendMail({
                      to: req.body.email,
-                     from: 'viarengoveronica@gmail.com',
+                     from: FROM_EMAIL,
                      subject: 'Octoshop - Password reset',
                      html: renderedEmail
                  })
@@ -141,7 +142,7 @@ exports.postSignup = (req, res, next) => {
                     res.redirect('/login');
                     return transporter.sendMail({
                         to: email,
-                        from: 'veronicaviarengo@gmail.com',
+                        from: FROM_EMAIL,
                         subject: 'Octoshop - signup succeded',
                         html: '<h1>Octoshop - signup succeded</h1>'
                     });

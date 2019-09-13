@@ -51,7 +51,7 @@ html(lang="en")
                                     form(action="/logout", method="POST")
                                         input(type="hidden",name="_csrf" value=csrfToken)
                                         button.nav-link(type="submit") Logout
-                            if isAuth==false
+                            if !isAuth 
                                 li.nav-item
                                     a.nav-link(href="/login", class=(path==="/login" ? "active" : "")) Login  
                                 li.nav-item
