@@ -36,6 +36,19 @@ input[type="number"]{
 
 }
 
+.credit__link {
+  color: #00a499;
+  text-decoration: none;
+}
+.credit {
+  font-size: 13px;
+  padding: 10px 0;
+  background-color: #d3f1e8;
+}
+.credit__icon{
+  color: #a40029;
+}
+
 @media screen and (min-width:992px){
   .ptb-60{
     padding-top:60px;

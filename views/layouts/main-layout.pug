@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        title #{docTitle}
+        link(rel="stylesheet", href="/css/bootstrap.min.css")
+        link(rel="stylesheet", href="/css/global.css")
+        link(rel="stylesheet", href="/css/shop/shop.css")
+        link(rel="apple-touch-icon", sizes="57x57", href="/img/favicon/apple-icon-57x57.png")
+        link(rel="apple-touch-icon", sizes="60x60", href="/img/favicon/apple-icon-60x60.png")
+        link(rel="apple-touch-icon", sizes="72x72", href="/img/favicon/apple-icon-72x72.png")
+        link(rel="apple-touch-icon", sizes="76x76", href="/img/favicon/apple-icon-76x76.png")
+        link(rel="apple-touch-icon", sizes="114x114", href="/img/favicon/apple-icon-114x114.png")
+        link(rel="apple-touch-icon", sizes="120x120", href="/img/favicon/apple-icon-120x120.png")
+        link(rel="apple-touch-icon", sizes="144x144", href="/img/favicon/apple-icon-144x144.png")
+        link(rel="apple-touch-icon", sizes="152x152", href="/img/favicon/apple-icon-152x152.png")
+        link(rel="apple-touch-icon", sizes="180x180", href="/img/favicon/apple-icon-180x180.png")
+        link(rel="icon", type="image/png", sizes="192x192",  href="/img/favicon/android-icon-192x192.png")
+        link(rel="icon", type="image/png", sizes="32x32", href="/img/favicon/favicon-32x32.png")
+        link(rel="icon", type="image/png", sizes="96x96", href="/img/favicon/favicon-96x96.png")
+        link(rel="icon", type="image/png", sizes="16x16", href="/img/favicon/favicon-16x16.png")
+        link(rel="manifest", href="/manifest.json")
+        link(rel="icon", href="/img/favicon/favicon.ico", type="image/x-icon")
+        meta(name="msapplication-TileColor", content="#ffffff")
+        meta(name="msapplication-TileImage", content="/img/favicon/ms-icon-144x144.png")
+        meta(name="theme-color", content="#ffffff") 
+        block styles
+    body
+        header.main-header#mainHeader
+            nav.navbar.navbar-expand-lg
+                .container
+                    a.navbar-brand(href='/') OctoShop
+                    button.navbar-toggler#navbarToggler(type='button', data-toggle='collapse', data-target='#navbarToggle', aria-controls='navbarTogglerDemo02', aria-expanded='false', aria-label='Toggle navigation')
+                        div.navbar-toggler-icon
+                            span.navbar-toggler-line
+                            span.navbar-toggler-line
+                    #navbarToggle.collapse.navbar-collapse
+                        ul.navbar-nav.ml-auto.mt-2.mt-lg-0
+                            li.nav-item.active
+                                a.nav-link(href="/", class=(path==="/" ? "active" : "")) Home
+                            li.nav-item
+                                a.nav-link(href="/products", class=(path==="/products" ? "active" : "")) Shop 
+                            if isAuth==true               
+                                li.nav-item
+                                    a.nav-link(href="/admin/add-product", class=(path==="/admin/add-product" ? "active" : "")) Add product
+                                li.nav-item
+                                    a.nav-link(href="/admin/products", class=(path==="/admin/products" ? "active" : "")) Admin products  
+                                li.nav-item
+                                    form(action="/logout", method="POST")
+                                        input(type="hidden",name="_csrf" value=csrfToken)
+                                        button.nav-link(type="submit") Logout
+                            if !isAuth 
+                                li.nav-item
+                                    a.nav-link(href="/login", class=(path==="/login" ? "active" : "")) Login  
+                                li.nav-item
+                                    a.nav-link(href="/signup", class=(path==="/signup" ? "active" : "")) Signup  
+                            li.nav-item
+                                a.nav-link(href="/cart", class=(path==="/cart" ? "active" : ""))
+                                    div.cart__items-container
+                                        svg.nav__svg(height="15px", viewBox="0 -31 512.00026 512", width="15px", xmlns="http://www.w3.org/2000/svg")
+                                            path(d="m164.960938 300.003906h.023437c.019531 0 .039063-.003906.058594-.003906h271.957031c6.695312 0 12.582031-4.441406 14.421875-10.878906l60-210c1.292969-4.527344.386719-9.394532-2.445313-13.152344-2.835937-3.757812-7.269531-5.96875-11.976562-5.96875h-366.632812l-10.722657-48.253906c-1.527343-6.863282-7.613281-11.746094-14.644531-11.746094h-90c-8.285156 0-15 6.714844-15 15s6.714844 15 15 15h77.96875c1.898438 8.550781 51.3125 230.917969 54.15625 243.710938-15.941406 6.929687-27.125 22.824218-27.125 41.289062 0 24.8125 20.1875 45 45 45h272c8.285156 0 15-6.714844 15-15s-6.714844-15-15-15h-272c-8.269531 0-15-6.730469-15-15 0-8.257812 6.707031-14.976562 14.960938-14.996094zm312.152343-210.003906-51.429687 180h-248.652344l-40-180zm0 0")
+                                            path(d="m150 405c0 24.8125 20.1875 45 45 45s45-20.1875 45-45-20.1875-45-45-45-45 20.1875-45 45zm45-15c8.269531 0 15 6.730469 15 15s-6.730469 15-15 15-15-6.730469-15-15 6.730469-15 15-15zm0 0")
+                                            path(d="m362 405c0 24.8125 20.1875 45 45 45s45-20.1875 45-45-20.1875-45-45-45-45 20.1875-45 45zm45-15c8.269531 0 15 6.730469 15 15s-6.730469 15-15 15-15-6.730469-15-15 6.730469-15 15-15zm0 0")
+                                        if cartItemsNum>0
+                                            span.cart__items-num #{cartItemsNum}
+                            li.nav-item
+                                a.nav-link(href="/orders", class=(path==="/orders" ? "active" : ""))
+                                    svg.nav__svg(x="0px", y="0px", height="15px",  width="15px", viewBox="0 0 512 512", style="enable-background:new 0 0 512 512;", xml:space="preserve")
+                                        g
+                                            g
+                                                path(d="M437.02,330.98c-27.883-27.882-61.071-48.523-97.281-61.018C378.521,243.251,404,198.548,404,148    C404,66.393,337.607,0,256,0S108,66.393,108,148c0,50.548,25.479,95.251,64.262,121.962    c-36.21,12.495-69.398,33.136-97.281,61.018C26.629,379.333,0,443.62,0,512h40c0-119.103,96.897-216,216-216s216,96.897,216,216    h40C512,443.62,485.371,379.333,437.02,330.98z M256,256c-59.551,0-108-48.448-108-108S196.449,40,256,40    c59.551,0,108,48.448,108,108S315.551,256,256,256z")
+
+        
+        main.main-content
+            block content
+        
+        .credit
+            .container
+                .row
+                    .col-lg-12.text-center
+                        span.credit__text Made with 
+                        span.credit__icon ❤ 
+                        span.credit__text by 
+                        a.credit__link(href="#") veronicadev
+
+        script(src="/js/shop/scripts.js")
