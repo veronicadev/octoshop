@@ -9,6 +9,7 @@ const API_EMAIL = process.env['API_EMAIL'];
 const FROM_EMAIL = process.env['TO_EMAIL'];
 const mongoose = require('mongoose');
 const Email = require('email-templates');
+const { validationResult} = require('express-validator/check');
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
         api_key: API_EMAIL
@@ -119,6 +120,14 @@ exports.postSignup = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     const confirmPassword = req.body.confirmPassword;
+    const errorsVal = validationResult(req);
+    if(!errorsVal.isEmpty()){
+        return res.status(422).render("shop/signup", {
+            docTitle: "Signup",
+            path: "/signup",
+            errorMessage: utils.getValidationMessage(errorsVal),
+        });
+    }
     User.findOne({ email: email })
         .then(userDoc => {
             if (userDoc) {

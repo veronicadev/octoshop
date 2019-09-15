@@ -1,9 +1,20 @@
-const getFlashMessage = (req, type="error")=>{
+const getFlashMessage = (req, type = "error") => {
     let message = req.flash(type);
-    if(message.length>0){
+    if (message.length > 0) {
         return message[0];
-    }else{
+    } else {
         return null;
     }
 }
-exports.getFlashMessage =getFlashMessage;
+
+const getValidationMessage = (messages) => {
+    let errorMessage = "";
+    if (messages && messages.errors.length > 0) {
+        messages.errors.forEach(element => {
+            errorMessage =  element.msg + errorMessage + ', ';
+        });
+    }
+    return errorMessage;
+}
+exports.getFlashMessage = getFlashMessage;
+exports.getValidationMessage = getValidationMessage;

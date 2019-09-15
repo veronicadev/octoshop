@@ -11,7 +11,7 @@ block shop-content
                     .col-lg-6.offset-3
                         if errorMessage
                             .alert.alert-danger.mb-3  #{errorMessage}
-                        form(action="/signup", method="POST")
+                        form(action="/signup", method="POST", novalidate)
                             input(type="hidden",name="_csrf" value=csrfToken)
                             input.form-control#username(type="text", name="username", placeholder="Username")
                             input.form-control#email(type="text", name="email", placeholder="Email")
