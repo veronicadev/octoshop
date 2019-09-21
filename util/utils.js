@@ -8,13 +8,13 @@ const getFlashMessage = (req, type = "error") => {
 }
 
 const getValidationMessage = (messages) => {
-    let errorMessage = "";
+    let errorMessage = [];
     if (messages && messages.errors.length > 0) {
         messages.errors.forEach(element => {
-            errorMessage =  element.msg + errorMessage + ', ';
+            errorMessage.push(element.msg);
         });
     }
-    return errorMessage;
+    return errorMessage.join(', ');
 }
 exports.getFlashMessage = getFlashMessage;
 exports.getValidationMessage = getValidationMessage;
