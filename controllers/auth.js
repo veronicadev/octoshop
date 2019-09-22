@@ -9,7 +9,7 @@ const API_EMAIL = process.env['API_EMAIL'];
 const FROM_EMAIL = process.env['TO_EMAIL'];
 const mongoose = require('mongoose');
 const Email = require('email-templates');
-const { validationResult} = require('express-validator/check');
+const { validationResult } = require('express-validator/check');
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
         api_key: API_EMAIL
@@ -22,6 +22,11 @@ exports.getSignup = (req, res, next) => {
         docTitle: "Signup",
         path: "/signup",
         errorMessage: errorMessage,
+        oldInput: {
+            email: '',
+            username: ''
+        },
+        validationErrors: []
     });
 };
 
@@ -30,7 +35,8 @@ exports.getLogin = (req, res, next) => {
     res.render("shop/login", {
         docTitle: "Login",
         errorMessage: errorMessage,
-        path: "/login"
+        path: "/login",
+        validationErrors: []
     });
 };
 
@@ -75,11 +81,11 @@ exports.postReset = (req, res, next) => {
             .then(renderedEmail => {
                 //console.log(renderedEmail)
                 return transporter.sendMail({
-                     to: req.body.email,
-                     from: FROM_EMAIL,
-                     subject: 'Octoshop - Password reset',
-                     html: renderedEmail
-                 })
+                    to: req.body.email,
+                    from: FROM_EMAIL,
+                    subject: 'Octoshop - Password reset',
+                    html: renderedEmail
+                })
             })
             .catch(error => {
                 console.log(error)
@@ -90,6 +96,15 @@ exports.postReset = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
+    const errorsVal = validationResult(req);
+    if (!errorsVal.isEmpty()) {
+        return res.status(422).render("shop/login", {
+            docTitle: "Login",
+            path: "/login",
+            errorMessage: utils.getValidationMessage(errorsVal),
+            validationErrors: errorsVal.array()
+        });
+    }
     User.findOne({ email: email })
         .then(user => {
             console.log(user)
@@ -119,43 +134,40 @@ exports.postSignup = (req, res, next) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    const confirmPassword = req.body.confirmPassword;
     const errorsVal = validationResult(req);
-    if(!errorsVal.isEmpty()){
+    if (!errorsVal.isEmpty()) {
         return res.status(422).render("shop/signup", {
             docTitle: "Signup",
             path: "/signup",
             errorMessage: utils.getValidationMessage(errorsVal),
+            oldInput: {
+                email: email,
+                username: username
+            },
+            validationErrors: errorsVal.array()
         });
     }
-    User.findOne({ email: email })
-        .then(userDoc => {
-            if (userDoc) {
-                req.flash('error', 'Email address already exists');
-                return res.redirect('/signup');
-            }
-            return bcryptjs.hash(password, 12)
-                .then(hashPsw => {
-                    const user = new User({
-                        username: username,
-                        email: email,
-                        password: hashPsw,
-                        cart: {
-                            items: [],
-                            totalPrice: 0
-                        }
-                    });
-                    return user.save();
-                })
-                .then(user => {
-                    res.redirect('/login');
-                    return transporter.sendMail({
-                        to: email,
-                        from: FROM_EMAIL,
-                        subject: 'Octoshop - signup succeded',
-                        html: '<h1>Octoshop - signup succeded</h1>'
-                    });
-                })
+    bcryptjs.hash(password, 12)
+        .then(hashPsw => {
+            const user = new User({
+                username: username,
+                email: email,
+                password: hashPsw,
+                cart: {
+                    items: [],
+                    totalPrice: 0
+                }
+            });
+            return user.save();
+        })
+        .then(user => {
+            res.redirect('/login');
+            return transporter.sendMail({
+                to: email,
+                from: FROM_EMAIL,
+                subject: 'Octoshop - signup succeded',
+                html: '<h1>Octoshop - signup succeded</h1>'
+            });
         })
         .catch(error => {
             console.log(error)
@@ -199,8 +211,7 @@ exports.postNewPassword = (req, res, next) => {
     const newPassword = req.body.newPassword;
     const userId = req.body.userId;
     let resetUser;
-    User.findOne(
-        {
+    User.findOne({
             resetToken: token,
             resetTokenExp: { $gt: Date.now() },
             _id: mongoose.Types.ObjectId(userId)

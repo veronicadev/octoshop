@@ -13,10 +13,10 @@ block shop-content
                             .alert.alert-danger.mb-3  #{errorMessage}
                         form(action="/signup", method="POST")
                             input(type="hidden",name="_csrf" value=csrfToken)
-                            input.form-control#username(type="text", name="username", placeholder="Username", required)
-                            input.form-control#email(type="text", name="email", placeholder="Email", required)
-                            input.form-control#password(type="password" name="password", placeholder="Password", required)
-                            input.form-control#confirmPassword(type="password" name="confirmPassword", placeholder="Confirm password", required)
+                            input.form-control#username(type="text", name="username", placeholder="Username", value=oldInput.username, class=validationErrors.find(e=>e.param === 'username') ? 'invalid' : '', required)
+                            input.form-control#email(type="text", name="email", placeholder="Email", value=oldInput.email, class=validationErrors.find(e=>e.param === 'email') ? 'invalid' : '', required)
+                            input.form-control#password(type="password" name="password", placeholder="Password", class=validationErrors.find(e=>e.param === 'password') ? 'invalid' : '', required)
+                            input.form-control#confirmPassword(type="password" name="confirmPassword", placeholder="Confirm password", class=validationErrors.find(e=>e.param === 'confirmPassword') ? 'invalid' : '', required)
                             button.btn.btn--full.btn--green-shadow(type="submit") SignUp
 
                     

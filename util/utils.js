@@ -16,5 +16,6 @@ const getValidationMessage = (messages) => {
     }
     return errorMessage.join(', ');
 }
+
 exports.getFlashMessage = getFlashMessage;
 exports.getValidationMessage = getValidationMessage;
