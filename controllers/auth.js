@@ -107,10 +107,13 @@ exports.postLogin = (req, res, next) => {
     }
     User.findOne({ email: email })
         .then(user => {
-            console.log(user)
             if (!user) {
-                req.flash('error', 'Invalid email or password');
-                return res.redirect('/login');
+                return res.status(422).render("shop/login", {
+                    docTitle: "Login",
+                    path: "/login",
+                    errorMessage: "Invalid email or password",
+                    validationErrors: []
+                });
             }
             bcryptjs.compare(password, user.password)
                 .then(doMatch => {
@@ -121,7 +124,12 @@ exports.postLogin = (req, res, next) => {
                             res.redirect('/');
                         });
                     }
-                    res.redirect('/login');
+                    return res.status(422).render("shop/login", {
+                        docTitle: "Login",
+                        path: "/login",
+                        errorMessage: "Invalid email or password",
+                        validationErrors: []
+                    });
                 })
         })
         .catch(error => {
@@ -212,10 +220,10 @@ exports.postNewPassword = (req, res, next) => {
     const userId = req.body.userId;
     let resetUser;
     User.findOne({
-            resetToken: token,
-            resetTokenExp: { $gt: Date.now() },
-            _id: mongoose.Types.ObjectId(userId)
-        })
+        resetToken: token,
+        resetTokenExp: { $gt: Date.now() },
+        _id: mongoose.Types.ObjectId(userId)
+    })
         .then((user) => {
             console.log(mongoose.Types.ObjectId(userId))
             resetUser = user;

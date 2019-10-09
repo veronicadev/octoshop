@@ -12,12 +12,15 @@ router.get('/reset-password/:token', authController.getNewPassword);
 router.post('/login', [
     body('email')
     .isEmail()
-    .withMessage('Please enter a valid email address'),
+    .withMessage('Please enter a valid email address')
+    .normalizeEmail()
+    .trim(),
     body('password')
     //.isLength({ min: 8 })
     //.withMessage("Enter a password with at least 8 characters")
     .isAlphanumeric()
-    .withMessage("Enter a password with only numbers and text"),
+    .withMessage("Enter a password with only numbers and text")
+    .trim(),
 ], authController.postLogin);
 router.post('/signup', [
         check('email')
@@ -30,13 +33,16 @@ router.post('/signup', [
                         return Promise.reject('Email address already exists')
                     }
                 });
-        }),
+        })
+        .normalizeEmail(),
         body('username')
         .isAlphanumeric()
-        .withMessage("Enter a username with only numbers and text"),
+        .withMessage("Enter a username with only numbers and text")
+        .trim(),
         body('password', "Enter a password with only numbers and text and at least 8 characters")
         .isLength({ min: 8 })
-        .isAlphanumeric(),
+        .isAlphanumeric()
+        .trim(),
         body('confirmPassword')
         .custom((value, { req }) => {
             if (value !== req.body.password) {
