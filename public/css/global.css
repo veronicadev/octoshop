@@ -59,6 +59,10 @@ input[type="number"] {}
 .alert {
     border-radius: 0;
 }
+.form-control.invalid {
+    border-color: #a40500
+}
+
 
 @media screen and (min-width:992px) {
     .ptb-60 {

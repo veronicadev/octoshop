@@ -9,31 +9,35 @@ router.get('/add-product', isAuth, adminController.getAddProduct);
 router.get('/products', isAuth, adminController.getProducts);
 router.post('/add-product', [
     body('title')
-        .isAlphanumeric()
+        .isString()
         .isLength({ min: 3 })
-        .trim(),
+        .trim()
+        .withMessage('Title must contain at least 3 characters'),
     body('imageUrl')
-        .isURL(),
+        .isURL()
+        .withMessage('Please enter URL as image'),
     body('price')
-        .isAlphanumeric(),
+        .isFloat(),
     body('description')
         .isLength({ min: 3 })
-        .isAlphanumeric()
+        .withMessage('Description must contain at least 3 characters')
 ], isAuth, adminController.postAddProduct);
-router.get('/edit-product/:productId', [
+router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
+router.post('/edit-product',[
     body('title')
-        .isAlphanumeric()
+        .isString()
         .isLength({ min: 3 })
-        .trim(),
+        .trim()
+        .withMessage('Title must contain at least 3 characters'),
     body('imageUrl')
-        .isURL(),
+        .isURL()
+        .withMessage('Please enter URL as image'),
     body('price')
-        .isAlphanumeric(),
+        .isFloat(),
     body('description')
         .isLength({ min: 3 })
-        .isAlphanumeric()
-], isAuth, adminController.getEditProduct);
-router.post('/edit-product', isAuth, adminController.postEditProduct);
+        .withMessage('Description must contain at least 3 characters')
+], isAuth, adminController.postEditProduct);
 router.post('/delete-product', isAuth, adminController.postDeleteProduct);
 
 module.exports = router;
