@@ -272,7 +272,6 @@ p {
 }
 
 
-
 /*FOOTER*/
 
 .footer__logo {
@@ -303,6 +302,16 @@ p {
     list-style: none;
     margin: 0;
     padding: 0;
+}
+
+.category__link {
+    color: #7a8184;
+    font-family: 'Gentium Basic', serif;
+    font-size: 30px;
+}
+
+.categories__list {
+    padding: 30px 0;
 }
 
 @media screen and (min-width:1024px) {

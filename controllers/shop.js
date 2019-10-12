@@ -1,14 +1,19 @@
 const Product = require('./../models/product');
+const Category = require('./../models/category');
 const Order = require('./../models/order');
 const User = require('./../models/user');
 const utils = require('./../util/utils');
 
 exports.getProducts = (req, res, next) => {
-    Product.find()
-        .then(prods => {
+    Promise.all([
+            Product.find(),
+            Category.find()
+        ])
+        .then(([prods, categories]) => {
             console.log(prods)
             res.render("shop/products", {
                 prods: prods,
+                categories: categories,
                 docTitle: "Shop",
                 path: "/products"
             });
@@ -45,17 +50,17 @@ exports.getCart = (req, res, next) => {
             let totalPrice = 0;
             const products = user.cart.items;
             products.forEach((item, index) => {
-                totalPrice= totalPrice+(item.product.price *item.quantity);
+                totalPrice = totalPrice + (item.product.price * item.quantity);
             });
             const infoMessage = utils.getFlashMessage(req, 'info');
-            const errorMessage =  utils.getFlashMessage(req, 'error');
+            const errorMessage = utils.getFlashMessage(req, 'error');
             res.render("shop/cart", {
                 docTitle: "Cart",
                 path: "/cart",
                 totalPrice: totalPrice,
                 products: products,
                 infoMessage: infoMessage,
-                errorMessage:errorMessage
+                errorMessage: errorMessage
             });
         });
 }
@@ -98,11 +103,11 @@ exports.postOrder = (req, res, next) => {
     req.user.populate('cart.items.product')
         .execPopulate()
         .then(user => {
-            let totalPrice =0;
+            let totalPrice = 0;
             const products = user.cart.items.map(item => {
-                return { quantity: item.quantity, product: { ...item.product._doc } }
+                return { quantity: item.quantity, product: {...item.product._doc } }
             });
-            products.forEach((item, index)=>{
+            products.forEach((item, index) => {
                 totalPrice = totalPrice + (item.product.price * item.quantity);
             });
             const newOrder = new Order({
@@ -136,3 +141,26 @@ exports.getOrders = (req, res, next) => {
 
         })
 };
+
+exports.getCategory = (req, res, next) => {
+    const catId = req.params.catId;
+    if (!catId) res.redirect('/products');
+    Promise.all([
+            Category.find({ _id: catId }),
+            Product.find(),
+            Category.find()
+        ])
+        .then(([category, prods, categories]) => {
+            console.log(category)
+            res.render("shop/category", {
+                docTitle: "Category -" + category[0].name,
+                path: "/categories",
+                categories: categories,
+                category: category[0],
+                prods: prods
+            });
+        })
+        .catch(error => {
+            console.log(error)
+        })
+}

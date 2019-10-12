@@ -11,8 +11,8 @@ block shop-content
                                 a.category__link(href="/categories/"+cat._id) #{cat.name}
                 .row
                     .col-lg-12
-                        h1.page__title All Products
-                        p List of all the products...
+                        h1.page__title #{category.name}
+                        p #{category.description}
                 .row
                     if prods.length>0
                         each product in prods
@@ -35,4 +35,3 @@ block shop-content
                     else
                         .col-lg-12
                             h1 No products
-
