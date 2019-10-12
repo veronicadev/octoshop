@@ -1,0 +1,36 @@
+extends ./../layouts/admin-layout
+
+block content
+    .container-fluid
+        .row
+            .col-lg-12
+                .card
+                    .card-body
+                        .card-title
+                            h4 Categories
+                        if cats.length>0
+                            .table-responsive
+                                table.table
+                                    thead
+                                        tr
+                                            th #
+                                            th Name 
+                                            th Description
+                                            th 
+                                    tbody
+                                        each cat in cats
+                                            tr
+                                                th.table-id #{cat._id}
+                                                td.table-title #{cat.name}
+                                                td.table-description #{cat.description}
+                                                td.table-actions 
+                                                    a.action-btn.edit-action(href="/admin/edit-category/"+cat._id+"?edit=true")
+                                                        i.fa.fa-pencil(aria-hidden="true")
+                                                    form.d-inline-block(action="/admin/delete-category", method="POST")
+                                                        input(type="hidden", value=cat._id, name="catId")
+                                                        input(type="hidden",name="_csrf" value=csrfToken)
+                                                        button.action-btn.delete-action(type="submit")
+                                                            i.fa.fa-trash-o(aria-hidden="true")
+                        else
+                            p No categories
+

@@ -1,0 +1,25 @@
+extends ./../layouts/admin-layout
+
+block content
+    .container-fluid
+        .row
+            .col-lg-12
+                if errorMessage
+                    .alert.alert-danger.mb-3  #{errorMessage}
+                .card
+                    .card-body
+                        .card-title
+                            h4 #{title}
+                        form.product-form(action=formAction, method="POST")
+                            .form-row
+                                .col
+                                    .form-group
+                                        label(for="name") Name
+                                        input.form-control(type="text", name="name", value=category.name, class=validationErrors.find(e=>e.param === 'name') ? 'invalid' : '', required)#name
+                                    .form-group
+                                        label(for="description") description
+                                        textarea(name="description", cols="30", rows="10", class=validationErrors.find(e=>e.param === 'description') ? 'invalid' : '', required).form-control#description #{category.description}
+                            if editing
+                                input(type="hidden", value=category._id, name="catId")
+                            input(type="hidden",name="_csrf" value=csrfToken)    
+                            button.btn(type="submit") #{title}
