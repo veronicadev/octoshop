@@ -1,11 +1,19 @@
 extends ./../layouts/admin-layout
 
 block content
+    if errorMessage
+        .container-fluid
+            .row
+                .col-lg-12
+                    .alert.alert-danger.mb-3  #{errorMessage}
+    if infoMessage
+        .container-fluid
+            .row
+                .col-lg-12
+                    .alert.alert-info.mb-3  #{infoMessage}
     .container-fluid
         .row
             .col-lg-12
-                if errorMessage
-                    .alert.alert-danger.mb-3  #{errorMessage}
                 .card
                     .card-body
                         .card-title

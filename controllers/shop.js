@@ -77,6 +77,7 @@ exports.postCart = (req, res, next) => {
     const productId = req.body.productId;
     Product.findById(productId)
         .then(product => {
+            req.flash('info', 'Product "'+product.title+'" added!');
             return req.user.addToCart(product);
         })
         .then((result) => {

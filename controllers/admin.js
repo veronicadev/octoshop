@@ -21,6 +21,8 @@ exports.getAddProduct = (req, res, next) => {
         product: product,
         title: "Add product",
         errorMessage: null,
+        infoMessage:utils.getFlashMessage(req, 'info'),
+        user: req.session.user,
         validationErrors: []
     });
 }
@@ -31,7 +33,10 @@ exports.getProducts = (req, res, next) => {
             res.render("admin/products", {
                 prods: prods,
                 docTitle: "Home",
+                infoMessage:utils.getFlashMessage(req, 'info'),
+                errorMessage:null,
                 path: "/admin/products",
+                user: req.session.user,
             });
         });
 }
@@ -46,7 +51,9 @@ exports.postAddProduct = (req, res, next) => {
             formAction: '/admin/add-product',
             errorMessage: utils.getValidationMessage(errorsVal),
             validationErrors: errorsVal.array(),
+            infoMessage: null,
             title: "Add product",
+            user: req.session.user,
             product: {
                 title: req.body.title,
                 description: req.body.description,
@@ -67,8 +74,11 @@ exports.postAddProduct = (req, res, next) => {
     });
     newProduct.save()
         .then(prod => {
+            req.flash('info', 'Product "'+req.body.title+'" created!'); 
             console.log('Product created!', prod);
-            res.redirect('/admin/products');
+        })
+        .then(()=>{
+            res.redirect('/admin/products'); 
         })
         .catch(error => {
             console.log('Product not created!', error);
@@ -90,8 +100,10 @@ exports.getEditProduct = (req, res, next) => {
                 product: product,
                 formAction: '/admin/edit-product',
                 title: "Update product",
-                errorMessage: null,
-                validationErrors: []
+                infoMessage:utils.getFlashMessage(req, 'info'),
+                errorMessage:null,
+                validationErrors: [],
+                user: req.session.user,
             });
         });
 }
@@ -108,7 +120,9 @@ exports.postEditProduct = (req, res, next) => {
             formAction: '/admin/edit-product',
             errorMessage: utils.getValidationMessage(errorsVal),
             validationErrors: errorsVal.array(),
+            infoMessage: null,
             title: "Edit product",
+            user: req.session.user,
             product: {
                 _id: productId,
                 title: req.body.title,
@@ -130,8 +144,9 @@ exports.postEditProduct = (req, res, next) => {
             product.save()
 
         })
-        .then(result => {
-            res.redirect('/admin/products');
+        .then(prod => {
+            req.flash('info', 'Product "'+req.body.title+'" updated!');
+           res.redirect('/admin/products');
         })
         .catch(error => {
             console.log(error)
@@ -142,6 +157,7 @@ exports.postDeleteProduct = (req, res, next) => {
     const productId = req.body.productId;
     Product.findByIdAndRemove(productId)
         .then(result => {
+            req.flash('info', 'Product deleted!');
             res.redirect('/admin/products');
         })
         .catch(error => {
@@ -162,8 +178,10 @@ exports.getAddCategory = (req, res, next) => {
         formAction: '/admin/add-category',
         category: category,
         title: "Add category",
-        errorMessage: null,
-        validationErrors: []
+        infoMessage:utils.getFlashMessage(req, 'info'),
+        errorMessage:null,
+        validationErrors: [],
+        user: req.session.user,
     });
 }
 
@@ -173,6 +191,8 @@ exports.getCategories = (req, res, next) => {
             res.render("admin/categories", {
                 cats: cats,
                 docTitle: "Categories",
+                infoMessage:utils.getFlashMessage(req, 'info'),
+                errorMessage:null,
                 path: "/admin/categories",
             });
         });
@@ -187,8 +207,10 @@ exports.postAddCategory = (req, res, next) => {
             editing: false,
             formAction: '/admin/add-category',
             errorMessage: utils.getValidationMessage(errorsVal),
+            infoMessage: null,
             validationErrors: errorsVal.array(),
             title: "Add category",
+            user: req.session.user,
             category: {
                 name: req.body.name,
                 description: req.body.description
@@ -201,6 +223,7 @@ exports.postAddCategory = (req, res, next) => {
     });
     newCategory.save()
         .then(category => {
+            req.flash('info', 'Category "'+req.body.name+'" created!');
             console.log('Category created!', category);
             res.redirect('/admin/categories');
         })
@@ -214,6 +237,7 @@ exports.postDeleteCategory = (req, res, next) => {
     const catId = req.body.catId;
     Category.findByIdAndRemove(catId)
         .then(result => {
+            req.flash('info', 'Category deleted!');
             res.redirect('/admin/categories');
         })
         .catch(error => {
@@ -236,8 +260,10 @@ exports.getEditCategory = (req, res, next) => {
                 category: category,
                 formAction: '/admin/edit-category',
                 title: "Update category",
+                infoMessage:utils.getFlashMessage(req, 'info'),
                 errorMessage: null,
-                validationErrors: []
+                validationErrors: [],
+                user: req.session.user,
             });
         });
 }
@@ -253,6 +279,8 @@ exports.postEditCategory = (req, res, next) => {
             formAction: '/admin/edit-category',
             errorMessage: utils.getValidationMessage(errorsVal),
             validationErrors: errorsVal.array(),
+            infoMessage: null,
+            user: req.session.user,
             title: "Edit category",
             category: {
                 _id: catId,
@@ -270,6 +298,7 @@ exports.postEditCategory = (req, res, next) => {
 
         })
         .then(result => {
+            req.flash('info', 'Category "'+req.body.name+'" updated!');
             res.redirect('/admin/categories');
         })
         .catch(error => {

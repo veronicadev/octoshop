@@ -19,8 +19,8 @@ html(lang="en")
             .header-content.clearfix
                 .header-right
                     ul.clearfix
-                        li.icons.dropdown#openProfile
-                            .user-img.c-pointer.position-relative
+                        li.icons.dropdown
+                            #openProfile.user-img.c-pointer.position-relative
                                 img(src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",height="40",width="40",alt="")
                             .drop-down.dropdown-profile.animated.fadeIn.dropdown-menu#dropdownProfile
                                 .dropdown-content-body
@@ -28,12 +28,12 @@ html(lang="en")
                                         li
                                             a(href="app-profile.html")
                                                 i.fa.fa-user
-                                                span Profile
+                                                span #{user.username}
                                         hr
                                         li
-                                            a(href="logout.html")
-                                                i.fa.fa-key
-                                                span Logout
+                                            form(action="/logout", method="POST")
+                                                input(type="hidden",name="_csrf" value=csrfToken)
+                                                button.button--reset.nav-link(type="submit") Logout                                                
         main.main-content
             block content
 

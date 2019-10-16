@@ -1,7 +1,6 @@
 const navbarToggler = document.getElementById("openProfile");
 const navbar = document.getElementById('dropdownProfile');
 navbarToggler.addEventListener('click', (e)=>{
-    e.preventDefault();
     navbar.classList.toggle('show');
 
 });

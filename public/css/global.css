@@ -63,6 +63,11 @@ input[type="number"] {}
     border-color: #a40500
 }
 
+.button--reset{
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
 
 @media screen and (min-width:992px) {
     .ptb-60 {

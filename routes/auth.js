@@ -1,11 +1,12 @@
 const express = require('express');
 const authController = require('./../controllers/auth');
+const isAuthSignupSignin = require('./../middleware/is-auth-signup-signin');
 const { check, body } = require('express-validator/check');
 const User = require('./../models/user');
 const router = express.Router();
 
-router.get('/signup', authController.getSignup);
-router.get('/login', authController.getLogin);
+router.get('/signup', isAuthSignupSignin, authController.getSignup);
+router.get('/login', isAuthSignupSignin, authController.getLogin);
 router.get('/reset', authController.getReset);
 router.get('/reset-password/:token', authController.getNewPassword);
 
