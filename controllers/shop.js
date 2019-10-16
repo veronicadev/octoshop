@@ -129,19 +129,6 @@ exports.postOrder = (req, res, next) => {
         })
 };
 
-exports.getOrders = (req, res, next) => {
-    Order.find({ user: req.session.user._id })
-        .then(orders => {
-            res.render("customer/orders", {
-                docTitle: "Orders",
-                path: "/orders",
-                orders: orders,
-                user: req.session.user
-            });
-
-        })
-};
-
 exports.getCategory = (req, res, next) => {
     const catId = req.params.catId;
     if (!catId) res.redirect('/products');

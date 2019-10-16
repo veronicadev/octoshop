@@ -12,6 +12,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
+const customerRoutes = require("./routes/customer");
 const errorsController = require('./controllers/errors')
 
 const User = require('./models/user');
@@ -63,6 +64,7 @@ app.use(flash());
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
+app.use('/customer', customerRoutes);
 
 app.use(errorsController.get404);
 
