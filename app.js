@@ -7,7 +7,9 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const port = process.env.PORT || 3000;
+const Role = require('./models/role');
 const MONGODB_URI = process.env.MONGODB_URI;
+const SESSION_KEY = process.env.SESSION_KEY || "sessionKey";
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -29,26 +31,54 @@ app.set("views", "views");
 
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(express.static(path.join(__dirname, 'public')));
+
+/*SESSION*/
 app.use(session({
-    secret:'secretKey',
+    secret:SESSION_KEY,
     resave: false,
     saveUninitialized:false,
     store: store
 }));
 app.use(csrfProtection);
+
+/*SESSION USER*/
 app.use((req, res, next)=>{
     if(!req.session.user){
         return next();
     }
     User.findById(req.session.user._id)
-    .then(user => {
-        req.user = user;
-        next();
-    })
-    .catch(error => {
-        console.log(error);
-    })
+        .then(user => {
+            return user
+                .populate('roleType')
+                .execPopulate()
+        })
+        .then(user=>{
+            req.user = user;
+            res.locals.user = user;
+            next();
+        })
+        .catch(error => {
+            console.log(error);
+        })
 });
+
+/*USER ROLES*/
+/*
+app.use((req, res, next)=>{
+    if(!req.userRoles){
+       Role.find()
+            .then(roles =>{
+                req.userRoles = roles;
+                console.log(req.userRoles);
+            })
+            .catch(error =>{
+                console.log(error);
+            })
+    }
+    next();
+});*/
+
+/*CART ITEMS*/
 app.use((req, res, next)=>{
     let cartItemsNum = 0;
     res.locals.isAuth = req.session.isLoggedin;
@@ -59,16 +89,18 @@ app.use((req, res, next)=>{
     res.locals.cartItemsNum = cartItemsNum;
     next();
 });
+
+/*FLASH MESSAGES*/
 app.use(flash());
 
+/*ROUTING*/
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 app.use('/customer', customerRoutes);
-
 app.use(errorsController.get404);
 
-
+/*CONNECTION DB & SERVER START*/
 mongoose.connect(MONGODB_URI,{useNewUrlParser: true})
     .then(result=>{
         console.log('Mongoose started');

@@ -42,15 +42,6 @@ html(lang="en")
                                 a.nav-link(href="/", class=(path==="/" ? "active" : "")) Home
                             li.nav-item
                                 a.nav-link(href="/products", class=(path==="/products" ? "active" : "")) Shop 
-                            if isAuth==true               
-                                li.nav-item
-                                    a.nav-link(href="/admin/add-product", class=(path==="/admin/add-product" ? "active" : "")) Add product
-                                li.nav-item
-                                    a.nav-link(href="/admin/products", class=(path==="/admin/products" ? "active" : "")) Admin products  
-                                li.nav-item
-                                    form(action="/logout", method="POST")
-                                        input(type="hidden",name="_csrf" value=csrfToken)
-                                        button.button--reset.nav-link(type="submit") Logout
                             if !isAuth 
                                 li.nav-item
                                     a.nav-link(href="/login", class=(path==="/login" ? "active" : "")) Login  

@@ -2,11 +2,14 @@ const express = require('express');
 const adminController = require('./../controllers/admin');
 const isAuth = require('./../middleware/is-auth');
 const { check, body } = require('express-validator/check');
+const roles = require('./../util/roles').roles;
+const allowRole = require('./../middleware/allow-role');
 
 const router = express.Router();
 
-router.get('/add-product', isAuth, adminController.getAddProduct);
-router.get('/products', isAuth, adminController.getProducts);
+router.get('/add-product', isAuth, allowRole([roles.ADMIN]), adminController.getAddProduct);
+router.get('/products', isAuth, allowRole([roles.ADMIN]), adminController.getProducts);
+router.get('/edit-product/:productId', isAuth,allowRole([roles.ADMIN]), adminController.getEditProduct);
 router.post('/add-product', [
     body('title')
     .isString()
@@ -24,7 +27,6 @@ router.post('/add-product', [
     .escape()
     .withMessage('Description must contain at least 3 characters')
 ], isAuth, adminController.postAddProduct);
-router.get('/edit-product/:productId', isAuth, adminController.getEditProduct);
 router.post('/edit-product', [
     body('title')
     .isString()
@@ -45,9 +47,9 @@ router.post('/edit-product', [
 router.post('/delete-product', isAuth, adminController.postDeleteProduct);
 
 
-router.get('/categories', isAuth, adminController.getCategories);
-router.get('/add-category', isAuth, adminController.getAddCategory);
-router.get('/edit-category/:catId', isAuth, adminController.getEditCategory);
+router.get('/categories', isAuth, allowRole([roles.ADMIN]), adminController.getCategories);
+router.get('/add-category', isAuth, allowRole([roles.ADMIN]), adminController.getAddCategory);
+router.get('/edit-category/:catId', isAuth, allowRole([roles.ADMIN]), adminController.getEditCategory);
 router.post('/add-category', [
     body('name')
     .isString()

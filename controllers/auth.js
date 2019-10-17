@@ -10,6 +10,8 @@ const mongoose = require('mongoose');
 const Email = require('email-templates');
 const { validationResult } = require('express-validator/check');
 const utils = require('./../util/utils');
+const rolesEnum = require('./../util/roles').roles;
+const Role = require('./../models/role');
 const transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
         api_key: API_EMAIL
@@ -143,6 +145,7 @@ exports.postSignup = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     const errorsVal = validationResult(req);
+    let role;
     if (!errorsVal.isEmpty()) {
         return res.status(422).render("shop/signup", {
             docTitle: "Signup",
@@ -155,6 +158,14 @@ exports.postSignup = (req, res, next) => {
             validationErrors: errorsVal.array()
         });
     }
+
+    Role
+    .findOne({name:rolesEnum.CUSTOMER})
+    .then((roles=>{
+        console.log(roles)
+        role = roles;
+    }))
+    .catch(error=>console.log(error));
     bcryptjs.hash(password, 12)
         .then(hashPsw => {
             const user = new User({
@@ -164,7 +175,8 @@ exports.postSignup = (req, res, next) => {
                 cart: {
                     items: [],
                     totalPrice: 0
-                }
+                },
+                roleType: role._id
             });
             return user.save();
         })
@@ -184,7 +196,6 @@ exports.postSignup = (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
     req.session.destroy((error) => {
-        console.log(error);
         res.redirect('/');
     });
 };

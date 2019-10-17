@@ -6,8 +6,7 @@ exports.getOrders = (req, res, next) => {
             res.render("customer/orders", {
                 docTitle: "Orders",
                 path: "/orders",
-                orders: orders,
-                user: req.session.user
+                orders: orders
             });
 
         })
@@ -19,8 +18,7 @@ exports.getDashboard = (req, res, next) => {
             res.render("customer/orders", {
                 docTitle: "Orders",
                 path: "/orders",
-                orders: orders,
-                user: req.session.user
+                orders: orders
             });
 
         })

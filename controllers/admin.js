@@ -22,7 +22,6 @@ exports.getAddProduct = (req, res, next) => {
         title: "Add product",
         errorMessage: null,
         infoMessage:utils.getFlashMessage(req, 'info'),
-        user: req.session.user,
         validationErrors: []
     });
 }
@@ -35,8 +34,7 @@ exports.getProducts = (req, res, next) => {
                 docTitle: "Home",
                 infoMessage:utils.getFlashMessage(req, 'info'),
                 errorMessage:null,
-                path: "/admin/products",
-                user: req.session.user,
+                path: "/admin/products"
             });
         });
 }
@@ -53,7 +51,6 @@ exports.postAddProduct = (req, res, next) => {
             validationErrors: errorsVal.array(),
             infoMessage: null,
             title: "Add product",
-            user: req.session.user,
             product: {
                 title: req.body.title,
                 description: req.body.description,
@@ -102,8 +99,7 @@ exports.getEditProduct = (req, res, next) => {
                 title: "Update product",
                 infoMessage:utils.getFlashMessage(req, 'info'),
                 errorMessage:null,
-                validationErrors: [],
-                user: req.session.user,
+                validationErrors: []
             });
         });
 }
@@ -122,7 +118,6 @@ exports.postEditProduct = (req, res, next) => {
             validationErrors: errorsVal.array(),
             infoMessage: null,
             title: "Edit product",
-            user: req.session.user,
             product: {
                 _id: productId,
                 title: req.body.title,
@@ -180,8 +175,7 @@ exports.getAddCategory = (req, res, next) => {
         title: "Add category",
         infoMessage:utils.getFlashMessage(req, 'info'),
         errorMessage:null,
-        validationErrors: [],
-        user: req.session.user,
+        validationErrors: []
     });
 }
 
@@ -210,7 +204,6 @@ exports.postAddCategory = (req, res, next) => {
             infoMessage: null,
             validationErrors: errorsVal.array(),
             title: "Add category",
-            user: req.session.user,
             category: {
                 name: req.body.name,
                 description: req.body.description
@@ -262,8 +255,7 @@ exports.getEditCategory = (req, res, next) => {
                 title: "Update category",
                 infoMessage:utils.getFlashMessage(req, 'info'),
                 errorMessage: null,
-                validationErrors: [],
-                user: req.session.user,
+                validationErrors: []
             });
         });
 }
@@ -280,7 +272,6 @@ exports.postEditCategory = (req, res, next) => {
             errorMessage: utils.getValidationMessage(errorsVal),
             validationErrors: errorsVal.array(),
             infoMessage: null,
-            user: req.session.user,
             title: "Edit category",
             category: {
                 _id: catId,

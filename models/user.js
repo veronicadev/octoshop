@@ -1,3 +1,4 @@
+const roles = require('./../util/roles').roles;
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
@@ -17,6 +18,11 @@ const userSchema = new Schema({
     resetTokenExp: Date,
     activeToken: String,
     active: Boolean,
+    roleType: {
+        type: Schema.Types.ObjectId,
+        ref: 'Role',
+        required: true
+    },
     cart: {
         items: [{
             product: {
