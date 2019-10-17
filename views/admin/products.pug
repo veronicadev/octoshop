@@ -30,9 +30,9 @@ block content
                                             th Price
                                             th 
                                     tbody
-                                        each product in prods
+                                        each product, index in prods
                                             tr
-                                                th.table-id #{product._id}
+                                                th.table-id #{index}
                                                 td.table-title #{product.title}
                                                 td.table-category #{product.category}
                                                 td.table-description #{product.description}

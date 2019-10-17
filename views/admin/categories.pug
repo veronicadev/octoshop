@@ -28,9 +28,9 @@ block content
                                             th Description
                                             th 
                                     tbody
-                                        each cat in cats
+                                        each cat, index in cats
                                             tr
-                                                th.table-id #{cat._id}
+                                                th.table-id #{index}
                                                 td.table-title #{cat.name}
                                                 td.table-description #{cat.description}
                                                 td.table-actions 
