@@ -9,7 +9,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 const port = process.env.PORT || 3000;
 const Role = require('./models/role');
 const MONGODB_URI = process.env.MONGODB_URI;
-const SESSION_KEY = process.env.SESSION_KEY || "sessionKey";
+const SESSION_KEY = process.env.SESSION_KEY;
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
