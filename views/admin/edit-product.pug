@@ -24,25 +24,22 @@ block content
                                     .form-group
                                         label(for="title") Title
                                         input.form-control(type="text", name="title", value=product.title, class=validationErrors.find(e=>e.param === 'title') ? 'invalid' : '', required)#title
-                                .col        
-                                    .form-group
-                                        label(for="imageUrl") Image url
-                                        input.form-control(type="text", name="imageUrl", value=product.imageUrl, class=validationErrors.find(e=>e.param === 'imageUrl') ? 'invalid' : '', required)#imageUrl
                                 .col
                                      .form-group
-                                        label(for="imageUrl") Image
-                                        input.form-control-file#image(name="image" type="file")
+                                        label Image
+                                        input.form-control-file#image(name="image", type="file", accept="image/*")
+                                        <!--label(for="image").form-control.form-control-file-label #{product.imageUrl}-->
                             .form-group
-                                label(for="description") description
+                                label(for="description") Description
                                 textarea(name="description", cols="30", rows="10", class=validationErrors.find(e=>e.param === 'description') ? 'invalid' : '', required).form-control#description #{product.description}
                             .form-row
                                 .col
                                     .form-group
-                                        label(for="category") category
+                                        label(for="category") Category
                                         input.form-control(type="text", name="category", value=product.category)#category
                                 .col        
                                     .form-group
-                                        label(for="price") price
+                                        label(for="price") Price
                                         input.form-control(type="number", name="price", step="0.01", value=product.price, class=validationErrors.find(e=>e.param === 'price') ? 'invalid' : '', required)#price
                             if editing
                                 input(type="hidden", value=product._id, name="productId")

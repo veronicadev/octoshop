@@ -4,7 +4,7 @@ block shop-content
     .container.pt-100
         .row
             .col-lg-6
-                img.details__img(src=product.imageUrl, alt=product.title)
+                img.details__img(src="/"+product.imageUrl, alt=product.title)
             .col-lg-6
                 h1.details__title #{product.title}
                 h2.details__category #{product.category}

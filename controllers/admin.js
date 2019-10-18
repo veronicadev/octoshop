@@ -40,7 +40,25 @@ exports.getProducts = (req, res, next) => {
 }
 
 exports.postAddProduct = (req, res, next) => {
+    const image = req.file;
     const errorsVal = validationResult(req);
+    if(!image){
+        return res.status(422).render("admin/edit-product", {
+            docTitle: "Add Product",
+            path: "/admin/add-product",
+            editing: false,
+            formAction: '/admin/add-product',
+            errorMessage: 'Attached file is not an image',
+            validationErrors: [],
+            infoMessage: null,
+            title: "Add product",
+            product: {
+                title: req.body.title,
+                description: req.body.description,
+                price: req.body.price
+            }
+        }); 
+    }
     if (!errorsVal.isEmpty()) {
         return res.status(422).render("admin/edit-product", {
             docTitle: "Add Product",
@@ -54,18 +72,15 @@ exports.postAddProduct = (req, res, next) => {
             product: {
                 title: req.body.title,
                 description: req.body.description,
-                imageUrl: req.body.imageUrl,
-                price: req.body.price,
-                category: req.body.category,
-                userId: req.user._id
+                price: req.body.price
             }
         });
     }
-    console.log(req.file)
+    console.log(image)
     const newProduct = new Product({
         title: req.body.title,
         description: req.body.description,
-        imageUrl: req.body.imageUrl,
+        imageUrl: image.destination + image.filename,
         price: req.body.price,
         category: req.body.category,
         userId: req.user._id
@@ -108,6 +123,7 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
     const productId = req.body.productId;
+    const image = req.file;
     const errorsVal = validationResult(req);
     console.log(errorsVal.errors)
     if (!errorsVal.isEmpty()) {
@@ -124,9 +140,7 @@ exports.postEditProduct = (req, res, next) => {
                 _id: productId,
                 title: req.body.title,
                 description: req.body.description,
-                imageUrl: req.body.imageUrl,
                 price: req.body.price,
-                category: req.body.category
             }
         });
     }
@@ -134,7 +148,10 @@ exports.postEditProduct = (req, res, next) => {
         .then(product => {
             if (!product) { return res.redirect('/admin/products'); }
             product.title = req.body.title;
-            product.imageUrl = req.body.imageUrl;
+            console.log(image)
+            if(image){
+                product.imageUrl = image.path;
+            }
             product.description = req.body.description;
             product.category = req.body.category;
             product.price = req.body.price;

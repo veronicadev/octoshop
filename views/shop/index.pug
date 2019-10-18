@@ -31,7 +31,7 @@ block shop-content
                             .col-lg-4
                                 article.product
                                     a.product__image(href="/products/"+product._id)
-                                        img(src=product.imageUrl, alt=product.title) 
+                                        img(src="/"+product.imageUrl, alt=product.title) 
                                     .product__content
                                         a.product__link(href="/products/"+product._id)
                                     .product__actions
