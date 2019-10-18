@@ -17,9 +17,6 @@ router.post('/add-product', [
     .trim()
     .escape()
     .withMessage('Title must contain at least 3 characters'),
-    body('imageUrl')
-    .isURL()
-    .withMessage('Please enter URL as image'),
     body('price')
     .isFloat(),
     body('description')
@@ -34,9 +31,6 @@ router.post('/edit-product', [
     .trim()
     .escape()
     .withMessage('Title must contain at least 3 characters'),
-    body('imageUrl')
-    .isURL()
-    .withMessage('Please enter URL as image'),
     body('price')
     .isFloat(),
     body('description')

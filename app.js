@@ -8,6 +8,7 @@ const flash = require('connect-flash');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const port = process.env.PORT || 3000;
 const Role = require('./models/role');
+const multer = require('multer');
 const MONGODB_URI = process.env.MONGODB_URI;
 const SESSION_KEY = process.env.SESSION_KEY;
 
@@ -25,35 +26,48 @@ const store = new MongoDBStore({
     collection: 'sessions'
 });
 const csrfProtection = csrf();
+const fileStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'images/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, new Date().toISOString() + '-' + file.originalname);
+    }
+});
+const multerObj = {
+    storage:fileStorage
+};
+
 
 app.set("view engine", "pug");
 app.set("views", "views");
 
-app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(multer(multerObj).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 /*SESSION*/
 app.use(session({
-    secret:SESSION_KEY,
+    secret: SESSION_KEY,
     resave: false,
-    saveUninitialized:false,
+    saveUninitialized: false,
     store: store
 }));
 app.use(csrfProtection);
 
 /*SESSION USER*/
-app.use((req, res, next)=>{
-    if(!req.session.user){
+app.use((req, res, next) => {
+    if (!req.session.user) {
         return next();
     }
     User.findById(req.session.user._id)
         .then(user => {
-            if(!user) return next();
+            if (!user) return next();
             return user
                 .populate('roleType')
                 .execPopulate()
         })
-        .then(user=>{
+        .then(user => {
             req.user = user;
             res.locals.user = user;
             next();
@@ -80,11 +94,11 @@ app.use((req, res, next)=>{
 });*/
 
 /*CART ITEMS*/
-app.use((req, res, next)=>{
+app.use((req, res, next) => {
     let cartItemsNum = 0;
     res.locals.isAuth = req.session.isLoggedin;
     res.locals.csrfToken = req.csrfToken();
-    if(req.user){
+    if (req.user) {
         cartItemsNum = req.user.cart.items.length;
     }
     res.locals.cartItemsNum = cartItemsNum;
@@ -95,7 +109,7 @@ app.use((req, res, next)=>{
 app.use(flash());
 
 /*ROUTING*/
-app.use('/admin',adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 app.use('/customer', customerRoutes);
@@ -104,17 +118,18 @@ app.get('/500', errorsController.get500);
 app.use(errorsController.get404);
 
 /**ERROR HANDLING MIDDLEWARE */
-app.use((error, req, res, next)=>{
+app.use((error, req, res, next) => {
+    console.log(error)
     res.redirect('/500');
 })
 /*CONNECTION DB & SERVER START*/
-mongoose.connect(MONGODB_URI,{useNewUrlParser: true})
-    .then(result=>{
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
+    .then(result => {
         console.log('Mongoose started');
-        app.listen(port, ()=>{
+        app.listen(port, () => {
             console.log("Server listening on port 3000")
         });
     })
-    .catch(error=> {
+    .catch(error => {
         console.error('Mongoose connection failed', error);
     })

@@ -18,7 +18,7 @@ block content
                     .card-body
                         .card-title
                             h4 #{title}
-                        form.product-form(action=formAction, method="POST")
+                        form.product-form(action=formAction, method="POST", enctype="multipart/form-data")
                             .form-row
                                 .col
                                     .form-group
@@ -28,6 +28,10 @@ block content
                                     .form-group
                                         label(for="imageUrl") Image url
                                         input.form-control(type="text", name="imageUrl", value=product.imageUrl, class=validationErrors.find(e=>e.param === 'imageUrl') ? 'invalid' : '', required)#imageUrl
+                                .col
+                                     .form-group
+                                        label(for="imageUrl") Image
+                                        input.form-control-file#image(name="image" type="file")
                             .form-group
                                 label(for="description") description
                                 textarea(name="description", cols="30", rows="10", class=validationErrors.find(e=>e.param === 'description') ? 'invalid' : '', required).form-control#description #{product.description}

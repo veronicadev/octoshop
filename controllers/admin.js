@@ -61,6 +61,7 @@ exports.postAddProduct = (req, res, next) => {
             }
         });
     }
+    console.log(req.file)
     const newProduct = new Product({
         title: req.body.title,
         description: req.body.description,
