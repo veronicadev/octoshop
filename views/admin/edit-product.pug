@@ -44,4 +44,8 @@ block content
                             if editing
                                 input(type="hidden", value=product._id, name="productId")
                             input(type="hidden",name="_csrf" value=csrfToken)    
-                            button.btn(type="submit") #{title}
+                            .form-row
+                                .col
+                                    button.btn(type="submit") #{title}
+                                .col.text-right
+                                    a.btn.btn--grey(href="/admin/products") Cancel
