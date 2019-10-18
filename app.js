@@ -48,6 +48,7 @@ app.use((req, res, next)=>{
     }
     User.findById(req.session.user._id)
         .then(user => {
+            if(!user) return next();
             return user
                 .populate('roleType')
                 .execPopulate()
@@ -58,7 +59,7 @@ app.use((req, res, next)=>{
             next();
         })
         .catch(error => {
-            console.log(error);
+            throw new Error(error);
         })
 });
 
@@ -98,8 +99,14 @@ app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 app.use('/customer', customerRoutes);
+
+app.get('/500', errorsController.get500);
 app.use(errorsController.get404);
 
+/**ERROR HANDLING MIDDLEWARE */
+app.use((error, req, res, next)=>{
+    res.redirect('/500');
+})
 /*CONNECTION DB & SERVER START*/
 mongoose.connect(MONGODB_URI,{useNewUrlParser: true})
     .then(result=>{

@@ -78,8 +78,9 @@ exports.postAddProduct = (req, res, next) => {
             res.redirect('/admin/products'); 
         })
         .catch(error => {
-            console.log('Product not created!', error);
-            res.redirect('/admin/products');
+            const newError =  new Error(error);
+            newError.httpStatusCode = 500;
+            return next(newError);
         });
 }
 
@@ -144,7 +145,9 @@ exports.postEditProduct = (req, res, next) => {
            res.redirect('/admin/products');
         })
         .catch(error => {
-            console.log(error)
+            const newError =  new Error(error);
+            newError.httpStatusCode = 500;
+            return next(newError);
         });
 }
 
@@ -156,7 +159,9 @@ exports.postDeleteProduct = (req, res, next) => {
             res.redirect('/admin/products');
         })
         .catch(error => {
-            console.log(error)
+            const newError =  new Error(error);
+            newError.httpStatusCode = 500;
+            return next(newError);
         });
 }
 
@@ -234,8 +239,9 @@ exports.postDeleteCategory = (req, res, next) => {
             res.redirect('/admin/categories');
         })
         .catch(error => {
-            console.log(error);
-            res.redirect('/admin/categories');
+            const newError =  new Error(error);
+            newError.httpStatusCode = 500;
+            return next(newError);;
         })
 }
 
@@ -293,7 +299,8 @@ exports.postEditCategory = (req, res, next) => {
             res.redirect('/admin/categories');
         })
         .catch(error => {
-            console.log(error);
-            res.redirect('/admin/categories');
+            const newError =  new Error(error);
+            newError.httpStatusCode = 500;
+            return next(newError);
         });
 }
