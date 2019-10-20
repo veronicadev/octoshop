@@ -77,7 +77,7 @@ exports.postCart = (req, res, next) => {
     const productId = req.body.productId;
     Product.findById(productId)
         .then(product => {
-            req.flash('info', 'Product "'+product.title+'" added!');
+            req.flash('info', 'Product "' + product.title + '" added!');
             return req.user.addToCart(product);
         })
         .then((result) => {
@@ -123,7 +123,7 @@ exports.postOrder = (req, res, next) => {
             req.user.clearCart();
         })
         .then(result => {
-            res.redirect('/orders');
+            res.redirect('/customer/orders');
         })
         .catch(error => {
             console.log(error)

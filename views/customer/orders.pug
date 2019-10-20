@@ -19,6 +19,8 @@ block content-customer
                                     .detail__descr # #{index + 1}
                                 .col-lg-3.detail
                                     .detail__title Total   
-                                    .detail__descr  #{order.totalPrice}                   
+                                    .detail__descr  #{order.totalPrice}     
+                                .col-lg-3.detail
+                                    a.btn(href="/customer/orders/"+order._id) Invoice             
     else
         h2 No orders

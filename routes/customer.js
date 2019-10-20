@@ -1,10 +1,11 @@
 const express = require('express');
 const customerController = require('./../controllers/customer');
+const isAuth = require('./../middleware/is-auth');
 
 const router = express.Router();
 
-router.get('/orders', customerController.getOrders);
-router.get('/dashboard', customerController.getDashboard);
-
+router.get('/orders', isAuth, customerController.getOrders);
+router.get('/dashboard', isAuth, customerController.getDashboard);
+router.get('/orders/:orderId', isAuth, customerController.getInvoice);
 
 module.exports = router;
