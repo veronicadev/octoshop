@@ -1,6 +1,7 @@
 const Order = require('./../models/order');
 const fs = require('fs');
 const path = require('path');
+const PDFDocument = require('pdfkit');
 
 exports.getOrders = (req, res, next) => {
     Order.find({ user: req.session.user._id })
@@ -35,19 +36,19 @@ exports.getInvoice = (req, res, next) => {
             if (!order) {
                 return next(new Error("No order found"));
             }
-            if (order.user.userId.toString() !== req.user._id.toString()) {
+            console.log(order)
+            console.log(req.user)
+            if (order.user.toString() !== req.user._id.toString()) {
                 return next(new Error("Unathorized"));
             }
-            console.log(invoicePath)
-            fs.readFile(invoicePath, (err, data) => {
-                if (err) {
-                    return next(err);
-                }
-                res.setHeader('Content-Type', 'application/pdf');
-                //res.setHeader('Content-Disposition', 'attachment; fileName="' + invoice + '"');
-                res.setHeader('Content-Disposition', 'inline; fileName="' + invoice + '"'); //just for testing
-                res.send(data);
-            })
+            const pdfDoc = new PDFDocument();
+            pdfDoc.pipe(fs.createWriteStream(invoicePath)); //pdf creation
+            res.setHeader('Content-Type', 'application/pdf');
+            //res.setHeader('Content-Disposition', 'inline; fileName="' + invoice + '"'); //just for testing
+            res.setHeader('Content-Disposition', 'attachment; fileName="' + invoice + '"');
+            pdfDoc.pipe(res); //add file to the response
+            pdfDoc.text("TEST");
+            pdfDoc.end();
         })
         .catch(err => {
             return next(err);
