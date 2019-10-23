@@ -69,9 +69,19 @@ input[type="number"] {}
     background-color: transparent;
 }
 
+.page-item .page-link{
+    color: #00a499;
+}
+.page-link {
+    outline: none;
+    font-size: 13px;
+    box-shadow:none;
+    padding: 0.6rem 1rem;
+}
 .page-item.active .page-link{
     background-color: #00a499;
     color: #fff;
+    border-color: #00a499;
 }
 
 .pagination__nav{

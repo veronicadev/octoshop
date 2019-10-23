@@ -32,10 +32,11 @@ block shop-content
                                             button.btn.btn--full.btn--green(type="submit") Add to Cart 
                                                 span.product__price $#{product.price}
                         nav.pagination__nav
-                            ul.pagination.pagination-sm
+                            ul.pagination.pagination-md
                                 if currentPage!==1
                                     li.page-item
-                                            a.page-link(href="/products?page="+previousPage) <<
+                                            a.page-link(href="/products?page="+previousPage) 
+                                                span &laquo;
                                 if hasPreviousPage
                                     li.page-item
                                             a.page-link(href="/products?page="+previousPage) #{previousPage}
@@ -46,7 +47,8 @@ block shop-content
                                             a.page-link(href="/products?page="+nextPage)  #{nextPage} 
                                 if currentPage!==lastPage
                                     li.page-item
-                                            a.page-link(href="/products?page="+nextPage) >>
+                                            a.page-link(href="/products?page="+nextPage)
+                                                span &raquo;
                     else
                         .col-lg-12
                             h1 No products
