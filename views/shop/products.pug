@@ -31,7 +31,22 @@ block shop-content
                                             input(type="hidden", name="productId", value=product._id)
                                             button.btn.btn--full.btn--green(type="submit") Add to Cart 
                                                 span.product__price $#{product.price}
-                                            
+                        nav.pagination__nav
+                            ul.pagination.pagination-sm
+                                if currentPage!==1
+                                    li.page-item
+                                            a.page-link(href="/products?page="+previousPage) <<
+                                if hasPreviousPage
+                                    li.page-item
+                                            a.page-link(href="/products?page="+previousPage) #{previousPage}
+                                li.page-item.active
+                                    a.page-link(href="/products?page="+currentPage) #{currentPage}
+                                if hasNextPage
+                                    li.page-item
+                                            a.page-link(href="/products?page="+nextPage)  #{nextPage} 
+                                if currentPage!==lastPage
+                                    li.page-item
+                                            a.page-link(href="/products?page="+nextPage) >>
                     else
                         .col-lg-12
                             h1 No products

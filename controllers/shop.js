@@ -3,21 +3,38 @@ const Category = require('./../models/category');
 const Order = require('./../models/order');
 const User = require('./../models/user');
 const utils = require('./../util/utils');
-
+const ITEMS_PER_PAGE = 2;
 exports.getProducts = (req, res, next) => {
-    Promise.all([
-            Product.find(),
-            Category.find()
-        ])
+    const page = +req.query.page || 1;
+    let totalItems = 0;
+    Product.find().countDocuments()
+        .then(count=>{
+            totalItems = count;
+            return Promise.all([
+                    Product.find()
+                        .skip((page-1) * ITEMS_PER_PAGE)
+                        .limit(ITEMS_PER_PAGE),
+                    Category.find()
+                ])
+        })
         .then(([prods, categories]) => {
             console.log(prods)
             res.render("shop/products", {
                 prods: prods,
                 categories: categories,
                 docTitle: "Shop",
-                path: "/products"
+                path: "/products",
+                currentPage: page,
+                hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+                hasPreviousPage: page > 1,
+                nextPage: page + 1,
+                previousPage: page - 1,
+                lastPage: Math.ceil((totalItems / ITEMS_PER_PAGE))
             });
-        });
+        })
+        .catch(err=>{
+            return next(err);
+        })
 }
 
 exports.getProduct = (req, res, next) => {
