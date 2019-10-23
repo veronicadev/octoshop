@@ -1,3 +1,4 @@
+const fs = require('fs');
 const getFlashMessage = (req, type = "error") => {
     let message = req.flash(type);
     if (message.length > 0) {
@@ -17,5 +18,12 @@ const getValidationMessage = (messages) => {
     return errorMessage.join(', ');
 }
 
+const deleteFile = (filePath) =>{
+    fs.unlink(filePath, (err) =>{
+        if(err) throw(err);
+    })
+}
+
 exports.getFlashMessage = getFlashMessage;
 exports.getValidationMessage = getValidationMessage;
+exports.deleteFile = getFlashMessage;

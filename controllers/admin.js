@@ -21,7 +21,7 @@ exports.getAddProduct = (req, res, next) => {
         product: product,
         title: "Add product",
         errorMessage: null,
-        infoMessage:utils.getFlashMessage(req, 'info'),
+        infoMessage: utils.getFlashMessage(req, 'info'),
         validationErrors: []
     });
 }
@@ -32,8 +32,8 @@ exports.getProducts = (req, res, next) => {
             res.render("admin/products", {
                 prods: prods,
                 docTitle: "Home",
-                infoMessage:utils.getFlashMessage(req, 'info'),
-                errorMessage:null,
+                infoMessage: utils.getFlashMessage(req, 'info'),
+                errorMessage: null,
                 path: "/admin/products"
             });
         });
@@ -42,7 +42,7 @@ exports.getProducts = (req, res, next) => {
 exports.postAddProduct = (req, res, next) => {
     const image = req.file;
     const errorsVal = validationResult(req);
-    if(!image){
+    if (!image) {
         return res.status(422).render("admin/edit-product", {
             docTitle: "Add Product",
             path: "/admin/add-product",
@@ -57,7 +57,7 @@ exports.postAddProduct = (req, res, next) => {
                 description: req.body.description,
                 price: req.body.price
             }
-        }); 
+        });
     }
     if (!errorsVal.isEmpty()) {
         return res.status(422).render("admin/edit-product", {
@@ -87,14 +87,14 @@ exports.postAddProduct = (req, res, next) => {
     });
     newProduct.save()
         .then(prod => {
-            req.flash('info', 'Product "'+req.body.title+'" created!'); 
+            req.flash('info', 'Product "' + req.body.title + '" created!');
             console.log('Product created!', prod);
         })
-        .then(()=>{
-            res.redirect('/admin/products'); 
+        .then(() => {
+            res.redirect('/admin/products');
         })
         .catch(error => {
-            const newError =  new Error(error);
+            const newError = new Error(error);
             newError.httpStatusCode = 500;
             return next(newError);
         });
@@ -114,8 +114,8 @@ exports.getEditProduct = (req, res, next) => {
                 product: product,
                 formAction: '/admin/edit-product',
                 title: "Update product",
-                infoMessage:utils.getFlashMessage(req, 'info'),
-                errorMessage:null,
+                infoMessage: utils.getFlashMessage(req, 'info'),
+                errorMessage: null,
                 validationErrors: []
             });
         });
@@ -149,7 +149,8 @@ exports.postEditProduct = (req, res, next) => {
             if (!product) { return res.redirect('/admin/products'); }
             product.title = req.body.title;
             console.log(image)
-            if(image){
+            if (image) {
+                utils.deleteFile(product.imageUrl);
                 product.imageUrl = image.path;
             }
             product.description = req.body.description;
@@ -159,11 +160,11 @@ exports.postEditProduct = (req, res, next) => {
 
         })
         .then(prod => {
-            req.flash('info', 'Product "'+req.body.title+'" updated!');
-           res.redirect('/admin/products');
+            req.flash('info', 'Product "' + req.body.title + '" updated!');
+            res.redirect('/admin/products');
         })
         .catch(error => {
-            const newError =  new Error(error);
+            const newError = new Error(error);
             newError.httpStatusCode = 500;
             return next(newError);
         });
@@ -171,16 +172,20 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
     const productId = req.body.productId;
-    Product.findByIdAndRemove(productId)
-        .then(result => {
+    Product.findById(productId).then(prod => {
+        if (!prod) return next(new Error('Product not found'))
+        utils.deleteFile(prod.imageUrl);
+        return Product.findByIdAndRemove(productId);
+    })
+    .then(result => {
             req.flash('info', 'Product deleted!');
             res.redirect('/admin/products');
-        })
-        .catch(error => {
-            const newError =  new Error(error);
+    })
+    .catch(error => {
+            const newError = new Error(error);
             newError.httpStatusCode = 500;
             return next(newError);
-        });
+    });
 }
 
 exports.getAddCategory = (req, res, next) => {
@@ -196,8 +201,8 @@ exports.getAddCategory = (req, res, next) => {
         formAction: '/admin/add-category',
         category: category,
         title: "Add category",
-        infoMessage:utils.getFlashMessage(req, 'info'),
-        errorMessage:null,
+        infoMessage: utils.getFlashMessage(req, 'info'),
+        errorMessage: null,
         validationErrors: []
     });
 }
@@ -208,8 +213,8 @@ exports.getCategories = (req, res, next) => {
             res.render("admin/categories", {
                 cats: cats,
                 docTitle: "Categories",
-                infoMessage:utils.getFlashMessage(req, 'info'),
-                errorMessage:null,
+                infoMessage: utils.getFlashMessage(req, 'info'),
+                errorMessage: null,
                 path: "/admin/categories",
             });
         });
@@ -239,7 +244,7 @@ exports.postAddCategory = (req, res, next) => {
     });
     newCategory.save()
         .then(category => {
-            req.flash('info', 'Category "'+req.body.name+'" created!');
+            req.flash('info', 'Category "' + req.body.name + '" created!');
             console.log('Category created!', category);
             res.redirect('/admin/categories');
         })
@@ -257,7 +262,7 @@ exports.postDeleteCategory = (req, res, next) => {
             res.redirect('/admin/categories');
         })
         .catch(error => {
-            const newError =  new Error(error);
+            const newError = new Error(error);
             newError.httpStatusCode = 500;
             return next(newError);;
         })
@@ -277,7 +282,7 @@ exports.getEditCategory = (req, res, next) => {
                 category: category,
                 formAction: '/admin/edit-category',
                 title: "Update category",
-                infoMessage:utils.getFlashMessage(req, 'info'),
+                infoMessage: utils.getFlashMessage(req, 'info'),
                 errorMessage: null,
                 validationErrors: []
             });
@@ -313,11 +318,11 @@ exports.postEditCategory = (req, res, next) => {
 
         })
         .then(result => {
-            req.flash('info', 'Category "'+req.body.name+'" updated!');
+            req.flash('info', 'Category "' + req.body.name + '" updated!');
             res.redirect('/admin/categories');
         })
         .catch(error => {
-            const newError =  new Error(error);
+            const newError = new Error(error);
             newError.httpStatusCode = 500;
             return next(newError);
         });
