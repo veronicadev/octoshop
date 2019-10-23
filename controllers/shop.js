@@ -3,6 +3,7 @@ const Category = require('./../models/category');
 const Order = require('./../models/order');
 const User = require('./../models/user');
 const utils = require('./../util/utils');
+const mongoose = require('mongoose');
 const ITEMS_PER_PAGE = 2;
 exports.getProducts = (req, res, next) => {
     const page = +req.query.page || 1;
@@ -40,6 +41,8 @@ exports.getProducts = (req, res, next) => {
 exports.getProduct = (req, res, next) => {
     const prodId = req.params.productId;
     Product.findById(prodId)
+        .populate('category')
+        .exec()
         .then(product => {
             res.render("shop/product-details", {
                 product: product,

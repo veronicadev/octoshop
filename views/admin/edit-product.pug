@@ -36,7 +36,9 @@ block content
                                 .col
                                     .form-group
                                         label(for="category") Category
-                                        input.form-control(type="text", name="category", value=product.category)#category
+                                        select.form-control(name="category")
+                                            each cat in categories
+                                                option(selected=(product.category.toString()===cat._id.toString() ? true : false) value=cat._id.toString()) #{cat.name}
                                 .col        
                                     .form-group
                                         label(for="price") Price

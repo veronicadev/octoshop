@@ -7,7 +7,7 @@ block shop-content
                 img.details__img(src="/"+product.imageUrl, alt=product.title)
             .col-lg-6
                 h1.details__title #{product.title}
-                h2.details__category #{product.category}
+                h2.details__category #{product.category.name}
                 span.details__price $ #{product.price}
                 p.details__description #{product.description}
                 form(action="/cart", method="POST")

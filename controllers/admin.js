@@ -1,5 +1,6 @@
 const Product = require('./../models/product');
 const Category = require('./../models/category');
+const mongoose = require('mongoose');
 
 const { validationResult } = require('express-validator/check');
 const utils = require('./../util/utils');
@@ -13,29 +14,46 @@ exports.getAddProduct = (req, res, next) => {
         imageUrl: '',
         price: ''
     }
-    res.render("admin/edit-product", {
-        docTitle: "Add Product",
-        path: "/admin/add-product",
-        editing: false,
-        formAction: '/admin/add-product',
-        product: product,
-        title: "Add product",
-        errorMessage: null,
-        infoMessage: utils.getFlashMessage(req, 'info'),
-        validationErrors: []
+    Category.find().then((categories=>{
+        res.render("admin/edit-product", {
+            docTitle: "Add Product",
+            path: "/admin/add-product",
+            editing: false,
+            formAction: '/admin/add-product',
+            product: product,
+            title: "Add product",
+            errorMessage: null,
+            categories: categories,
+            infoMessage: utils.getFlashMessage(req, 'info'),
+            validationErrors: []
+        });
+    }))
+    .catch(err=>{
+        const newError = new Error(err);
+        newError.httpStatusCode = 500;
+        return next(newError);
     });
 }
 
 exports.getProducts = (req, res, next) => {
     Product.find()
-        .then(prods => {
+/*        .then(prods => {
+            return prods.populate('category')
+            .execPopulate();
+        })*/
+        .then(products=>{
             res.render("admin/products", {
-                prods: prods,
+                prods: products,
                 docTitle: "Home",
                 infoMessage: utils.getFlashMessage(req, 'info'),
                 errorMessage: null,
                 path: "/admin/products"
             });
+        })
+        .catch(err=>{
+            const newError = new Error(err);
+            newError.httpStatusCode = 500;
+            return next(newError);
         });
 }
 
@@ -55,7 +73,8 @@ exports.postAddProduct = (req, res, next) => {
             product: {
                 title: req.body.title,
                 description: req.body.description,
-                price: req.body.price
+                price: req.body.price,
+                category: req.body.category
             }
         });
     }
@@ -72,7 +91,8 @@ exports.postAddProduct = (req, res, next) => {
             product: {
                 title: req.body.title,
                 description: req.body.description,
-                price: req.body.price
+                price: req.body.price,
+                category: req.body.category
             }
         });
     }
@@ -82,7 +102,7 @@ exports.postAddProduct = (req, res, next) => {
         description: req.body.description,
         imageUrl: image.destination + image.filename,
         price: req.body.price,
-        category: req.body.category,
+        category: mongoose.Types.ObjectId(req.body.category),
         userId: req.user._id
     });
     newProduct.save()
@@ -104,21 +124,31 @@ exports.getEditProduct = (req, res, next) => {
     const editMode = req.query.edit;
     if (!editMode) { res.redirect('/admin/products'); } // redirect to admin
     const productId = req.params.productId;
-    Product.findById(productId)
-        .then(product => {
-            if (!product) { return res.redirect('/admin/products'); }
-            res.render("admin/edit-product", {
-                docTitle: "Edit Product",
-                path: "/admin/edit-product",
-                editing: editMode,
-                product: product,
-                formAction: '/admin/edit-product',
-                title: "Update product",
-                infoMessage: utils.getFlashMessage(req, 'info'),
-                errorMessage: null,
-                validationErrors: []
-            });
+    Promise.all([
+        Product.findById(productId),
+        Category.find()
+    ])
+    .then(([product,categories]) => {
+        console.log(product)
+        if (!product) { return res.redirect('/admin/products'); }
+        res.render("admin/edit-product", {
+            docTitle: "Edit Product",
+            path: "/admin/edit-product",
+            editing: editMode,
+            product: product,
+            formAction: '/admin/edit-product',
+            title: "Update product",
+            categories: categories,
+            infoMessage: utils.getFlashMessage(req, 'info'),
+            errorMessage: null,
+            validationErrors: []
         });
+    })
+    .catch(err=>{
+        const newError = new Error(err);
+        newError.httpStatusCode = 500;
+        return next(newError);
+    });
 }
 
 exports.postEditProduct = (req, res, next) => {
@@ -141,6 +171,7 @@ exports.postEditProduct = (req, res, next) => {
                 title: req.body.title,
                 description: req.body.description,
                 price: req.body.price,
+                category: req.body.category
             }
         });
     }
@@ -154,7 +185,7 @@ exports.postEditProduct = (req, res, next) => {
                 product.imageUrl = image.path;
             }
             product.description = req.body.description;
-            product.category = req.body.category;
+            product.category = mongoose.Types.ObjectId(req.body.category);
             product.price = req.body.price;
             product.save()
 

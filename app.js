@@ -73,13 +73,11 @@ app.use((req, res, next) => {
         return next();
     }
     User.findById(req.session.user._id)
+        .populate('roleType')
+        .exec()
         .then(user => {
             if (!user) return next();
-            return user
-                .populate('roleType')
-                .execPopulate()
-        })
-        .then(user => {
+            console.log(user)
             req.user = user;
             res.locals.user = user;
             next();

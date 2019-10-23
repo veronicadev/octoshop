@@ -23,7 +23,6 @@ block shop-content
                                     .product__content
                                         a.product__link(href="/products/"+product._id)
                                             h2.product__title #{product.title} 
-                                            span.product__category #{product.category}
                                     
                                     .product__actions
                                         form(action="/cart", method="POST")
