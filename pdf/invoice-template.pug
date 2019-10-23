@@ -1,17 +1,21 @@
 html(lang="en")
     head
-        
-    body(style="margin:0; width:100%; background-color:#f4f8f7; height:100%; font-family: 'Roboto', sans-serif;")
-        each prod in order.products
-            .order__product
-                img.order__product-img(src=prod.product.imageUrl)
-                .order__quantity #{prod.quantity}
-                <!--p #{prod.title} x #{prod.quantity}-->
-        .order__details
-            .row
-                .col-lg-3.detail
-                    .detail__title Order number
-                    .detail__descr # #{index + 1}
-                .col-lg-3.detail
-                    .detail__title Total   
-                    .detail__descr  #{order.totalPrice}
+        style
+            include ../public/css/global.css
+            include ../public/css/customer/invoice.css
+    body
+        table.invoice__products
+            thead
+                tr
+                    th Name
+                    th Qnt
+                    th Price
+            tbody
+                each prod in order.products
+                    tr
+                        td #{prod.product.title}
+                        td #{prod.quantity}
+                        td $ #{prod.product.price}
+            tfoot
+                tr
+                    td Total price  #{order.totalPrice}
