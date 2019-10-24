@@ -1,1 +1,81 @@
 extends ./../layouts/shop-layout
+
+block styles
+    link(rel="stylesheet", href="/css/shop/checkout.css")
+
+block shop-content
+    .container.pt-100
+        .row
+            .col-lg-12
+                .row
+                    .col-lg-12
+                            h1.page__title Cart
+                if infoMessage
+                    .row
+                            .col-lg-12
+                                .alert.alert-info.mb-3  #{infoMessage}
+                .row
+                        .col-lg-6
+                            section.billing-details
+                                h2 Billing details
+                                form(method="POST", action="/create-order")
+                                    .form-group
+                                        label(for="name") First name
+                                        input.form-control(type="text", name="name", required)
+                                    .form-group
+                                        label(for="surname") Last name
+                                        input.form-control(type="text", name="surname", required)
+                                    .form-group
+                                        label(for="company") Company name
+                                        input.form-control(type="text", name="company")
+                                    .form-group
+                                        label(for="country") Country
+                                        select.form-control(name="country", required)
+                                            option Italy
+                                    .form-group
+                                        label(for="streetAddress") Street Address
+                                        input.form-control(type="text", name="streetAddress", required)
+                                    .form-group
+                                        label(for="postcode") Postcode/ZIP
+                                        input.form-control(type="text", name="postcode", required)
+                                    .form-group
+                                        label(for="city") Town/city
+                                        input.form-control(type="text", name="city", required)
+                                    .form-group
+                                        label(for="province") Province
+                                        input.form-control(type="text", name="province", required)
+                                    .form-group
+                                        label(for="phone") Phone
+                                        input.form-control(type="text", name="phone", required)
+                                    .form-group
+                                        label(for="email") Email address
+                                        input.form-control(type="email", name="email", required)
+                                    .form-group
+                                        label(for="notes") Order notes
+                                        textarea.form-control(cols="30", rows="10", name="notes")
+                                    input.form-control(type="text", name="name", placeholder="name")
+                                    input(type="hidden",name="_csrf" value=csrfToken)
+                        .col-lg-6
+                            section.order-list
+                                table.cart-table
+                                    tbody
+                                        each item in products
+                                            tr.cart-item
+                                                td.cart-item__info
+                                                    a.cart-item__link-img(title="item.title", target="_blank" href="/products/"+item.product._id)
+                                                        h2.cart-item__title #{item.title}
+                                                            span.cart-item__count x #{item.quantity}
+                                                td.cart-item__price-box
+                                                    span.cart-item__price $ #{item.product.price * item.quantity}
+                                    tfoot.cart__total
+                                        tr.cart-item
+                                            td.cart-total__info
+                                                    h2.cart-item__title Shipping 
+                                            td.cart-item__price-box
+                                                span.cart-item__price $ 6
+                                        tr.cart-item
+                                            td.cart-total__info
+                                                    h2.cart-item__title Total
+                                            td.cart-item__price-box
+                                                span.cart-item__price $ #{totalPrice}
+

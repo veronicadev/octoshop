@@ -23,7 +23,7 @@ block shop-content
                                         each item in products
                                             tr.cart-item
                                                 td.cart-item__info
-                                                    a.cart-item__link-img(title="item.title", href="/products/"+item._id)
+                                                    a.cart-item__link-img(title="item.title", href="/products/"+item.product._id) #{item}
                                                         img.cart-item__img(alt="item.title", src=item.product.imageUrl)
                                                     a.cart-item__link
                                                         h2.cart-item__title #{item.title}

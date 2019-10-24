@@ -87,10 +87,26 @@ exports.getCart = (req, res, next) => {
 
 
 exports.getCheckout = (req, res, next) => {
-    res.render("shop/checkout", {
-        docTitle: "Checkout",
-        path: "/checkout"
-    });
+    req.user.populate('cart.items.product')
+        .execPopulate()
+        .then(user => {
+            let totalPrice = 0;
+            const products = user.cart.items;
+            if(products.length===0) return res.redirect('/cart');
+            products.forEach((item, index) => {
+                totalPrice = totalPrice + (item.product.price * item.quantity);
+            });
+            const infoMessage = utils.getFlashMessage(req, 'info');
+            const errorMessage = utils.getFlashMessage(req, 'error');
+            res.render("shop/checkout", {
+                docTitle: "Checkout",
+                path: "/checkout",
+                totalPrice: totalPrice,
+                products: products,
+                infoMessage: infoMessage,
+                errorMessage: errorMessage
+            });
+        });
 }
 
 exports.postCart = (req, res, next) => {
