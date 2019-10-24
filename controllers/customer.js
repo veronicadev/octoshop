@@ -76,3 +76,10 @@ exports.getInvoice = (req, res, next) => {
             return next(err);
         })
 }
+
+exports.getInformation =(req, res, next) =>{
+    res.render('customer/information', {
+        docTitle: "Account information",
+        path: "/customer/information"
+    })
+}

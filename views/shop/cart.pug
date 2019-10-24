@@ -23,7 +23,7 @@ block shop-content
                                         each item in products
                                             tr.cart-item
                                                 td.cart-item__info
-                                                    a.cart-item__link-img(title="item.title", href="/products/"+item.product._id) #{item}
+                                                    a.cart-item__link-img(title="item.title", href="/products/"+item.product._id)
                                                         img.cart-item__img(alt="item.title", src=item.product.imageUrl)
                                                     a.cart-item__link
                                                         h2.cart-item__title #{item.title}
@@ -44,9 +44,7 @@ block shop-content
                                             td.cart-item__price-box
                                                 span.cart-item__price $ #{totalPrice}
                                 .text-right
-                                    form(action="/create-order", method="POST")
-                                        input(type="hidden",name="_csrf" value=csrfToken)
-                                        button.btn.btn--green(type="submit") Order now                                                 
+                                    a.btn.btn--green(href="/checkout") Checkout                                           
                     else
                         .col-lg-12
                             h2 No products in the carts

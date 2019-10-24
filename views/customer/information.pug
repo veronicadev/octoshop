@@ -1,0 +1,57 @@
+extends ./../layouts/customer-layout
+
+block content-customer
+    h4 Account information
+    section.information
+        form(method="POST", action="/save-information")
+            .form-row
+                .col
+                    .form-group
+                        label(for="name") First name
+                        input.form-control(type="text", name="name", required)
+                .col
+                    .form-group
+                        label(for="surname") Last name
+                        input.form-control(type="text", name="surname", required)
+            .form-row
+                .col
+                    .form-group
+                        label(for="company") Company name
+                        input.form-control(type="text", name="company")
+                .col
+                    .form-group
+                        label(for="country") Country
+                        select.form-control(name="country", required)
+                            option Italy
+            .form-row
+                .col
+                    .form-group
+                        label(for="streetAddress") Street Address
+                        input.form-control(type="text", name="streetAddress", required)
+                .col
+                    .form-group
+                        label(for="postcode") Postcode/ZIP
+                        input.form-control(type="text", name="postcode", required)
+            .form-row
+                .col
+                    .form-group
+                        label(for="city") Town/city
+                        input.form-control(type="text", name="city", required)
+                .col
+                    .form-group
+                        label(for="province") Province
+                        input.form-control(type="text", name="province", required)
+            .form-row
+                .col
+                    .form-group
+                        label(for="phone") Phone
+                        input.form-control(type="text", name="phone", required)
+                .col
+                    .form-group
+                        label(for="email") Email address
+                        input.form-control(type="email", name="email", required)
+            .form-group
+                label(for="notes") Order notes
+                textarea.form-control(cols="30", rows="10", name="notes")
+            input(type="hidden",name="_csrf" value=csrfToken) 
+            button.btn.btn--green(type="submit") Save

@@ -53,29 +53,33 @@ block shop-content
                                     .form-group
                                         label(for="notes") Order notes
                                         textarea.form-control(cols="30", rows="10", name="notes")
-                                    input.form-control(type="text", name="name", placeholder="name")
                                     input(type="hidden",name="_csrf" value=csrfToken)
                         .col-lg-6
-                            section.order-list
-                                table.cart-table
+                            section.checkout-list
+                                h2 Your order
+                                table.checkout-table
                                     tbody
                                         each item in products
-                                            tr.cart-item
-                                                td.cart-item__info
-                                                    a.cart-item__link-img(title="item.title", target="_blank" href="/products/"+item.product._id)
-                                                        h2.cart-item__title #{item.title}
-                                                            span.cart-item__count x #{item.quantity}
-                                                td.cart-item__price-box
-                                                    span.cart-item__price $ #{item.product.price * item.quantity}
-                                    tfoot.cart__total
-                                        tr.cart-item
-                                            td.cart-total__info
-                                                    h2.cart-item__title Shipping 
-                                            td.cart-item__price-box
-                                                span.cart-item__price $ 6
-                                        tr.cart-item
-                                            td.cart-total__info
-                                                    h2.cart-item__title Total
-                                            td.cart-item__price-box
-                                                span.cart-item__price $ #{totalPrice}
-
+                                            tr.checkout-item
+                                                td.checkout-item__info                                       
+                                                    .checkout-item__title #{item.product.title} 
+                                                        span.checkout-item__count x #{item.quantity}
+                                                td.checkout-item__price-box
+                                                    span.checkout-item__price $ #{item.product.price * item.quantity}
+                                    tfoot.checkout__total
+                                        tr
+                                            td.checkout-total__info
+                                                    .checkout-total__title Shipping 
+                                            td.checkout-total__price-box
+                                                span.checkout-total__price $ 6
+                                        tr
+                                            td.checkout-total__info
+                                                    .checkout-total__title Total
+                                            td.checkout-total__price-box
+                                                span.checkout-item__price $ #{totalPrice}
+                .row
+                    .col-lg-12
+                        .text-right
+                            form(action="/create-order", method="POST")
+                                input(type="hidden",name="_csrf" value=csrfToken)
+                                button.btn.btn--green(type="submit") Order now

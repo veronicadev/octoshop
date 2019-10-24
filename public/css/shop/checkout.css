@@ -1,0 +1,15 @@
+
+/*CHECKOUT*/
+.checkout-total__info, .checkout-total__price-box {
+    padding: 15px 0;
+}
+.checkout-item__count, .checkout-item__title {
+    padding: 15px 0;
+}
+.checkout-table {
+    font-size: 18px;
+    width: 100%;
+}
+.checkout__total {
+    border-top: 1px solid #ced4da;
+}
