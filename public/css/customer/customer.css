@@ -10,10 +10,18 @@
 }
 
 .customer__menu-link {
+    width: 100%;
     display: block;
     position: relative;
+    text-align: left;
     padding: 18px 10px;
+    box-shadow: none;
+    outline: none;
     border-bottom: 1px solid #e6e8e7;
+}
+.customer__menu-link:focus{
+    box-shadow: none;
+    outline: none;
 }
 .customer__menu-item:last-of-type{
     border-bottom: 0

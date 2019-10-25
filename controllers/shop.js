@@ -2,8 +2,10 @@ const Product = require('./../models/product');
 const Category = require('./../models/category');
 const Order = require('./../models/order');
 const User = require('./../models/user');
-const utils = require('./../util/utils');
 const mongoose = require('mongoose');
+const { validationResult } = require('express-validator/check');
+const utils = require('./../util/utils');
+
 const ITEMS_PER_PAGE = 2;
 exports.getProducts = (req, res, next) => {
     const page = +req.query.page || 1;
@@ -104,7 +106,8 @@ exports.getCheckout = (req, res, next) => {
                 totalPrice: totalPrice,
                 products: products,
                 infoMessage: infoMessage,
-                errorMessage: errorMessage
+                errorMessage: errorMessage,
+                tempUser: req.user
             });
         });
 }
@@ -137,6 +140,19 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
+    const errorsVal = validationResult(req);
+    const data = {
+        name: req.body.name,
+        surname: req.body.surname,
+        company: req.body.company,
+        country: req.body.country,
+        streetAddress: req.body.streetAddress,
+        postcode: req.body.postcode,
+        city: req.body.city,
+        province: req.body.province,
+        phone: req.body.phone,
+        notes: req.body.notes
+    };
     req.user.populate('cart.items.product')
         .execPopulate()
         .then(user => {
@@ -147,19 +163,43 @@ exports.postOrder = (req, res, next) => {
             products.forEach((item, index) => {
                 totalPrice = totalPrice + (item.product.price * item.quantity);
             });
+            console.log('products: ',products)
+            console.log('tempUser: '+data)
+            if (!errorsVal.isEmpty()) {
+                return res.status(422).render("shop/checkout", {
+                    docTitle: "Checkout",
+                    path: "/checkout",
+                    errorMessage: utils.getValidationMessage(errorsVal),
+                    validationErrors: errorsVal.array(),
+                    infoMessage: null,
+                    totalPrice: totalPrice,
+                    products: products,
+                    tempUser: data
+                });
+            }
             const newOrder = new Order({
                 user: req.user._id,
                 products: products,
-                totalPrice: totalPrice
+                totalPrice: totalPrice,
+                name: req.body.name,
+                surname: req.body.surname,
+                company: req.body.company,
+                country: req.body.country,
+                streetAddress: req.body.streetAddress,
+                postcode: req.body.postcode,
+                city: req.body.city,
+                province: req.body.province,
+                phone: req.body.phone,
+                notes: req.body.notes
             });
             console.log(newOrder)
-            return newOrder.save();
-        })
-        .then(result => {
-            req.user.clearCart();
-        })
-        .then(result => {
-            res.redirect('/customer/orders');
+            return newOrder.save()
+            .then(result => {
+                return req.user.clearCart();
+            })
+            .then(result => {
+                res.redirect('/customer/orders');
+            })
         })
         .catch(error => {
             console.log(error)

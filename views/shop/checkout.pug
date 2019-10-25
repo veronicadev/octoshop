@@ -14,6 +14,10 @@ block shop-content
                     .row
                             .col-lg-12
                                 .alert.alert-info.mb-3  #{infoMessage}
+                if errorMessage
+                    .row
+                            .col-lg-12
+                                .alert.alert-info.mb-3  #{errorMessage}
                 .row
                         .col-lg-6
                             section.billing-details
@@ -21,39 +25,37 @@ block shop-content
                                 form(method="POST", action="/create-order")
                                     .form-group
                                         label(for="name") First name
-                                        input.form-control(type="text", name="name", required)
+                                        input.form-control(type="text", name="name", value=tempUser.name, required)
                                     .form-group
                                         label(for="surname") Last name
-                                        input.form-control(type="text", name="surname", required)
+                                        input.form-control(type="text", name="surname",value=tempUser.surname, required)
                                     .form-group
                                         label(for="company") Company name
-                                        input.form-control(type="text", name="company")
+                                        input.form-control(type="text", name="company", value=tempUser.company)
                                     .form-group
                                         label(for="country") Country
-                                        select.form-control(name="country", required)
+                                        select.form-control(name="country", value=tempUser.country)
                                             option Italy
                                     .form-group
                                         label(for="streetAddress") Street Address
-                                        input.form-control(type="text", name="streetAddress", required)
+                                        input.form-control(type="text", name="streetAddress", value=tempUser.streetAddress, required)
                                     .form-group
                                         label(for="postcode") Postcode/ZIP
-                                        input.form-control(type="text", name="postcode", required)
+                                        input.form-control(type="text", name="postcode", value=tempUser.postcode, required)
                                     .form-group
                                         label(for="city") Town/city
-                                        input.form-control(type="text", name="city", required)
+                                        input.form-control(type="text", name="city", value=tempUser.city, required)
                                     .form-group
                                         label(for="province") Province
-                                        input.form-control(type="text", name="province", required)
+                                        input.form-control(type="text", name="province", value=tempUser.province, required)
                                     .form-group
                                         label(for="phone") Phone
-                                        input.form-control(type="text", name="phone", required)
-                                    .form-group
-                                        label(for="email") Email address
-                                        input.form-control(type="email", name="email", required)
+                                        input.form-control(type="text", name="phone", value=tempUser.phone, required)
                                     .form-group
                                         label(for="notes") Order notes
                                         textarea.form-control(cols="30", rows="10", name="notes")
                                     input(type="hidden",name="_csrf" value=csrfToken)
+                                    button.btn.btn--green(type="submit") Order now
                         .col-lg-6
                             section.checkout-list
                                 h2 Your order
@@ -77,9 +79,3 @@ block shop-content
                                                     .checkout-total__title Total
                                             td.checkout-total__price-box
                                                 span.checkout-item__price $ #{totalPrice}
-                .row
-                    .col-lg-12
-                        .text-right
-                            form(action="/create-order", method="POST")
-                                input(type="hidden",name="_csrf" value=csrfToken)
-                                button.btn.btn--green(type="submit") Order now

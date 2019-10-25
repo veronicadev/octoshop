@@ -15,6 +15,30 @@ const orderSchema = new Schema({
         type: Number,
         required: true
     },
+    name:{
+        type: String  
+    },
+    surname:{
+        type: String
+    },
+    companyName:{
+        type: String
+    },
+    country:{
+        type: String
+    },
+    streetAddress:{
+        type: String
+    },
+    city:{
+        type: String
+    },
+    province:{
+        type: String
+    },
+    phone:{
+        type: String
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',

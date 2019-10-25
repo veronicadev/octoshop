@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/orders', isAuth, customerController.getOrders);
 router.get('/dashboard', isAuth, customerController.getDashboard);
-router.get('/orders/:orderId', isAuth, customerController.getInvoice);
+router.get('/invoice/:orderId', isAuth, customerController.getInvoice);
 
 router.get('/information', isAuth, customerController.getInformation);
 router.post('/update-information', [
@@ -47,7 +47,11 @@ router.post('/update-information', [
     .isEmail()
     .withMessage('Please enter a valid email address')
     .normalizeEmail()
+    .trim(),
+    body('phone')
+    .isString()
     .trim()
+    .escape()
 ], isAuth, customerController.postInformation);
 
 module.exports = router;
