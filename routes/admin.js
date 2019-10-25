@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/add-product', isAuth, allowRole([roles.ADMIN]), adminController.getAddProduct);
 router.get('/products', isAuth, allowRole([roles.ADMIN]), adminController.getProducts);
-router.get('/edit-product/:productId', isAuth,allowRole([roles.ADMIN]), adminController.getEditProduct);
+router.get('/edit-product/:productId', isAuth, allowRole([roles.ADMIN]), adminController.getEditProduct);
 router.post('/add-product', [
     body('title')
     .isString()

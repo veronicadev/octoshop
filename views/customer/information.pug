@@ -3,55 +3,56 @@ extends ./../layouts/customer-layout
 block content-customer
     h4 Account information
     section.information
-        form(method="POST", action="/save-information")
+        if errorMessage
+            .alert.alert-danger.mb-3  #{errorMessage}
+        if infoMessage
+            .alert.alert-info.mb-3  #{infoMessage}
+        form(method="POST", action="/customer/update-information")
             .form-row
                 .col
                     .form-group
-                        label(for="name") First name
-                        input.form-control(type="text", name="name", required)
+                        label.req(for="name") First name
+                        input.form-control(type="text", name="name", value=user.name, required)
                 .col
                     .form-group
-                        label(for="surname") Last name
-                        input.form-control(type="text", name="surname", required)
+                        label.req(for="surname") Last name
+                        input.form-control(type="text", name="surname", value=user.surname, required)
             .form-row
                 .col
                     .form-group
                         label(for="company") Company name
-                        input.form-control(type="text", name="company")
+                        input.form-control(type="text", name="company", value=user.company)
                 .col
                     .form-group
                         label(for="country") Country
-                        select.form-control(name="country", required)
-                            option Italy
+                        select.form-control(name="country")
+                            option  Italy
             .form-row
                 .col
                     .form-group
                         label(for="streetAddress") Street Address
-                        input.form-control(type="text", name="streetAddress", required)
+                        input.form-control(type="text", name="streetAddress", value=user.streetAddress)
                 .col
                     .form-group
                         label(for="postcode") Postcode/ZIP
-                        input.form-control(type="text", name="postcode", required)
+                        input.form-control(type="text", name="postcode", value=user.postcode)
             .form-row
                 .col
                     .form-group
                         label(for="city") Town/city
-                        input.form-control(type="text", name="city", required)
+                        input.form-control(type="text", name="city", value=user.city)
                 .col
                     .form-group
                         label(for="province") Province
-                        input.form-control(type="text", name="province", required)
+                        input.form-control(type="text", name="province", value=user.province)
             .form-row
                 .col
                     .form-group
                         label(for="phone") Phone
-                        input.form-control(type="text", name="phone", required)
+                        input.form-control(type="text", name="phone", value=user.phone)
                 .col
                     .form-group
-                        label(for="email") Email address
-                        input.form-control(type="email", name="email", required)
-            .form-group
-                label(for="notes") Order notes
-                textarea.form-control(cols="30", rows="10", name="notes")
+                        label.req(for="email") Email address
+                        input.form-control(type="email", name="email", value=user.email, required)
             input(type="hidden",name="_csrf" value=csrfToken) 
             button.btn.btn--green(type="submit") Save
