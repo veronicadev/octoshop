@@ -5,20 +5,22 @@ const User = require('./../models/user');
 const mongoose = require('mongoose');
 const { validationResult } = require('express-validator/check');
 const utils = require('./../util/utils');
-
+const STRIPE_KEY = process.env.STRIPE_KEY;
+const STRIPE_KEY_SECRET = process.env.STRIPE_KEY_SECRET;
+const stripe = require('stripe')(STRIPE_KEY_SECRET);
 const ITEMS_PER_PAGE = 2;
 exports.getProducts = (req, res, next) => {
     const page = +req.query.page || 1;
     let totalItems = 0;
     Product.find().countDocuments()
-        .then(count=>{
+        .then(count => {
             totalItems = count;
             return Promise.all([
-                    Product.find()
-                        .skip((page-1) * ITEMS_PER_PAGE)
-                        .limit(ITEMS_PER_PAGE),
-                    Category.find()
-                ])
+                Product.find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE),
+                Category.find()
+            ])
         })
         .then(([prods, categories]) => {
             console.log(prods)
@@ -35,7 +37,7 @@ exports.getProducts = (req, res, next) => {
                 lastPage: Math.ceil((totalItems / ITEMS_PER_PAGE))
             });
         })
-        .catch(err=>{
+        .catch(err => {
             return next(err);
         })
 }
@@ -94,7 +96,7 @@ exports.getCheckout = (req, res, next) => {
         .then(user => {
             let totalPrice = 0;
             const products = user.cart.items;
-            if(products.length===0) return res.redirect('/cart');
+            if (products.length === 0) return res.redirect('/cart');
             products.forEach((item, index) => {
                 totalPrice = totalPrice + (item.product.price * item.quantity);
             });
@@ -107,7 +109,8 @@ exports.getCheckout = (req, res, next) => {
                 products: products,
                 infoMessage: infoMessage,
                 errorMessage: errorMessage,
-                tempUser: req.user
+                tempUser: req.user,
+                stripeKey: STRIPE_KEY
             });
         });
 }
@@ -141,6 +144,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
 exports.postOrder = (req, res, next) => {
     const errorsVal = validationResult(req);
+    const stripeToken = req.body.stripeToken;
     const data = {
         name: req.body.name,
         surname: req.body.surname,
@@ -163,8 +167,8 @@ exports.postOrder = (req, res, next) => {
             products.forEach((item, index) => {
                 totalPrice = totalPrice + (item.product.price * item.quantity);
             });
-            console.log('products: ',products)
-            console.log('tempUser: '+data)
+            console.log('products: ', products)
+            console.log('tempUser: ' + data)
             if (!errorsVal.isEmpty()) {
                 return res.status(422).render("shop/checkout", {
                     docTitle: "Checkout",
@@ -194,12 +198,21 @@ exports.postOrder = (req, res, next) => {
             });
             console.log(newOrder)
             return newOrder.save()
-            .then(result => {
-                return req.user.clearCart();
-            })
-            .then(result => {
-                res.redirect('/customer/orders');
-            })
+                .then(result => {
+                    const charge = stripe.charges.create({
+                        amount: totalPrice * 100,
+                        currency: 'usd',
+                        description: user.name + ' order',
+                        source: stripeToken,
+                        metadata: {
+                            order_id: result._id.toString()
+                        }
+                    });
+                    return req.user.clearCart();
+                })
+                .then(result => {
+                    res.redirect('/customer/orders');
+                })
         })
         .catch(error => {
             console.log(error)
