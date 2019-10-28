@@ -242,21 +242,21 @@ exports.getCategory = (req, res, next) => {
     const catId = req.params.catId;
     if (!catId) res.redirect('/products');
     Promise.all([
-            Category.find({ _id: catId }),
-            Product.find(),
+            Category.findOne({ _id: catId }),
+            Product.find({category:catId}),
             Category.find()
         ])
         .then(([category, prods, categories]) => {
             console.log(category)
             res.render("shop/category", {
-                docTitle: "Category -" + category[0].name,
+                docTitle: "Category -" + category.name,
                 path: "/categories",
                 categories: categories,
-                category: category[0],
+                category: category,
                 prods: prods
             });
         })
         .catch(error => {
-            console.log(error)
+            return next(error)
         })
 }
