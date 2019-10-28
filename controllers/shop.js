@@ -5,8 +5,8 @@ const User = require('./../models/user');
 const mongoose = require('mongoose');
 const { validationResult } = require('express-validator/check');
 const utils = require('./../util/utils');
-const STRIPE_KEY = process.env.STRIPE_KEY;
-const STRIPE_KEY_SECRET = process.env.STRIPE_KEY_SECRET;
+const STRIPE_KEY = process.env.STRIPE_KEY || 'pk_test_qtD4BKoyahbMpGJd8M5xJDRe00gqbudkmu';
+const STRIPE_KEY_SECRET = process.env.STRIPE_KEY_SECRET || 'sk_test_aI5TZzN9afyI07zWebGgudze00GbyhJcMQ';
 const stripe = require('stripe')(STRIPE_KEY_SECRET);
 const ITEMS_PER_PAGE = 2;
 exports.getProducts = (req, res, next) => {
@@ -109,8 +109,7 @@ exports.getCheckout = (req, res, next) => {
                 products: products,
                 infoMessage: infoMessage,
                 errorMessage: errorMessage,
-                tempUser: req.user,
-                stripeKey: STRIPE_KEY
+                tempUser: req.user
             });
         });
 }
@@ -196,26 +195,46 @@ exports.postOrder = (req, res, next) => {
                 phone: req.body.phone,
                 notes: req.body.notes
             });
-            console.log(newOrder)
+            
+            let orderFetched;
             return newOrder.save()
-                .then(result => {
-                    const charge = stripe.charges.create({
+                .then(order => {
+                    orderFetched = order;
+                    return stripe.customers.create({
+                        source: req.body.stripeToken,
+                        email:req.user.email,
+                        name: req.body.name + ' ' + req.body.surname + ' ' + req.body.company,
+                        address: {
+                            line1:req.body.streetAddress,
+                            city: req.body.city + ' ' + req.body.province,
+                            country:req.body.country,
+                            postal_code:req.body.postcode
+                        },
+                        phone: req.body.phone
+                      })
+                })
+                .then(customer=>{
+                    return stripe.charges.create({
                         amount: totalPrice * 100,
                         currency: 'usd',
                         description: user.name + ' order',
-                        source: stripeToken,
                         metadata: {
-                            order_id: result._id.toString()
-                        }
-                    });
-                    return req.user.clearCart();
+                            order_id: orderFetched._id.toString()
+                        },
+                        receipt_email:customer.email,
+                        customer: customer.id
+                    })
                 })
                 .then(result => {
+                    console.log('STRIPE: ',result);
+                    return req.user.clearCart();
+                })
+                .then(response=>{
                     res.redirect('/customer/orders');
                 })
         })
         .catch(error => {
-            console.log(error)
+             return next(error)
         })
 };
 
