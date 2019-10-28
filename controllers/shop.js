@@ -5,8 +5,8 @@ const User = require('./../models/user');
 const mongoose = require('mongoose');
 const { validationResult } = require('express-validator/check');
 const utils = require('./../util/utils');
-const STRIPE_KEY = process.env.STRIPE_KEY || 'pk_test_qtD4BKoyahbMpGJd8M5xJDRe00gqbudkmu';
-const STRIPE_KEY_SECRET = process.env.STRIPE_KEY_SECRET || 'sk_test_aI5TZzN9afyI07zWebGgudze00GbyhJcMQ';
+const STRIPE_KEY = process.env.STRIPE_KEY;
+const STRIPE_KEY_SECRET = process.env.STRIPE_KEY_SECRET;
 const stripe = require('stripe')(STRIPE_KEY_SECRET);
 const ITEMS_PER_PAGE = 2;
 exports.getProducts = (req, res, next) => {
@@ -217,7 +217,7 @@ exports.postOrder = (req, res, next) => {
                     return stripe.charges.create({
                         amount: totalPrice * 100,
                         currency: 'usd',
-                        description: user.name + ' order',
+                        description: req.user.name + ' order',
                         metadata: {
                             order_id: orderFetched._id.toString()
                         },
@@ -226,7 +226,6 @@ exports.postOrder = (req, res, next) => {
                     })
                 })
                 .then(result => {
-                    console.log('STRIPE: ',result);
                     return req.user.clearCart();
                 })
                 .then(response=>{
