@@ -422,6 +422,10 @@ th {
     background-color: #889998;
   }
 
+  .form-control-file-btn{
+    height: calc(1.5em + .75rem + 2px);
+  }
+
 
 
 @media screen and (min-width:1024px) {

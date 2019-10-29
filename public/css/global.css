@@ -90,6 +90,28 @@ input[type="number"] {}
     justify-content: center;
 }
 
+.form-control-file{
+    appearance: none;
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+    border: none;
+    background: transparent;
+    opacity: 0;
+
+}
+.form-control-file-label{
+    width: 80%;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    overflow: hidden;
+}
+
+.form-control-file-btn{    
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
 @media screen and (min-width:992px) {
     .ptb-60 {
         padding-top: 60px;

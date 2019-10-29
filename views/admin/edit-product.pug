@@ -27,8 +27,10 @@ block content
                                 .col
                                      .form-group
                                         label Image
-                                        input.form-control-file#image(name="image", type="file", accept="image/*")
-                                        <!--label(for="image").form-control.form-control-file-label #{product.imageUrl}-->
+                                        .form-row
+                                                button.btn.btn--green-full.form-control-file-btn(type="button") Upload
+                                                input.form-control-file#image(name="image", type="file", accept="image/*")
+                                                label#imagePath(for="image").form-control.form-control-file-label #{product.imageUrl}
                             .form-group
                                 label(for="description") Description
                                 textarea(name="description", cols="30", rows="10", class=validationErrors.find(e=>e.param === 'description') ? 'invalid' : '', required).form-control#description #{product.description}
