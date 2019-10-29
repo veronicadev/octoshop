@@ -77,7 +77,6 @@ app.use((req, res, next) => {
         .exec()
         .then(user => {
             if (!user) return next();
-            console.log(user)
             req.user = user;
             res.locals.user = user;
             next();
@@ -87,21 +86,6 @@ app.use((req, res, next) => {
         })
 });
 
-/*USER ROLES*/
-/*
-app.use((req, res, next)=>{
-    if(!req.userRoles){
-       Role.find()
-            .then(roles =>{
-                req.userRoles = roles;
-                console.log(req.userRoles);
-            })
-            .catch(error =>{
-                console.log(error);
-            })
-    }
-    next();
-});*/
 
 /*CART ITEMS*/
 app.use((req, res, next) => {
@@ -133,13 +117,17 @@ app.use((error, req, res, next) => {
     res.redirect('/500');
 })
 /*CONNECTION DB & SERVER START*/
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => {
         console.log('Mongoose started');
         app.listen(port, () => {
             console.log("Server listening on port 3000")
+            Role.find()
+                .then(roles=>{
+                    global.roles = roles;
+            })
         });
     })
     .catch(error => {
-        console.error('Mongoose connection failed', error);
+        console.error(error);
     })
