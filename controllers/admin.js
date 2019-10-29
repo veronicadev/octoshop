@@ -37,10 +37,6 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
     Product.find()
-        /*        .then(prods => {
-                    return prods.populate('category')
-                    .execPopulate();
-                })*/
         .then(products => {
             res.render("admin/products", {
                 prods: products,
@@ -120,7 +116,7 @@ exports.postAddProduct = (req, res, next) => {
                 return next(newError);
             });
     } else {
-        const newError = new Error('403 Unauthorized');
+        const newError = new Error();
         newError.httpStatusCode = 403;
         return next(newError);
     }
@@ -207,7 +203,7 @@ exports.postEditProduct = (req, res, next) => {
                 return next(newError);
             });
     } else {
-        const newError = new Error('403 Unauthorized');
+        const newError = new Error();
         newError.httpStatusCode = 403;
         return next(newError);
     }
@@ -231,7 +227,7 @@ exports.postDeleteProduct = (req, res, next) => {
                 return next(newError);
             });
     } else {
-        const newError = new Error('403 Unauthorized');
+        const newError = new Error();
         newError.httpStatusCode = 403;
         return next(newError);
     }
@@ -303,7 +299,7 @@ exports.postAddCategory = (req, res, next) => {
                 res.redirect('/admin/categories');
             });
     } else {
-        const newError = new Error('403 Unauthorized');
+        const newError = new Error();
         newError.httpStatusCode = 403;
         return next(newError);
     }
@@ -323,8 +319,8 @@ exports.postDeleteCategory = (req, res, next) => {
                 newError.httpStatusCode = 500;
                 return next(newError);;
             })
-    }else {
-        const newError = new Error('403 Unauthorized');
+    } else {
+        const newError = new Error();
         newError.httpStatusCode = 403;
         return next(newError);
     }
@@ -378,7 +374,7 @@ exports.postEditCategory = (req, res, next) => {
                 category.name = req.body.name;
                 category.description = req.body.description;
                 category.save()
-    
+
             })
             .then(result => {
                 req.flash('info', 'Category "' + req.body.name + '" updated!');
@@ -389,8 +385,8 @@ exports.postEditCategory = (req, res, next) => {
                 newError.httpStatusCode = 500;
                 return next(newError);
             });
-    }else {
-        const newError = new Error('403 Unauthorized');
+    } else {
+        const newError = new Error();
         newError.httpStatusCode = 403;
         return next(newError);
     }

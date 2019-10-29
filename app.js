@@ -114,7 +114,8 @@ app.use(errorsController.get404);
 /**ERROR HANDLING MIDDLEWARE */
 app.use((error, req, res, next) => {
     console.log(error)
-    res.redirect('/500');
+    if(!error.httpStatusCode) error.httpStatusCode = 500;
+    res.redirect('/'+error.httpStatusCode);
 })
 /*CONNECTION DB & SERVER START*/
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
