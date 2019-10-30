@@ -16,20 +16,18 @@ if (megamenus && megamenus.length > 0) {
                 menu.classList.toggle('collapse');
                 megamenus[i].classList.toggle('opened');
             })
-
         }
     }
 }
 
-var fileInput = document.querySelector(".form-control-file"),
-    fileLabel = document.querySelector(".form-control-file-label")
-fileBtn = document.querySelector(".form-control-file-btn");
+const fileInput = document.querySelector(".form-control-file");
+const fileLabel = document.querySelector(".form-control-file-label");
+const fileBtn = document.querySelector(".form-control-file-btn");
 
 fileInput.addEventListener("change", function (event) {
     if (this.value) {
-        console.log(event.target.files)
         const newName = event.target.files[0].name;
-        fileLabel.innerHTML = event.target.files[0].name;
+        fileLabel.innerHTML = newName;
     }else{
         fileLabel.innerHTML = '';
     }
