@@ -11,6 +11,7 @@ const Role = require('./models/role');
 const multer = require('multer');
 const MONGODB_URI = process.env.MONGODB_URI;
 const SESSION_KEY = process.env.SESSION_KEY;
+const helmet = require('helmet')
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -117,6 +118,9 @@ app.use((error, req, res, next) => {
     if(!error.httpStatusCode) error.httpStatusCode = 500;
     res.redirect('/'+error.httpStatusCode);
 })
+/*HELMET*/
+app.use(helmet())
+
 /*CONNECTION DB & SERVER START*/
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => {
