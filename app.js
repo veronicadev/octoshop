@@ -13,6 +13,8 @@ const MONGODB_URI = process.env.MONGODB_URI;
 const SESSION_KEY = process.env.SESSION_KEY;
 const helmet = require('helmet');
 const compression = require('compression');
+const morgan = require('morgan');
+const fs = require('fs');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -124,6 +126,12 @@ app.use(helmet());
 
 /**COMPRESSION*/
 app.use(compression());
+
+/**REQUEST LOGGING*/
+const accessLogStream = fs.createWriteStream(path.join(__dirname), 'access.log', {
+    flags: 'a'
+});
+app.use(morgan('combined', {stream: accessLogStream}));
 
 
 
