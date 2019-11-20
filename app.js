@@ -11,7 +11,8 @@ const Role = require('./models/role');
 const multer = require('multer');
 const MONGODB_URI = process.env.MONGODB_URI;
 const SESSION_KEY = process.env.SESSION_KEY;
-const helmet = require('helmet')
+const helmet = require('helmet');
+const compression = require('compression');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -119,7 +120,12 @@ app.use((error, req, res, next) => {
     res.redirect('/'+error.httpStatusCode);
 })
 /*HELMET*/
-app.use(helmet())
+app.use(helmet());
+
+/**COMPRESSION*/
+app.use(compression());
+
+
 
 /*CONNECTION DB & SERVER START*/
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
