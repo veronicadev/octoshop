@@ -29,6 +29,14 @@ const store = new MongoDBStore({
     uri: MONGODB_URI,
     collection: 'sessions'
 });
+
+/**REQUEST LOGGING*/
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
+    flags: 'a'
+});
+app.use(morgan('combined', {stream: accessLogStream}));
+
+
 const csrfProtection = csrf();
 const fileStorage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -126,12 +134,6 @@ app.use(helmet());
 
 /**COMPRESSION*/
 app.use(compression());
-
-/**REQUEST LOGGING*/
-const accessLogStream = fs.createWriteStream(path.join(__dirname), 'access.log', {
-    flags: 'a'
-});
-app.use(morgan('combined', {stream: accessLogStream}));
 
 
 
