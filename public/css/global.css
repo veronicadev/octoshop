@@ -112,6 +112,29 @@ input[type="number"] {}
     border-bottom-right-radius: 0px;
 }
 
+/*ADMIN BAR*/
+.admin__bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+    background-color: #052e24;
+    color: #fff;
+    padding: 5px 15px;
+    text-align: right;
+}
+
+.admin__bar_link{
+    margin-left: 15px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.admin__bar_nav{
+
+}
+
 @media screen and (min-width:992px) {
     .ptb-60 {
         padding-top: 60px;

@@ -10,7 +10,12 @@ html(lang="en")
         link(rel="stylesheet", href="/css/global.css")
         link(rel="stylesheet", href="/css/admin/dashboard.css")
         block styles
-    body
+    body(class=(user && isAdmin ? "admin__dashboard" : ""))
+        if user && isAdmin
+            section.admin__bar
+                .admin__bar_nav
+                    a.admin__bar_link(href='/admin/products') Dashboard
+                    a.admin__bar_link(href='/products') Shop
         .nav-header
             .brand-logo
                 a(href="/", target="_blank")

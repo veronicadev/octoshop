@@ -314,6 +314,14 @@ p {
     padding: 30px 0;
 }
 
+.admin__dashboard .main-header{
+    top: 34px;
+}
+
+.admin__dashboard{
+    padding-top: 94px;
+}
+
 @media screen and (min-width:1024px) {
     .main-header {
         padding: 25px 0;
@@ -342,5 +350,8 @@ p {
     .main-header--fixed {
         background-color: #d3f1e8;
         border-bottom: 1px solid #00a499
+    }
+    .admin__dashboard{
+        padding-top: 0;
     }
 }

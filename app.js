@@ -16,6 +16,8 @@ const compression = require('compression');
 const morgan = require('morgan');
 const fs = require('fs');
 
+const roles = require('./util/roles').roles;
+
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
@@ -34,7 +36,7 @@ const store = new MongoDBStore({
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
     flags: 'a'
 });
-app.use(morgan('combined', {stream: accessLogStream}));
+app.use(morgan('combined', { stream: accessLogStream }));
 
 
 const csrfProtection = csrf();
@@ -48,16 +50,16 @@ const fileStorage = multer.diskStorage({
     }
 });
 
-const fileFilter = (req, file, cb)=>{
+const fileFilter = (req, file, cb) => {
     console.log(file)
-    if(file.mimetype==='image/png' || file.mimetype==='image/jpeg' || file.mimetype==='image/jpg'){
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
         cb(null, true);
-    }else {
+    } else {
         cb(null, false);
     }
 }
 const multerObj = {
-    storage:fileStorage,
+    storage: fileStorage,
     fileFilter: fileFilter
 };
 
@@ -68,7 +70,7 @@ app.set("views", "views");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer(multerObj).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/images',express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 /*SESSION*/
 app.use(session({
@@ -84,6 +86,8 @@ app.use((req, res, next) => {
     if (!req.session.user) {
         return next();
     }
+    req.isAdmin = false;
+    res.locals.isAdmin = false;
     User.findById(req.session.user._id)
         .populate('roleType')
         .exec()
@@ -91,6 +95,12 @@ app.use((req, res, next) => {
             if (!user) return next();
             req.user = user;
             res.locals.user = user;
+            console.log(user)
+
+            if (user.roleType.name===roles.ADMIN){
+                req.isAdmin = true;
+                res.locals.isAdmin = true;
+            }
             next();
         })
         .catch(error => {
@@ -126,8 +136,8 @@ app.use(errorsController.get404);
 /**ERROR HANDLING MIDDLEWARE */
 app.use((error, req, res, next) => {
     console.log(error)
-    if(!error.httpStatusCode) error.httpStatusCode = 500;
-    res.redirect('/'+error.httpStatusCode);
+    if (!error.httpStatusCode) error.httpStatusCode = 500;
+    res.redirect('/' + error.httpStatusCode);
 })
 /*HELMET*/
 app.use(helmet());
@@ -144,11 +154,12 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true 
         app.listen(port, () => {
             console.log("Server listening on port 3000")
             Role.find()
-                .then(roles=>{
+                .then(roles => {
                     global.roles = roles;
-            })
+                })
         });
     })
     .catch(error => {
-        console.error(error);
+        next(error);
+        //console.error(error);
     })
