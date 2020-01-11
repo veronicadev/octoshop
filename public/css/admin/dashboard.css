@@ -317,7 +317,7 @@ th {
     height: 100%;
     display: none;
     position: absolute;
-    top: 5rem;
+    top: calc(5rem + 34px);
     padding-top: 0;
     z-index: 99;
     background: #fff;
@@ -422,6 +422,18 @@ th {
     background-color: #889998;
   }
 
+  .form-control-file-btn{
+    height: calc(1.5em + .75rem + 2px);
+  }
+
+
+.admin__dashboard .header, .admin__dashboard .nav-header{
+    top: 34px;
+}
+
+.main-content{
+    padding-top: 34px;
+}
 
 
 @media screen and (min-width:1024px) {

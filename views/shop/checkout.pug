@@ -55,15 +55,9 @@ block shop-content
                                         label(for="notes") Order notes
                                         textarea.form-control(cols="30", rows="10", name="notes")
                                     input(type="hidden",name="_csrf" value=csrfToken)
-                                    script.stripe-button(
-                                        src="https://checkout.stripe.com/checkout.js", 
-                                        data-key=stripeKey, 
-                                        data-amount=totalPrice * 100 
-                                        data-name="Your Order"  data-description="All the items you ordered",
-                                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png",
-                                        data-locale="auto",
-                                        data-currency="usd")    
-                                    <!--button.btn.btn--green(type="submit") Order now-->
+                                    #card-element.bg-transparent.text-white.p-2.h-10.mb-4
+                                    #card-errors(role="alert")
+                                    button.btn.btn--green Order now
                         .col-lg-6
                             section.checkout-list
                                 h2 Your order
@@ -87,3 +81,5 @@ block shop-content
                                                     .checkout-total__title Total
                                             td.checkout-total__price-box
                                                 span.checkout-item__price $ #{totalPrice}
+    script(src="https://js.stripe.com/v3/")
+    script(src="/js/shop/card.js")   

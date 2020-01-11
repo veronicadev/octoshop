@@ -11,6 +11,12 @@ const Role = require('./models/role');
 const multer = require('multer');
 const MONGODB_URI = process.env.MONGODB_URI;
 const SESSION_KEY = process.env.SESSION_KEY;
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
+const fs = require('fs');
+
+const roles = require('./util/roles').roles;
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -25,6 +31,14 @@ const store = new MongoDBStore({
     uri: MONGODB_URI,
     collection: 'sessions'
 });
+
+/**REQUEST LOGGING*/
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
+    flags: 'a'
+});
+app.use(morgan('combined', { stream: accessLogStream }));
+
+
 const csrfProtection = csrf();
 const fileStorage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -36,16 +50,16 @@ const fileStorage = multer.diskStorage({
     }
 });
 
-const fileFilter = (req, file, cb)=>{
+const fileFilter = (req, file, cb) => {
     console.log(file)
-    if(file.mimetype==='image/png' || file.mimetype==='image/jpeg' || file.mimetype==='image/jpg'){
+    if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
         cb(null, true);
-    }else {
+    } else {
         cb(null, false);
     }
 }
 const multerObj = {
-    storage:fileStorage,
+    storage: fileStorage,
     fileFilter: fileFilter
 };
 
@@ -56,7 +70,7 @@ app.set("views", "views");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(multer(multerObj).single('image'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/images',express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 /*SESSION*/
 app.use(session({
@@ -72,14 +86,21 @@ app.use((req, res, next) => {
     if (!req.session.user) {
         return next();
     }
+    req.isAdmin = false;
+    res.locals.isAdmin = false;
     User.findById(req.session.user._id)
         .populate('roleType')
         .exec()
         .then(user => {
             if (!user) return next();
-            console.log(user)
             req.user = user;
             res.locals.user = user;
+            console.log(user)
+
+            if (user.roleType.name===roles.ADMIN){
+                req.isAdmin = true;
+                res.locals.isAdmin = true;
+            }
             next();
         })
         .catch(error => {
@@ -87,21 +108,6 @@ app.use((req, res, next) => {
         })
 });
 
-/*USER ROLES*/
-/*
-app.use((req, res, next)=>{
-    if(!req.userRoles){
-       Role.find()
-            .then(roles =>{
-                req.userRoles = roles;
-                console.log(req.userRoles);
-            })
-            .catch(error =>{
-                console.log(error);
-            })
-    }
-    next();
-});*/
 
 /*CART ITEMS*/
 app.use((req, res, next) => {
@@ -130,16 +136,30 @@ app.use(errorsController.get404);
 /**ERROR HANDLING MIDDLEWARE */
 app.use((error, req, res, next) => {
     console.log(error)
-    res.redirect('/500');
+    if (!error.httpStatusCode) error.httpStatusCode = 500;
+    res.redirect('/' + error.httpStatusCode);
 })
+/*HELMET*/
+app.use(helmet());
+
+/**COMPRESSION*/
+app.use(compression());
+
+
+
 /*CONNECTION DB & SERVER START*/
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => {
         console.log('Mongoose started');
         app.listen(port, () => {
             console.log("Server listening on port 3000")
+            Role.find()
+                .then(roles => {
+                    global.roles = roles;
+                })
         });
     })
     .catch(error => {
-        console.error('Mongoose connection failed', error);
+        next(error);
+        //console.error(error);
     })

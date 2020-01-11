@@ -26,4 +26,4 @@ const deleteFile = (filePath) =>{
 
 exports.getFlashMessage = getFlashMessage;
 exports.getValidationMessage = getValidationMessage;
-exports.deleteFile = getFlashMessage;
+exports.deleteFile = deleteFile;

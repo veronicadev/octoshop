@@ -109,8 +109,7 @@ exports.getCheckout = (req, res, next) => {
                 products: products,
                 infoMessage: infoMessage,
                 errorMessage: errorMessage,
-                tempUser: req.user,
-                stripeKey: STRIPE_KEY
+                tempUser: req.user
             });
         });
 }
@@ -196,26 +195,45 @@ exports.postOrder = (req, res, next) => {
                 phone: req.body.phone,
                 notes: req.body.notes
             });
-            console.log(newOrder)
+            
+            let orderFetched;
             return newOrder.save()
-                .then(result => {
-                    const charge = stripe.charges.create({
+                .then(order => {
+                    orderFetched = order;
+                    return stripe.customers.create({
+                        source: req.body.stripeToken,
+                        email:req.user.email,
+                        name: req.body.name + ' ' + req.body.surname + ' ' + req.body.company,
+                        address: {
+                            line1:req.body.streetAddress,
+                            city: req.body.city + ' ' + req.body.province,
+                            country:req.body.country,
+                            postal_code:req.body.postcode
+                        },
+                        phone: req.body.phone
+                      })
+                })
+                .then(customer=>{
+                    return stripe.charges.create({
                         amount: totalPrice * 100,
                         currency: 'usd',
-                        description: user.name + ' order',
-                        source: stripeToken,
+                        description: req.user.name + ' order',
                         metadata: {
-                            order_id: result._id.toString()
-                        }
-                    });
-                    return req.user.clearCart();
+                            order_id: orderFetched._id.toString()
+                        },
+                        receipt_email:customer.email,
+                        customer: customer.id
+                    })
                 })
                 .then(result => {
+                    return req.user.clearCart();
+                })
+                .then(response=>{
                     res.redirect('/customer/orders');
                 })
         })
         .catch(error => {
-            console.log(error)
+             return next(error)
         })
 };
 
@@ -223,21 +241,21 @@ exports.getCategory = (req, res, next) => {
     const catId = req.params.catId;
     if (!catId) res.redirect('/products');
     Promise.all([
-            Category.find({ _id: catId }),
-            Product.find(),
+            Category.findOne({ _id: catId }),
+            Product.find({category:catId}),
             Category.find()
         ])
         .then(([category, prods, categories]) => {
             console.log(category)
             res.render("shop/category", {
-                docTitle: "Category -" + category[0].name,
+                docTitle: "Category -" + category.name,
                 path: "/categories",
                 categories: categories,
-                category: category[0],
+                category: category,
                 prods: prods
             });
         })
         .catch(error => {
-            console.log(error)
+            return next(error)
         })
 }

@@ -27,7 +27,12 @@ html(lang="en")
         meta(name="msapplication-TileImage", content="/img/favicon/ms-icon-144x144.png")
         meta(name="theme-color", content="#ffffff") 
         block styles
-    body
+    body(class=(user && isAdmin ? "admin__dashboard" : ""))
+        if user && isAdmin
+            section.admin__bar
+                .admin__bar_nav
+                    a.admin__bar_link(href='/admin/products') Dashboard
+                    a.admin__bar_link(href='/products') Shop
         header.main-header#mainHeader
             nav.navbar.navbar-expand-lg
                 .container
