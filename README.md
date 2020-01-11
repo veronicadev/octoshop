@@ -4,15 +4,13 @@
   <br>
 </p>
 
-![alt text](https://i.ibb.co/qdvWsM4/homepage.png)
-
 Simple Node js ecommerce
 Technlogies used:
   * Node JS
   * Express JS
-  * Vanilla Javascript
+  * Pug
+  * Javascript
   * Html/Css
-  * BEM methodology
   * Bootstrap
   
 ## **Run the project**
@@ -27,12 +25,3 @@ npm i
 npm start
 ```
 
-
-## **Screenshot**
-### Admin panel
-
-All products page
-![alt text](https://i.ibb.co/PcCHvGs/admin-panel-1.jpg)
-
-Add product page
-![alt text](https://i.ibb.co/6YtrQHj/admin-panel-2.jpg)
