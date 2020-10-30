@@ -12,6 +12,7 @@ Technlogies used:
   * Javascript
   * Html/Css
   * Bootstrap
+  * MongoDB
   
 ## **Run the project**
 
