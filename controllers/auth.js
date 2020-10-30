@@ -81,7 +81,6 @@ exports.postReset = (req, res, next) => {
 
             })
             .then(renderedEmail => {
-                //console.log(renderedEmail)
                 return transporter.sendMail({
                     to: req.body.email,
                     from: FROM_EMAIL,
@@ -165,7 +164,6 @@ exports.postSignup = (req, res, next) => {
     Role
     .findOne({name:rolesEnum.CUSTOMER})
     .then((roles=>{
-        console.log(roles)
         role = roles;
     }))
     .catch(error=>console.log(error));
@@ -211,10 +209,8 @@ exports.getNewPassword = (req, res, next) => {
     if (!token) {
         return res.redirect('/login');
     }
-    console.log(token)
     User.findOne({ resetToken: token, resetTokenExp: { $gt: Date.now() } })
         .then((user) => {
-            console.log(user)
             if (!user) {
                 return res.redirect('/login');
             }
@@ -245,13 +241,10 @@ exports.postNewPassword = (req, res, next) => {
         _id: mongoose.Types.ObjectId(userId)
     })
         .then((user) => {
-            console.log(mongoose.Types.ObjectId(userId))
             resetUser = user;
-            console.log('user', user)
             return bcryptjs.hash(newPassword, 12);
         })
         .then((hashedPsw) => {
-            console.log('resetUser', resetUser)
             resetUser.password = hashedPsw;
             resetUser.resetToken = null;
             resetUser.resetTokenExp = undefined;
@@ -260,7 +253,6 @@ exports.postNewPassword = (req, res, next) => {
         .then((result) => {
             //TODO 
             //inviare mail che conferma che è stata cambiata la password e eventualmente un flash message
-            console.log(result)
             res.redirect('/login');
         })
         .catch((error) => {

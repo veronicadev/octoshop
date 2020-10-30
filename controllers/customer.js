@@ -121,7 +121,6 @@ exports.postInformation =(req, res, next) =>{
     req.user.phone= currentUser.phone;
     User.findOne({email:currentUser.email, _id:{$ne: req.user._id}})
     .then(userFetched=>{
-        console.log(userFetched)
         if(userFetched){
             return res.status(422).render("customer/information", {
                 docTitle: "Account information",

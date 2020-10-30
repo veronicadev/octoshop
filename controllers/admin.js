@@ -93,7 +93,6 @@ exports.postAddProduct = (req, res, next) => {
                 }
             });
         }
-        console.log(image)
         const newProduct = new Product({
             title: req.body.title,
             description: req.body.description,
@@ -131,7 +130,6 @@ exports.getEditProduct = (req, res, next) => {
         Category.find()
     ])
         .then(([product, categories]) => {
-            console.log(product)
             if (!product) { return res.redirect('/admin/products'); }
             res.render("admin/edit-product", {
                 docTitle: "Edit Product",
@@ -158,7 +156,6 @@ exports.postEditProduct = (req, res, next) => {
         const productId = req.body.productId;
         const image = req.file;
         const errorsVal = validationResult(req);
-        console.log(errorsVal.errors)
         if (!errorsVal.isEmpty()) {
             return res.status(422).render("admin/edit-product", {
                 docTitle: "Edit Product",
@@ -182,7 +179,6 @@ exports.postEditProduct = (req, res, next) => {
             .then(product => {
                 if (!product) { return res.redirect('/admin/products'); }
                 product.title = req.body.title;
-                console.log(image)
                 if (image) {
                     utils.deleteFile(product.imageUrl);
                     product.imageUrl = image.path;

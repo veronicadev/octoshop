@@ -51,7 +51,6 @@ const fileStorage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-    console.log(file)
     if (file.mimetype === 'image/png' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg') {
         cb(null, true);
     } else {
@@ -95,7 +94,6 @@ app.use((req, res, next) => {
             if (!user) return next();
             req.user = user;
             res.locals.user = user;
-            console.log(user)
 
             if (user.roleType.name===roles.ADMIN){
                 req.isAdmin = true;
@@ -150,7 +148,6 @@ app.use(compression());
 /*CONNECTION DB & SERVER START*/
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(result => {
-        console.log('Mongoose started');
         app.listen(port, () => {
             console.log("Server listening on port 3000")
             Role.find()

@@ -166,8 +166,6 @@ exports.postOrder = (req, res, next) => {
             products.forEach((item, index) => {
                 totalPrice = totalPrice + (item.product.price * item.quantity);
             });
-            console.log('products: ', products)
-            console.log('tempUser: ' + data)
             if (!errorsVal.isEmpty()) {
                 return res.status(422).render("shop/checkout", {
                     docTitle: "Checkout",
@@ -246,7 +244,6 @@ exports.getCategory = (req, res, next) => {
             Category.find()
         ])
         .then(([category, prods, categories]) => {
-            console.log(category)
             res.render("shop/category", {
                 docTitle: "Category -" + category.name,
                 path: "/categories",

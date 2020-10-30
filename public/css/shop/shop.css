@@ -231,13 +231,17 @@ p {
 }
 
 .banner__img {
-    background-image: url('https://cdn.dribbble.com/users/2181562/screenshots/6308061/attachments/1351009/ice-4-.jpg');
+    background-image: url('../../img/icecream.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     height: 100%;
     width: 100%;
     opacity: 0.7;
+}
+
+.height{
+    min-height: 800px;
 }
 
 .banner__title {
